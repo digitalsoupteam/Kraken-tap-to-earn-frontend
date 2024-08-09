@@ -22,22 +22,23 @@ const Footer: FC = () => {
         },
         {
             name: 'Referrals',
-            link: '/referrals/',
+            link: '/referrals',
             icon: <ShipIcon/>,
         },
         {
             name: 'Quests',
-            link: '/quests/',
+            link: '/quests',
             icon: <CaseIcon/>,
         },
         {
             name: 'Leaderboard',
-            link: '/leaderboard/',
+            link: '/leaderboard',
             icon: <AnchorIcon/>,
         },
     ];
 
     const pathname = usePathname();
+        console.log(pathname);
 
     return <footer className={styles.root}>
         <Wrapper>

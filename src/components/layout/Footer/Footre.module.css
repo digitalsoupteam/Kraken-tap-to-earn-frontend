@@ -19,7 +19,7 @@
     width: 100%;
 }
 
-.button {
+.root .button {
     width: 100%;
     font-size: 12px;
     border-radius: 0;
@@ -34,7 +34,7 @@
     }
 }
 
-.buttonActive {
+.root .buttonActive {
     background-color: var(--primary);
 
     & svg {
