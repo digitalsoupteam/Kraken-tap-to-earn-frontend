@@ -1,2 +1,50 @@
 .root {
+    position: sticky;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    width: 100%;
+    background-color: var(--black);
+}
+
+.navigation li {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.button {
+    width: 100%;
+    font-size: 12px;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+
+    & svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.buttonActive {
+    background-color: var(--primary);
+
+    & svg {
+        color: var(--white);
+    }
+}
+
+.navigation li:first-of-type .button {
+    border-radius: var(--br-medium) 0 0 var(--br-medium);
+}
+
+.navigation li:last-of-type .button {
+    border-radius: 0 var(--br-medium) var(--br-medium) 0;
 }
