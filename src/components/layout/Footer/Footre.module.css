@@ -1,6 +1,6 @@
 .root {
     z-index: 1;
-    position: sticky;
+    position: fixed;
     bottom: 8px;
     left: 0;
     right: 0;

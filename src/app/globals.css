@@ -17,6 +17,8 @@
   --dark-gradient-hover: linear-gradient(180deg, #0a0724 0%, #19115b 100%);
   --card-gradient: linear-gradient(180deg, #5440e2 0%, #4c2397 100%);
 
+  --header-height: 100px;
+
   --indent: 20px;
 
   --br-medium: 16px;
@@ -69,9 +71,8 @@ main {
   flex-grow: 1;
   position: relative;
   background-image: url('/images/background.png');
-  /*background-size: 100%;*/
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top right;
-  padding-top: 100px;
+  padding-top: var(--header-height);
 }
