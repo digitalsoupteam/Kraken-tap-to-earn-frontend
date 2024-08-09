@@ -58,7 +58,7 @@ body {
 }
 
 body {
-  background: var(--black);
+  background-color: var(--black);
   color: var(--white);
   display: flex;
   flex-direction: column;
@@ -67,4 +67,11 @@ body {
 
 main {
   flex-grow: 1;
+  position: relative;
+  background-image: url('/images/background.png');
+  /*background-size: 100%;*/
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top right;
+  padding-top: 100px;
 }
