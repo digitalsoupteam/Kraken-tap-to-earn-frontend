@@ -7,9 +7,11 @@ import {Wrapper} from "@/components/layout";
 import {QuestList} from "@/components/quests";
 import {QuestsBar} from "@/components/quests";
 
+import styles from './Quests.module.css';
+
 const Quests: FC = () => {
     return (
-        <>
+        <div className={styles.root}>
             <PageHeading image="/images/quests-image.png" title="get more" titleAccent="diamonds"/>
 
             <Wrapper>
@@ -17,7 +19,7 @@ const Quests: FC = () => {
 
                 <QuestsBar/>
             </Wrapper>
-        </>
+        </div>
     );
 }
 

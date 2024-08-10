@@ -1,0 +1,51 @@
+.root {
+    position: relative;
+    background: var(--card-gradient);
+    border-radius: var(--br-medium);
+    padding: 11px;
+    overflow: hidden;
+    max-width: 500px;
+    margin: 0 auto var(--indent);
+}
+
+.text {
+    z-index: 1;
+    position: relative;
+    font-size: 14px;
+    text-align: center;
+}
+
+.icon {
+    position: relative;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.tentacles {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    border-radius: var(--br-medium);
+}
+
+.tentaclesItem img {
+    object-fit: contain;
+    height: 100%;
+    width: auto;
+}
+
+.tentaclesLeft img {
+    height: calc(100% - 6px);
+    border-radius: var(--br-medium) 0 0 var(--br-medium);
+}
+
+.tentaclesRight img {
+    border-radius: 0 var(--br-medium) var(--br-medium) 0;
+}

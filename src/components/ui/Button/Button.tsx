@@ -10,14 +10,15 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     target?: string;
     disabled?: boolean;
     onClick?: () => void;
+    isLight?: boolean;
 }
 
 
-const Button: FC<IButtonProps> = ({className, onClick, children, href, target, type, disabled}) => {
+const Button: FC<IButtonProps> = ({className, onClick, children, href, target, type, disabled, isLight}) => {
     const Tag = href ? 'a' : 'button';
 
     return <Tag
-        className={clsx(className, styles.root)}
+        className={clsx(className, styles.root, isLight && styles.light)}
         onClick={onClick}
         {...(href && {href})}
         {...(target && {target})}

@@ -12,7 +12,7 @@ const EnergyTracker: FC = () => {
     return <div className={styles.root}>
         <div className={styles.inner}>
             <div className={styles.tentacles}>
-                <div className={clsx(styles.tentaclesItem, styles.tentaclesleft, isEnergyFull && styles.tentaclesItemShow)}>
+                <div className={clsx(styles.tentaclesItem, styles.tentaclesLeft, isEnergyFull && styles.tentaclesItemShow)}>
                     <Image src={'/images/tentacles-1.png'} width={'74'} height={'33'} alt={'kraken tentacles'} />
                 </div>
                 <div className={clsx(styles.tentaclesItem, styles.tentaclesRight, isEnergyFull && styles.tentaclesItemShow)}>

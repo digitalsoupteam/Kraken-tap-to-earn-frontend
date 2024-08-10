@@ -34,3 +34,18 @@
         }
     }
 }
+
+.light {
+    background-color: var(--primary);
+
+    &:active {
+        background-color: var(--secondary);
+    }
+
+    @media (hover: hover) {
+        &:hover,
+        &:focus {
+            background-color: var(--secondary);
+        }
+    }
+}

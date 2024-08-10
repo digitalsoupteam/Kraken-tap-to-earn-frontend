@@ -1,0 +1,18 @@
+.root {
+    margin-bottom: var(--indent);
+}
+
+.title {
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.noReferrals {
+    color: var(--light);
+    font-size: 14px;
+    padding: var(--indent);
+    width: 100%;
+    background-color: var(--secondary);
+    border-radius: var(--br-medium);
+    text-align: center;
+}

@@ -1,0 +1,6 @@
+.container {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+}
