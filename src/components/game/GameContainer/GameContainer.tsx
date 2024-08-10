@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import {Wrapper} from "@/components/layout";
 import {PageHeading} from "@/components/common";
-import {TotalPoints, TapButton, EnergyTracker} from "@/components/game/";
+import {TotalPoints, TapButton, EnergyTracker, GameBar} from "@/components/game/";
 
 import styles from './GameContainer.module.css';
 
@@ -34,6 +34,8 @@ const GameContainer: FC = () => {
                 <TapButton/>
 
                 <EnergyTracker/>
+
+                <GameBar/>
             </div>
         </Wrapper>
     </section>

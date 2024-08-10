@@ -1,0 +1,15 @@
+.root {
+    position: fixed;
+    bottom: calc(var(--footer-height) + 8px);
+    left: 0;
+    right: 0;
+    padding: var(--padding-x);
+}
+
+.inner {
+    border-radius: var(--br-medium);
+}
+
+.inner > * {
+    box-shadow: 0 -2px 30px 0 rgba(0, 0, 0, 0.6);
+}
