@@ -10,15 +10,15 @@
     left: 0;
     right: 0;
     bottom: 0;
+}
 
-    & img {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.background img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .inner {
