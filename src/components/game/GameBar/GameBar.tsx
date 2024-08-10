@@ -1,10 +1,11 @@
 import React, {FC} from 'react';
 
 import {BottomBar} from "@/components/common";
+import {ProgressTracker} from "@/components/game";
 
 const GameBar: FC = () => {
     return <BottomBar>
-        GameBar
+        <ProgressTracker/>
     </BottomBar>
 };
 

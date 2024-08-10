@@ -1,0 +1,50 @@
+.root {
+    width: fit-content;
+    display: grid;
+    grid-template-columns: 33px 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 10px 4px 6px;
+    border-radius: var(--br-medium);
+    background: var(--card-gradient);
+}
+
+.levelContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.level {
+    font-size: 14px;
+}
+
+.tracker {
+    position: relative;
+    height: 4px;
+}
+
+.tracker::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: inset 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    border-radius: var(--br-medium);
+}
+
+.bar {
+    background-color: var(--secondary);
+    height: 100%;
+    border-radius: var(--br-medium);
+}
+
+.progress {
+    background: var(--white);
+    width: 100%;
+    height: 100%;
+    border-radius: var(--br-medium);
+    transition: var(--tr-default);
+}

@@ -3,7 +3,6 @@
     bottom: calc(var(--footer-height) + 8px);
     left: 0;
     right: 0;
-    padding: var(--padding-x);
 }
 
 .inner {
@@ -12,4 +11,5 @@
 
 .inner > * {
     box-shadow: 0 -2px 30px 0 rgba(0, 0, 0, 0.6);
+    border-radius: var(--br-medium);
 }
