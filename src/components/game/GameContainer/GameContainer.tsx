@@ -27,7 +27,7 @@ const GameContainer: FC = () => {
 
         <Wrapper>
             <div className={styles.inner}>
-                <PageHeading title={'tap and go'} titleAccent={'into space'} size={'big'}/>
+                {/*<PageHeading title={'tap and go'} titleAccent={'into space'} size={'big'}/>*/}
 
                 <TotalPoints/>
 

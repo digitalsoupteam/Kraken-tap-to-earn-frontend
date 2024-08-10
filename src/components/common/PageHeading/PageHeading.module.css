@@ -8,9 +8,9 @@
 
 .imageContainer {
     padding: 0 50px;
+}
 
-    & img {
-        width: 100%;
-        height: auto;
-    }
+.imageContainer img {
+    width: 100%;
+    height: auto;
 }
