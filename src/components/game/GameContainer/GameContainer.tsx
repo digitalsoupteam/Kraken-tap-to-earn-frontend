@@ -5,6 +5,7 @@ import {Wrapper} from "@/components/layout";
 import {PageHeading} from "@/components/common";
 
 import styles from './GameContainer.module.css';
+import TotalPoints from "@/components/game/TotalPoints/TotalPoints";
 
 const GameContainer: FC = () => {
     return <section className={styles.root}>
@@ -27,6 +28,8 @@ const GameContainer: FC = () => {
         <Wrapper>
             <div className={styles.inner}>
                 <PageHeading title={'tap and go'} titleAccent={'into space'} size={'big'}/>
+
+                <TotalPoints />
             </div>
         </Wrapper>
     </section>

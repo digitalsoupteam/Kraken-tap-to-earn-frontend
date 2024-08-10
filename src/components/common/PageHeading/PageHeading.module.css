@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     gap: var(--indent);
+    margin-bottom: var(--indent);
 }
 
 .imageContainer {
