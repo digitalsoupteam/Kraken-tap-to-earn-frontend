@@ -7,6 +7,7 @@ import KrakenBottomImage from '/public/images/kraken.svg';
 import KrakenSeasideImage from '/public/images/kraken-smirking.svg';
 import KrakenTroposphereImage from '/public/images/kraken-smiling.svg';
 import KrakenOuterSpaceImage from '/public/images/kraken-rock.svg';
+import {useGameStore} from "@/components/game";
 
 import styles from './TapButton.module.css';
 
@@ -15,6 +16,7 @@ const TapButton: FC = () => {
     const [taps, setTaps] = useState<{ id: number, x: number, y: number }[]>([]);
     const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const increasePoints = useGameStore(state => state.increasePoints);
 
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
         const id = Date.now() + (touchIdentifier || 0);
@@ -26,6 +28,7 @@ const TapButton: FC = () => {
         const y = clientY - buttonRect.top;
 
         setTaps((prev) => [...prev, {id, x, y}]);
+        increasePoints();
 
         setTimeout(() => {
             setTaps((prev) => prev.filter(tap => tap.id !== id));
@@ -36,7 +39,6 @@ const TapButton: FC = () => {
         if (!isTouchDevice) {
             return;
         }
-        console.log('tap');
 
         Array.from(e.touches).forEach(touch => {
             handleTap(touch.clientX, touch.clientY, touch.identifier);
@@ -47,7 +49,6 @@ const TapButton: FC = () => {
         if (isTouchDevice) {
             return;
         }
-        console.log('click');
 
         handleTap(e.clientX, e.clientY);
     };
