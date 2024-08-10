@@ -6,6 +6,9 @@
 }
 
 .inner {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
     border-radius: var(--br-medium);
 }
 

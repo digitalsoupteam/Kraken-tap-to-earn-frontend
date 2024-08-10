@@ -4,7 +4,7 @@ import type {Metadata} from "next";
 import {Bebas_Neue} from "next/font/google";
 import localFont from 'next/font/local';
 
-// import AppWalletProvider from "@/providers/AppWalletProvider";
+import AppWalletProvider from "@/providers/AppWalletProvider";
 import {Footer, Header} from "@/components/layout";
 
 import "./globals.css";
@@ -28,8 +28,8 @@ const DarkHornetItalic = localFont({
 });
 
 export const metadata: Metadata = {
-    title: "Kraken",
-    description: "Kraken",
+    title: "Kraken tap and go into space",
+    description: "Kraken tap and go into space",
 };
 
 
@@ -37,13 +37,13 @@ const RootLayout: FC<PropsWithChildren> = ({children}) => {
     return (
         <html lang="en">
         <body className={clsx(BebasNeue.className, DarkHornetItalic.variable)}>
-        {/*<AppWalletProvider>*/}
-        <Header/>
-        <main>
-            {children}
-        </main>
-        <Footer/>
-        {/*</AppWalletProvider>*/}
+        <AppWalletProvider>
+            <Header/>
+            <main>
+                {children}
+            </main>
+            <Footer/>
+        </AppWalletProvider>
         </body>
         </html>
     );

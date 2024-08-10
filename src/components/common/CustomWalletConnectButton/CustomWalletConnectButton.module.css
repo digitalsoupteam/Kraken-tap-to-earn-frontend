@@ -1,0 +1,56 @@
+.root {
+    display: flex;
+}
+
+.root ul {
+    top: auto;
+    bottom: calc(100% + var(--indent));
+}
+
+.root button {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    font-family: inherit;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--primary);
+    border-radius: var(--br-medium);
+    padding: 8px 16px;
+    border: none;
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    transition: var(--tr-default);
+    height: 100%;
+
+    & svg {
+        width: 16px;
+        height: 16px;
+        color: var(--light);
+        transition: var(--tr-default);
+    }
+
+    &:active {
+        background-color: var(--primary);
+    }
+
+    @media (hover: hover) {
+        &:hover,
+        &:focus {
+            background-color: var(--secondary);
+        }
+    }
+}
+
+.root.dark button {
+    background-color: var(--secondary);
+
+    @media (hover: hover) {
+        &:hover,
+        &:focus {
+            background-color: var(--primary);
+        }
+    }
+}
