@@ -3,10 +3,9 @@ import Image from "next/image";
 
 import {Wrapper} from "@/components/layout";
 import {PageHeading} from "@/components/common";
+import {TotalPoints, TapButton, EnergyTracker} from "@/components/game/";
 
 import styles from './GameContainer.module.css';
-import TotalPoints from "@/components/game/TotalPoints/TotalPoints";
-import TapButton from "@/components/game/TapButton/TapButton";
 
 const GameContainer: FC = () => {
     return <section className={styles.root}>
@@ -30,9 +29,11 @@ const GameContainer: FC = () => {
             <div className={styles.inner}>
                 <PageHeading title={'tap and go'} titleAccent={'into space'} size={'big'}/>
 
-                <TotalPoints />
+                <TotalPoints/>
 
-                <TapButton />
+                <TapButton/>
+
+                <EnergyTracker/>
             </div>
         </Wrapper>
     </section>
