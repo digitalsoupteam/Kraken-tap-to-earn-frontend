@@ -11,9 +11,9 @@ import KrakenOuterSpaceImage from '/public/images/kraken-rock.svg';
 import styles from './TapButton.module.css';
 
 const TapButton: FC = () => {
-    const tapEffectDuration = 1000;
+    const tapEffectDuration = 500;
     const [taps, setTaps] = useState<{ id: number, x: number, y: number }[]>([]);
-    const isTouchDevice = wwindow.matchMedia('(pointer: coarse)').matches;
+    const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
@@ -54,12 +54,14 @@ const TapButton: FC = () => {
 
     return <div className={styles.root}>
         <button className={styles.button} ref={buttonRef} onTouchStart={handleTouch} onClick={handleClick}>
-            <motion.span className={styles.image} whileTap={{scale: 0.9, transition: {duration: 0.3}}}>
-                <span className={styles.buttonBg}/>
-                <KrakenBottomImage/>
-                {/*<KrakenSeasideImage/>*/}
-                {/*<KrakenTroposphereImage/>*/}
-                {/*<KrakenOuterSpaceImage/>*/}
+            <motion.span className={styles.buttonInner} whileTap={{scale: 0.9, transition: {duration: 0.3}}}>
+                <span className={styles.image}>
+                    <span className={styles.buttonBg}/>
+                    <KrakenBottomImage/>
+                    {/*<KrakenSeasideImage/>*/}
+                    {/*<KrakenTroposphereImage/>*/}
+                    {/*<KrakenOuterSpaceImage/>*/}
+                </span>
             </motion.span>
         </button>
 
@@ -67,8 +69,8 @@ const TapButton: FC = () => {
             <motion.div
                 key={tap.id}
                 className={styles.tapEffect}
-                initial={{opacity: 1, y: 0}}
-                animate={{opacity: 0, y: -40}}
+                initial={{opacity: 1, y: -20}}
+                animate={{opacity: 0, y: -100}}
                 transition={{duration: tapEffectDuration / 1000}}
                 style={{top: tap.y, left: tap.x}}
             >
