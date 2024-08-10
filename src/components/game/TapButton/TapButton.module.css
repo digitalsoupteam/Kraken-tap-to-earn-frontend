@@ -5,6 +5,7 @@
 }
 
 .button {
+    cursor: pointer;
     display: block;
     width: calc(100% - 30px);
     height: 100%;
@@ -23,6 +24,7 @@
 .image {
     position: relative;
     width: 71.5%;
+    max-width: 400px;
     aspect-ratio: 1;
     display: flex;
     align-items: center;

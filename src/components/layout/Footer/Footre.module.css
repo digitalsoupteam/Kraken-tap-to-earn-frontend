@@ -28,19 +28,19 @@
     flex-direction: column;
     align-items: center;
     gap: 4px;
+}
 
-    & svg {
-        width: 24px;
-        height: 24px;
-    }
+.root .button svg {
+    width: 24px;
+    height: 24px;
 }
 
 .root .buttonActive {
     background-color: var(--primary);
+}
 
-    & svg {
-        color: var(--white);
-    }
+.root .buttonActive svg {
+    color: var(--white);
 }
 
 .navigation li:first-of-type .button {
