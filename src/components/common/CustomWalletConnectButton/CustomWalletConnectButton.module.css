@@ -54,3 +54,16 @@
         }
     }
 }
+
+.root.big {
+    width: 100%;
+}
+
+.root.big :global(.wallet-adapter-dropdown) {
+    width: 100%;
+}
+
+.root.big button {
+    width: 100%;
+    font-size: 20px;
+}

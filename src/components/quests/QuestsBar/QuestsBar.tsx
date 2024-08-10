@@ -1,18 +1,12 @@
-'use client';
-
 import React, {FC} from 'react';
 
 import {BottomBar} from "@/components/common";
-import {ProgressTracker} from "@/components/game";
 import CustomWalletConnectButton from "@/components/common/CustomWalletConnectButton/CustomWalletConnectButton";
 
-
-const GameBar: FC = () => {
+const QuestsBar: FC = () => {
     return <BottomBar>
-        <ProgressTracker/>
-
-        <CustomWalletConnectButton size={'medium'}/>
+        <CustomWalletConnectButton size={'big'}/>
     </BottomBar>
 };
 
-export default GameBar;
+export default QuestsBar;

@@ -1,0 +1,9 @@
+.noQuests {
+    color: var(--light);
+    font-size: 14px;
+    padding: var(--indent);
+    width: 100%;
+    background-color: var(--secondary);
+    border-radius: var(--br-medium);
+    text-align: center;
+}
