@@ -35,10 +35,22 @@
     border-radius: var(--br-medium);
 }
 
+.tentaclesItem {
+    display: flex;
+}
+
 .tentaclesItem img {
     object-fit: contain;
     height: 100%;
     width: auto;
+}
+
+.tentaclesLeft {
+    justify-content: flex-start;
+}
+
+.tentaclesRight {
+    justify-content: flex-end;
 }
 
 .tentaclesLeft img {

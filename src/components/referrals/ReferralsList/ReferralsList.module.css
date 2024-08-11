@@ -1,5 +1,6 @@
 .root {
-    margin-bottom: var(--indent);
+    max-width: 500px;
+    margin: 0 auto var(--indent);
 }
 
 .title {

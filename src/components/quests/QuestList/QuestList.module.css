@@ -1,3 +1,8 @@
+.root {
+    max-width: 500px;
+    margin: 0 auto var(--indent);
+}
+
 .noQuests {
     color: var(--light);
     font-size: 14px;

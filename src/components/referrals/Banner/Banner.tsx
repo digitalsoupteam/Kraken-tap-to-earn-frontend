@@ -28,7 +28,7 @@ const Banner: FC = () => {
                 }}
                 variants={{
                     hidden: {x: '-90%'},
-                    visible: {x: '0%'},
+                    visible: {x: 0},
                 }}
             >
                 <Image src={'/images/tentacles-3.png'} width="82" height="51" alt="kraken tentacles"/>
@@ -43,7 +43,7 @@ const Banner: FC = () => {
                 }}
                 variants={{
                     hidden: {x: '90%'},
-                    visible: {x: '0%'},
+                    visible: {x: 0},
                 }}
             >
                 <Image src={'/images/tentacles-2.png'} width="76" height="56" alt="kraken tentacles"/>
