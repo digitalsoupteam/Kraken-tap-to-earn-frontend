@@ -1,6 +1,6 @@
 .root {
     font-size: 14px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 2px;
 }

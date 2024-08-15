@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
-import {UserImage} from "@/components/common";
+import {Points, UserImage} from "@/components/common";
 import DiamondPointsIcon from "/public/images/diamond-points.svg";
 
 import styles from './UserItem.module.css';
@@ -14,15 +14,15 @@ interface LeaderboardItemProps {
 }
 
 const UserItem: FC<LeaderboardItemProps> = ({placement, image, name, points}) => {
-    return <div className={clsx(styles.root, placement && styles.placementItem,placement && placement < 4 && styles.leader)}>
+    return <div
+        className={clsx(styles.root, placement && styles.placementItem, placement && placement < 4 && styles.leader)}>
         {placement && <span className={styles.placement}>{placement}</span>}
 
         <UserImage image={image}/>
 
         <span className={styles.name}>{name}</span>
 
-        <span className={styles.points}>{new Intl.NumberFormat('ru-RU').format(points)} <DiamondPointsIcon
-            className={styles.diamondIcon}/></span>
+        <Points points={points}/>
     </div>
 };
 

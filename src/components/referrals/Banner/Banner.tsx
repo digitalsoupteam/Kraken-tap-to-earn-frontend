@@ -1,11 +1,13 @@
 'use client';
 
 import React, {FC} from 'react';
+import Image from 'next/image';
 import clsx from "clsx";
 import {motion} from "framer-motion";
 
+import {Points} from "@/components/common";
+
 import styles from './Banner.module.css';
-import Image from "next/image";
 
 const Banner: FC = () => {
     const animationDuration = 0.6;
@@ -13,8 +15,7 @@ const Banner: FC = () => {
     return <div className={styles.root}>
         <div className={styles.text}>
             Invite a friend and get a reward
-            <br/>+20 000 <Image className={styles.icon} src={'/images/diamond-points.svg'} width="16" height="16"
-                                alt={'kraken points'}/> for you and your friend
+            <br/>+ <Points points={20000}/> for you and your friend
         </div>
 
         <div className={styles.tentacles}>

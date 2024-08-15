@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 
-import {UserImage} from "@/components/common";
+import {Points, UserImage} from "@/components/common";
 import DiamondPointsIcon from "/public/images/diamond-points.svg";
 
 import styles from './UserProfile.module.css';
@@ -18,10 +18,7 @@ const UserProfile: FC = () => {
             </span>
         </div>
 
-        <div className={styles.points}>
-            <span className={styles.pointsValue}>200 000 000</span>
-            <DiamondPointsIcon className={styles.pointsIcon}/>
-        </div>
+        <Points points={200000000}/>
     </div>
 };
 
