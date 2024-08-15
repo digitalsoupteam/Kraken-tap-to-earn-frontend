@@ -1,0 +1,33 @@
+.root {
+    width: 100%;
+    background-color: var(--primary);
+    padding: 8px 14px;
+    display: grid;
+    grid-template-columns: 40px 1fr max-content;
+    align-items: center;
+    gap: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.info {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.points {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.pointsValue {
+    font-size: 14px;
+}
+
+.pointsIcon {
+    width: 16px;
+    height: 16px;
+    margin-top: -2px;
+}

@@ -38,7 +38,6 @@ const Footer: FC = () => {
     ];
 
     const pathname = usePathname();
-        console.log(pathname);
 
     return <footer className={styles.root}>
         <Wrapper>
