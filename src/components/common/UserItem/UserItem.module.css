@@ -32,14 +32,3 @@
     color: var(--light);
     font-size: 14px;
 }
-
-.points {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.diamondIcon {
-    margin-top: -2px;
-}

@@ -1,4 +1,5 @@
 import React, {FC, ButtonHTMLAttributes} from 'react';
+import Link from 'next/link';
 
 import clsx from 'clsx';
 
@@ -13,20 +14,26 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     isLight?: boolean;
 }
 
-
-const Button: FC<IButtonProps> = ({className, onClick, children, href, target, type, disabled, isLight}) => {
-    const Tag = href ? 'a' : 'button';
-
-    return <Tag
-        className={clsx(className, styles.root, isLight && styles.light)}
-        onClick={onClick}
-        {...(href && {href})}
-        {...(target && {target})}
-        {...(type && {type})}
-        {...(disabled && {disabled})}
-    >
-        {children}
-    </Tag>
-};
+const Button: FC<IButtonProps> = ({className, onClick, children, href, target, type, disabled, isLight}) => (
+    href ? (
+        <Link
+            className={clsx(className, styles.root, isLight && styles.light)}
+            onClick={onClick}
+            href={href}
+            target={target}
+        >
+            {children}
+        </Link>
+    ) : (
+        <button
+            className={clsx(className, styles.root, isLight && styles.light)}
+            onClick={onClick}
+            type={type}
+            disabled={disabled}
+        >
+            {children}
+        </button>
+    )
+);
 
 export default Button;
