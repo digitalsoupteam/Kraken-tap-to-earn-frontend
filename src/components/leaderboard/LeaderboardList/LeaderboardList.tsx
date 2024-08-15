@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 
 import {Wrapper} from "@/components/layout";
-import {LeaderboardItem} from "@/components/leaderboard";
+import {UserItem} from "@/components/common";
 
 import styles from './LeaderboardList.module.css';
 
@@ -69,7 +69,7 @@ const LeaderboardList: FC = () => {
         <Wrapper>
             <div className={styles.list}>
                 {mockUsers && mockUsers.length && mockUsers.map((user, index) => (
-                    <LeaderboardItem placement={index + 1} key={user.id} image={user.image} name={user.name} points={user.points}/>
+                    <UserItem placement={index + 1} key={user.id} image={user.image} name={user.name} points={user.points}/>
                 ))}
             </div>
         </Wrapper>

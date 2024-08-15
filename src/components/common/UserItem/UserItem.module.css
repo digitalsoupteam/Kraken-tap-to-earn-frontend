@@ -1,11 +1,15 @@
 .root {
     display: grid;
-    grid-template-columns: min-content 40px 1fr max-content;
+    grid-template-columns: 40px 1fr max-content;
     align-items: center;
     gap: 8px;
     background-color: var(--secondary);
     border-radius: var(--br-medium);
     padding: 8px 14px;
+}
+
+.placementItem {
+    grid-template-columns: min-content 40px 1fr max-content;
 }
 
 .root.leader {
