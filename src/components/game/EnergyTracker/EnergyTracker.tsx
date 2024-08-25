@@ -5,6 +5,7 @@ import EnergyIcon from '/public/images/energy.svg';
 
 import styles from './EnergyTracker.module.css';
 import Image from "next/image";
+import { basePath } from '../../../../next.config';
 
 const EnergyTracker: FC = () => {
     const isEnergyFull = true;
@@ -13,10 +14,10 @@ const EnergyTracker: FC = () => {
         <div className={styles.inner}>
             <div className={styles.tentacles}>
                 <div className={clsx(styles.tentaclesItem, styles.tentaclesLeft, isEnergyFull && styles.tentaclesItemShow)}>
-                    <Image src={'/images/tentacles-1.png'} width={'74'} height={'33'} alt={'kraken tentacles'} />
+                    <Image src={basePath + '/images/tentacles-1.png'} width={'74'} height={'33'} alt={'kraken tentacles'} />
                 </div>
                 <div className={clsx(styles.tentaclesItem, styles.tentaclesRight, isEnergyFull && styles.tentaclesItemShow)}>
-                    <Image src={'/images/tentacles-2.png'} width={'76'} height={'73'}  alt={'kraken tentacles'} />
+                    <Image src={basePath + '/images/tentacles-2.png'} width={'76'} height={'73'}  alt={'kraken tentacles'} />
                 </div>
             </div>
 
