@@ -15,9 +15,11 @@ const StoreInit: FC<PropsWithChildren> = ({children}) => {
 
     // TG WebApp
     useEffect(() => {
-        WebApp.ready();
-        WebApp.expand();
-        console.log(`[LOG]: WebApp ready!`);
+        if (typeof window !== 'undefined') {
+            WebApp.ready();
+            WebApp.expand();
+            console.log(`[LOG]: WebApp ready!`);
+        }
     }, []);
 
     // Debug WS connectin status
@@ -34,15 +36,17 @@ const StoreInit: FC<PropsWithChildren> = ({children}) => {
 
     // Initial get or create device id
     useEffect(() => {
-        const telegramInitData = WebApp.initData;
-        const savedDeviceId = window.localStorage['deviceId'];
-        const _deviceId = telegramInitData
-            ? WebApp.initData
-            : savedDeviceId
-            ? savedDeviceId
-            : self.crypto.randomUUID();
-        console.log(`[LOG]: Set device id ${_deviceId}!`);
-        setDeviceId(_deviceId);
+        if (typeof window !== 'undefined') {
+            const telegramInitData = WebApp.initData;
+            const savedDeviceId = window.localStorage['deviceId'];
+            const _deviceId = telegramInitData
+                ? WebApp.initData
+                : savedDeviceId
+                ? savedDeviceId
+                : self.crypto.randomUUID();
+            console.log(`[LOG]: Set device id ${_deviceId}!`);
+            setDeviceId(_deviceId);
+        }
     }, []);
 
     // If deviceId updated, save to local storage and initUser
