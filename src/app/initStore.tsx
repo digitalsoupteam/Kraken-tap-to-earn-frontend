@@ -9,7 +9,8 @@ const StoreInit: FC<PropsWithChildren> = ({children}) => {
     const {deviceId, setDeviceId, setUserId} = useAppStore(state => state);
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(
-        'ws://127.0.0.1:3000/ws'
+        'ws://127.0.0.1:3000/ws',
+        {share: true}
     );
 
     // TG WebApp

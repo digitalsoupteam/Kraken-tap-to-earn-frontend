@@ -12,7 +12,8 @@ const LeaderboardList: FC = () => {
     const {userId} = useAppStore(state => state);
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(
-        'ws://127.0.0.1:3000/ws'
+        'ws://127.0.0.1:3000/ws',
+        {share: true}
     );
 
     const [users, setUsers] = useState<
