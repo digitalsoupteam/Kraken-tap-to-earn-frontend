@@ -13,11 +13,12 @@ import styles from './TapButton.module.css';
 import useWebSocket from 'react-use-websocket';
 import {useAppStore} from '@/providers/AppStoreProvider';
 
+
 const TapButton: FC = () => {
     const {userId} = useAppStore(state => state);
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(
-        'ws://127.0.0.1:3000/ws',
+        process.env.NEXT_PUBLIC_WS_URL ?? 'ws://172.86.75.111:3000/ws',
         {share: true}
     );
 
