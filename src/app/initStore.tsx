@@ -51,6 +51,7 @@ const StoreInit: FC<PropsWithChildren> = ({children}) => {
 
     // If deviceId updated, save to local storage and initUser
     useEffect(() => {
+        if(readyState != 1) return
         window.localStorage['deviceId'] = deviceId;
 
         if (!deviceId) return;
@@ -65,7 +66,7 @@ const StoreInit: FC<PropsWithChildren> = ({children}) => {
         };
         console.log(`[LOG]: Call initUser method, with data:`, message);
         sendMessage(JSON.stringify(message));
-    }, [deviceId, sendMessage]);
+    }, [deviceId, sendMessage, readyState]);
 
     // Receive initUser responce
     useEffect(() => {
