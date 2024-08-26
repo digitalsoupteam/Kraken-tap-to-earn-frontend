@@ -5,9 +5,11 @@ import {Bebas_Neue} from "next/font/google";
 import localFont from 'next/font/local';
 
 import AppWalletProvider from "@/providers/AppWalletProvider";
+import {AppStoreProvider} from '@/providers/AppStoreProvider';
 import {Footer, Header} from "@/components/layout";
 
 import "./globals.css";
+import StoreInit from "./initStore";
 
 const BebasNeue = Bebas_Neue({
     weight: '400',
@@ -37,13 +39,17 @@ const RootLayout: FC<PropsWithChildren> = ({children}) => {
     return (
         <html lang="en">
         <body className={clsx(BebasNeue.className, DarkHornetItalic.variable)}>
-        <AppWalletProvider>
-            <Header/>
-            <main>
-                {children}
-            </main>
-            <Footer/>
-        </AppWalletProvider>
+        <AppStoreProvider>
+            <StoreInit>
+                <AppWalletProvider>
+                    <Header/>
+                    <main>
+                        {children}
+                    </main>
+                    <Footer/>
+                </AppWalletProvider>
+            </StoreInit>
+        </AppStoreProvider>
         </body>
         </html>
     );
