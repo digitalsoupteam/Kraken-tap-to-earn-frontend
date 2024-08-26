@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 import React, {FC, useEffect, useState} from 'react';
 
 import {Points, UserImage} from '@/components/common';
@@ -9,6 +9,7 @@ import useWebSocket from 'react-use-websocket';
 import {useAppStore} from '@/providers/AppStoreProvider';
 
 const UserProfile: FC = () => {
+    const GET_USER_MESSAGE_ID = 4000;
     const {userId} = useAppStore(state => state);
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(
@@ -30,7 +31,7 @@ const UserProfile: FC = () => {
         if (!userId) return;
         const message = {
             jsonrpc: '2.0',
-            id: 1,
+            id: GET_USER_MESSAGE_ID,
             method: 'getUser',
             params: {
                 userId,
@@ -43,6 +44,7 @@ const UserProfile: FC = () => {
     useEffect(() => {
         if (!lastMessage) return;
         const response = JSON.parse(lastMessage.data);
+        if (response.id != GET_USER_MESSAGE_ID) return;
         console.log(`[LOG]: Receive getUser data`, response);
         if (!response || !response.result || !response.result[0]) return;
         const userInfo = response.result[0];
@@ -56,16 +58,18 @@ const UserProfile: FC = () => {
         setUser(user);
     }, [lastMessage, userId]);
 
-    return <div className={styles.root}>
-        <UserImage image={'/images/user-image.png'} />
+    return (
+        <div className={styles.root}>
+            <UserImage image={'/images/user-image.png'} />
 
-        <div className={styles.info}>
-            <span className={styles.name}>{user?.name}</span>
-            <span className={styles.position}>5% of the best</span>
+            <div className={styles.info}>
+                <span className={styles.name}>{user?.name}</span>
+                <span className={styles.position}>5% of the best</span>
+            </div>
+
+            <Points points={user?.points ?? 0} />
         </div>
-
-        <Points points={user?.points ?? 0} />
-    </div>
+    );
 };
 
 export default UserProfile;

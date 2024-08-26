@@ -15,6 +15,7 @@ import {useAppStore} from '@/providers/AppStoreProvider';
 
 
 const TapButton: FC = () => {
+    const SEND_TAPS_MESSAGE_ID = 2000
     const {userId} = useAppStore(state => state);
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(
@@ -25,6 +26,7 @@ const TapButton: FC = () => {
     useEffect(() => {
         if (!lastMessage) return;
         const response = JSON.parse(lastMessage.data);
+        if(response.id != SEND_TAPS_MESSAGE_ID) return
         console.log(`[LOG]: Receive sendTaps data`, response);
         if (
             !response ||
@@ -54,7 +56,7 @@ const TapButton: FC = () => {
 
         const message = {
             jsonrpc: '2.0',
-            id: 1,
+            id: SEND_TAPS_MESSAGE_ID,
             method: 'sendTaps',
             params: {
                 userId,

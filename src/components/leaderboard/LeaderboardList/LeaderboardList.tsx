@@ -9,6 +9,7 @@ import useWebSocket from 'react-use-websocket';
 import {useAppStore} from '@/providers/AppStoreProvider';
 
 const LeaderboardList: FC = () => {
+    const GET_TOP_USERS_MESSAGE_ID = 3000
     const {userId} = useAppStore(state => state);
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(
@@ -28,7 +29,7 @@ const LeaderboardList: FC = () => {
     useEffect(() => {
         const message = {
             jsonrpc: '2.0',
-            id: 1,
+            id: GET_TOP_USERS_MESSAGE_ID,
             method: 'getTopUsers',
             params: {
                 limit: 10,
@@ -41,6 +42,7 @@ const LeaderboardList: FC = () => {
     useEffect(() => {
         if (!lastMessage) return;
         const response = JSON.parse(lastMessage.data);
+        if(response.id != GET_TOP_USERS_MESSAGE_ID) return
         console.log(`[LOG]: Receive getTopUsers data`, response);
         if (!response || !response.result || !response.result[0]) return; 
         const users = response.result;
