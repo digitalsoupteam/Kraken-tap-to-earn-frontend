@@ -18,7 +18,7 @@ const TapButton: FC = () => {
     const {userId} = useAppStore(state => state);
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(
-        process.env.NEXT_PUBLIC_WS_URL ?? 'ws://172.86.75.111:3000/ws',
+        process.env.NEXT_PUBLIC_WS_URL ?? 'wss://172.86.75.111:3000/ws',
         {share: true}
     );
 
