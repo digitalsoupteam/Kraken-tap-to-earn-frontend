@@ -6,7 +6,7 @@ import {FC, PropsWithChildren, useEffect} from 'react';
 import useWebSocket from 'react-use-websocket';
 
 const StoreInit: FC<PropsWithChildren> = ({children}) => {
-    const {deviceId, setDeviceId, setUserId} = useAppStore(state => state);
+    const {deviceId, setDeviceId, userId, setUserId} = useAppStore(state => state);
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(
         process.env.NEXT_PUBLIC_WS_URL ?? 'wss://172.86.75.111:3000/ws',
@@ -69,13 +69,14 @@ const StoreInit: FC<PropsWithChildren> = ({children}) => {
 
     // Receive initUser responce
     useEffect(() => {
+        if(!userId) return
         if (!lastMessage) return;
         const response = JSON.parse(lastMessage.data);
         if (!response || !response.result || !response.result[0]) return;
         const userInfo = response.result[0];
         console.log(`[LOG]: Receive initUser data:`, userInfo);
         setUserId(userInfo.user_id);
-    }, [lastMessage, setUserId]);
+    }, [setUserId]);
 
     return children;
 };
