@@ -9,7 +9,6 @@ import TickIcon from '/public/images/tick.svg';
 import CompleteIcon from '/public/images/complete.svg';
 
 import styles from './QuestItem.module.css';
-import { basePath } from '../../../../next.config';
 
 interface QuestItemProps {
     name: string;
@@ -23,7 +22,7 @@ const QuestItem: FC<QuestItemProps> = ({name, objective, href, points, status}) 
 
     return <Button className={clsx(styles.root, styles.link)} href={href} target={"_blank"}>
         <span>
-            <Image className={styles.objectiveIcon} src={basePath+ `/images/quest-${objective}.svg`} width="40" height="40" alt="" />
+            <Image className={styles.objectiveIcon} src={`/images/quest-${objective}.svg`} width="40" height="40" alt="" />
         </span>
 
         <span className={styles.info}>
