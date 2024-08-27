@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "devBackend": "NEXT_PUBLIC_WS_URL='ws://127.0.0.1:3000/ws' next dev -p 8011",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -15,15 +16,17 @@
     "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.95.2",
     "@svgr/webpack": "^8.1.0",
+    "@twa-dev/sdk": "^7.8.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.24",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
+    "react-use-websocket": "^4.8.1",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.16.1",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",

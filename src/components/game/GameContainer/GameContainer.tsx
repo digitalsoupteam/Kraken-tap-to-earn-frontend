@@ -6,11 +6,12 @@ import {PageHeading} from "@/components/common";
 import {TotalPoints, TapButton, EnergyTracker, GameBar} from "@/components/game/";
 
 import styles from './GameContainer.module.css';
+import { basePath } from '../../../../next.config';
 
 const GameContainer: FC = () => {
     return <section className={styles.root}>
         <div className={styles.background}>
-            <Image src="/images/background-bottom.png" width="300" height="100" alt=""/>
+            <Image src={basePath + "/images/background-bottom.png"} width="300" height="100" alt=""/>
         </div>
 
         {/*<div className={styles.background}>*/}

@@ -1,17 +1,44 @@
 'use client';
 
-import React, {FC, useState, useRef} from 'react';
+import React, {FC, useState, useRef, useEffect} from 'react';
 import {motion} from 'framer-motion';
 
 import KrakenBottomImage from '/public/images/kraken.svg';
 import KrakenSeasideImage from '/public/images/kraken-smirking.svg';
 import KrakenTroposphereImage from '/public/images/kraken-smiling.svg';
 import KrakenOuterSpaceImage from '/public/images/kraken-rock.svg';
-import {useGameStore} from "@/components/game";
+import {useGameStore} from '@/components/game';
 
 import styles from './TapButton.module.css';
+import useWebSocket from 'react-use-websocket';
+import {useAppStore} from '@/providers/AppStoreProvider';
+
 
 const TapButton: FC = () => {
+    const SEND_TAPS_MESSAGE_ID = 2000
+    const {userId} = useAppStore(state => state);
+
+    const {sendMessage, lastMessage, readyState} = useWebSocket(
+        process.env.NEXT_PUBLIC_WS_URL ?? 'wss://172.86.75.111:3000/ws',
+        {share: true}
+    );
+
+    useEffect(() => {
+        if (!lastMessage) return;
+        const response = JSON.parse(lastMessage.data);
+        if(response.id != SEND_TAPS_MESSAGE_ID) return
+        console.log(`[LOG]: Receive sendTaps data`, response);
+        if (
+            !response ||
+            !response.result ||
+            !response.result[0] ||
+            !response.result[0].user_info
+        )
+            return;
+        const userInfoFromTap = response.result[0].user_info;
+        console.log(`[LOG]: Parse user from sendTaps data`, userInfoFromTap);
+    }, [lastMessage]);
+
     const tapEffectDuration = 500;
     const [taps, setTaps] = useState<{ id: number, x: number, y: number }[]>([]);
     const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
@@ -27,7 +54,22 @@ const TapButton: FC = () => {
         const x = clientX - buttonRect.left;
         const y = clientY - buttonRect.top;
 
-        setTaps((prev) => [...prev, {id, x, y}]);
+        const message = {
+            jsonrpc: '2.0',
+            id: SEND_TAPS_MESSAGE_ID,
+            method: 'sendTaps',
+            params: {
+                userId,
+                taps: {
+                    x,
+                    y,
+                },
+            },
+        };
+        console.log(`[LOG]: Call sendTaps method, with data`, message);
+        sendMessage(JSON.stringify(message));
+
+        setTaps(prev => [...prev, {id, x, y}]);
         increasePoints();
 
         setTimeout(() => {
