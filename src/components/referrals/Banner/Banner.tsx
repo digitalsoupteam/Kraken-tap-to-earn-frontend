@@ -8,7 +8,6 @@ import {motion} from "framer-motion";
 import {Points} from "@/components/common";
 
 import styles from './Banner.module.css';
-import { basePath } from '../../../../next.config';
 
 const Banner: FC = () => {
     const animationDuration = 0.6;
@@ -33,7 +32,7 @@ const Banner: FC = () => {
                     visible: {x: 0},
                 }}
             >
-                <Image src={basePath + '/images/tentacles-3.png'} width="82" height="51" alt="kraken tentacles"/>
+                <Image src={'/images/tentacles-3.png'} width="82" height="51" alt="kraken tentacles"/>
             </motion.div>
             <motion.div
                 className={clsx(styles.tentaclesItem, styles.tentaclesRight)}
@@ -48,7 +47,7 @@ const Banner: FC = () => {
                     visible: {x: 0},
                 }}
             >
-                <Image src={basePath + '/images/tentacles-2.png'} width="76" height="56" alt="kraken tentacles"/>
+                <Image src={'/images/tentacles-2.png'} width="76" height="56" alt="kraken tentacles"/>
             </motion.div>
         </div>
     </div>

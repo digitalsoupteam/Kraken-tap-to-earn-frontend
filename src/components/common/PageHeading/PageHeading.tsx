@@ -3,7 +3,6 @@ import Image from "next/image";
 
 import styles from './PageHeading.module.css';
 import {Title} from "@/components/ui";
-import { basePath } from '../../../../next.config';
 
 interface PageHeadingProps {
     image?: string;
@@ -16,7 +15,7 @@ const PageHeading: FC<PageHeadingProps> = ({image, title, titleAccent, size}) =>
     return <section className={styles.root}>
         {
             image && <div className={styles.imageContainer}>
-                <Image src={basePath + image} width="300" height="100" alt=""/>
+                <Image src={image} width="300" height="100" alt=""/>
             </div>
         }
         <Title title={title} titleAccent={titleAccent} size={size} />

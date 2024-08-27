@@ -72,7 +72,7 @@ body {
 main {
   flex-grow: 1;
   position: relative;
-  background-image: url('/Kraken-tap-to-earn-frontend/images/background.png');
+  background-image: url('/images/background.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top right;
