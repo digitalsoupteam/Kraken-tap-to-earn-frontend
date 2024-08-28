@@ -4,7 +4,7 @@ import type {Metadata} from "next";
 import {Bebas_Neue} from "next/font/google";
 import localFont from 'next/font/local';
 
-import AppWalletProvider from "@/providers/AppWalletProvider";
+import {AppWalletProvider, TelegramWebApp} from "@/providers/";
 import {Footer, Header} from "@/components/layout";
 
 import "./globals.css";
@@ -32,17 +32,18 @@ export const metadata: Metadata = {
     description: "Kraken tap and go into space",
 };
 
-
 const RootLayout: FC<PropsWithChildren> = ({children}) => {
     return (
         <html lang="en">
         <body className={clsx(BebasNeue.className, DarkHornetItalic.variable)}>
         <AppWalletProvider>
-            <Header/>
-            <main>
-                {children}
-            </main>
-            <Footer/>
+            <TelegramWebApp>
+                <Header/>
+                <main>
+                    {children}
+                </main>
+                <Footer/>
+            </TelegramWebApp>
         </AppWalletProvider>
         </body>
         </html>
