@@ -7,7 +7,7 @@ import KrakenBottomImage from '/public/images/kraken.svg';
 import KrakenSeasideImage from '/public/images/kraken-smirking.svg';
 import KrakenTroposphereImage from '/public/images/kraken-smiling.svg';
 import KrakenOuterSpaceImage from '/public/images/kraken-rock.svg';
-import {useGameStore} from "@/components/game";
+import {useGameStore} from '@/components/game';
 
 import styles from './TapButton.module.css';
 
@@ -16,7 +16,10 @@ const TapButton: FC = () => {
     const [taps, setTaps] = useState<{ id: number, x: number, y: number }[]>([]);
     const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
     const buttonRef = useRef<HTMLButtonElement>(null);
-    const increasePoints = useGameStore(state => state.increasePoints);
+    const {multiplier, increasePoints} = useGameStore((state) => ({
+        multiplier: state.multiplier,
+        increasePoints: state.increasePoints,
+    }));
 
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
         const id = Date.now() + (touchIdentifier || 0);
@@ -26,6 +29,23 @@ const TapButton: FC = () => {
 
         const x = clientX - buttonRect.left;
         const y = clientY - buttonRect.top;
+
+        // const message = {
+        //     jsonrpc: '2.0',
+        //     id: 1,
+        //     method: 'sendTaps',
+        //     params: {
+        //         userId,
+        //         taps: {
+        //             x,
+        //             y,
+        //         },
+        //     },
+        // };
+        // console.log(`[LOG]: Call sendTaps method, with data`, message);
+        // sendMessage(JSON.stringify(message));
+
+        setTaps(prev => [...prev, {id, x, y}]);
 
         setTaps((prev) => [...prev, {id, x, y}]);
         increasePoints();
@@ -75,7 +95,7 @@ const TapButton: FC = () => {
                 transition={{duration: tapEffectDuration / 1000}}
                 style={{top: tap.y, left: tap.x}}
             >
-                +1
+                +{multiplier}
             </motion.div>
         ))}
     </div>

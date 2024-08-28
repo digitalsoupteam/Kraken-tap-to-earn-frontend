@@ -8,16 +8,19 @@ import {useGameStore} from "@/components/game";
 import styles from './TotalPoints.module.css';
 
 const TotalPoints: FC = () => {
-    const totalPoints = useGameStore(state => state.totalPoints);
-    const multiplier = useGameStore(state => state.multiplier);
+        const {totalPoints, multiplier} = useGameStore((state) => ({
+            totalPoints: state.totalPoints,
+            multiplier: state.multiplier
+        }));
 
-    return <div className={styles.root}>
-        <DiamondPointsIcon className={styles.icon}/>
+        return <div className={styles.root}>
+            <DiamondPointsIcon className={styles.icon}/>
 
-        <span className={styles.value}>{totalPoints}</span>
+            <span className={styles.value}>{totalPoints}</span>
 
-        <span className={styles.multiplier}><CrossIcon/> {multiplier}</span>
-    </div>
-};
+            <span className={styles.multiplier}><CrossIcon/> {multiplier}</span>
+        </div>
+    }
+;
 
 export default TotalPoints;

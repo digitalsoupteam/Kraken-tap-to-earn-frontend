@@ -7,11 +7,18 @@ import useWebSocketStore from "@/stores/useWebSocketStore";
 const WebSocket: FC<PropsWithChildren> = ({children}) => {
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://172.86.75.111:3000/ws';
 
-    const {setSendMessage, setMessages, setReadyState, connectionStatus} = useWebSocketStore((state) => ({
+    const {
+        setSendMessage,
+        setMessages,
+        setReadyState,
+        connectionStatus,
+        setLastMessage
+    } = useWebSocketStore((state) => ({
         setSendMessage: state.setSendMessage,
         setMessages: state.setMessages,
         setReadyState: state.setReadyState,
         connectionStatus: state.connectionStatus,
+        setLastMessage: state.setLastMessage,
     }));
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL, {
@@ -33,7 +40,11 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setReadyState(readyState);
     }, [sendMessage, readyState, setSendMessage, setReadyState]);
 
-    console.log(connectionStatus);
+    useEffect(() => {
+        setLastMessage(lastMessage?.data);
+    }, [lastMessage]);
+
+    console.log('[LOG]: WS status: ', connectionStatus);
 
     return <>{children}</>;
 };
