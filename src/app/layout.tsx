@@ -4,7 +4,7 @@ import type {Metadata} from "next";
 import {Bebas_Neue} from "next/font/google";
 import localFont from 'next/font/local';
 
-import {AppWalletProvider, TelegramWebApp} from "@/providers/";
+import {AppWalletProvider, TelegramWebApp, WebSocket} from "@/providers/";
 import {Footer, Header} from "@/components/layout";
 
 import "./globals.css";
@@ -38,11 +38,13 @@ const RootLayout: FC<PropsWithChildren> = ({children}) => {
         <body className={clsx(BebasNeue.className, DarkHornetItalic.variable)}>
         <AppWalletProvider>
             <TelegramWebApp>
-                <Header/>
-                <main>
-                    {children}
-                </main>
-                <Footer/>
+                <WebSocket>
+                    <Header/>
+                    <main>
+                        {children}
+                    </main>
+                    <Footer/>
+                </WebSocket>
             </TelegramWebApp>
         </AppWalletProvider>
         </body>
