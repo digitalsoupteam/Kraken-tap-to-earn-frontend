@@ -20,7 +20,17 @@ interface WebSocketState {
     setMessages: (messages: string[]) => void;
     setReadyState: (state: ReadyState) => void;
     setSendMessage: (sendMessage: (message: string) => void) => void;
+    jwt: string;
+    setJwt: (jwt: string) => void;
 }
+
+const getLocalJwt = () => {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem('jwt') || '';
+    }
+
+    return '';
+};
 
 const useWebSocketStore = create<WebSocketState>()(
     devtools((set) => ({
@@ -37,6 +47,11 @@ const useWebSocketStore = create<WebSocketState>()(
                 connectionStatus: connectionStatuses[state],
             }),
         setSendMessage: (sendMessage) => set({ sendMessage }),
+        jwt: getLocalJwt(),
+        setJwt: (jwt) => {
+            getLocalJwt();
+            set({ jwt });
+        },
     }))
 );
 
