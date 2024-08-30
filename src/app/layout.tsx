@@ -1,4 +1,5 @@
-import React, {FC, PropsWithChildren} from "react";
+import React, {FC, PropsWithChildren, Suspense} from "react";
+
 import clsx from "clsx";
 import type {Metadata} from "next";
 import {Bebas_Neue} from "next/font/google";
@@ -36,17 +37,19 @@ const RootLayout: FC<PropsWithChildren> = ({children}) => {
     return (
         <html lang="en">
         <body className={clsx(BebasNeue.className, DarkHornetItalic.variable)}>
-        <AppWalletProvider>
-            <TelegramWebApp>
-                <WebSocket>
-                    <Header/>
-                    <main>
-                        {children}
-                    </main>
-                    <Footer/>
-                </WebSocket>
-            </TelegramWebApp>
-        </AppWalletProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+            <AppWalletProvider>
+                <TelegramWebApp>
+                    <WebSocket>
+                        <Header/>
+                        <main>
+                            {children}
+                        </main>
+                        <Footer/>
+                    </WebSocket>
+                </TelegramWebApp>
+            </AppWalletProvider>
+        </Suspense>
         </body>
         </html>
     );
