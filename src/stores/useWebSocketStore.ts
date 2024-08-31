@@ -50,7 +50,9 @@ const useWebSocketStore = create<WebSocketState>()(
         setSendMessage: (sendMessage) => set({ sendMessage }),
         jwt: getLocalJwt(),
         setJwt: (jwt) => {
-            getLocalJwt();
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('jwt', jwt);
+            }
             set({ jwt });
         },
         getUser: () => {
