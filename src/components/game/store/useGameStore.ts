@@ -1,6 +1,21 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import totalPoints from "@/components/game/TotalPoints/TotalPoints";
+import {create} from 'zustand';
+import {devtools} from 'zustand/middleware';
+
+interface User {
+    level: number[],
+    session_left: number,
+    id: number,
+    nickname: string,
+    session_taps: number,
+    is_blocked: boolean,
+    session_taps_left: number,
+    calm_left: number,
+    taps: number,
+    calm_until: number,
+    session_start: number,
+    session_until: number,
+    user_id: string;
+}
 
 interface GameStore {
     telegramInitData: string;
@@ -10,6 +25,8 @@ interface GameStore {
     userPhoto: string;
     setUserPhoto: (photo: string) => void;
     totalPoints: number;
+    userName: string,
+    setUserName: (name: string) => void,
     multiplier: number;
     increasePoints: () => void;
     setTotalPoints: (totalPoints: number) => void;
@@ -21,6 +38,8 @@ interface GameStore {
     setSessionUntil: (sessionUntil: number) => void;
     sessionStart: number;
     setSessionStart: (sessionStart: number) => void;
+    leadersList: User[];
+    setLeadersList: (leadersList: User[]) => void;
 }
 
 const useGameStore = create<GameStore>()(
@@ -32,11 +51,13 @@ const useGameStore = create<GameStore>()(
             setUserId: (userId: string) => set({userId: userId}),
             userPhoto: '',
             setUserPhoto: (photo: string) => set({userPhoto: photo}),
+            userName: '',
+            setUserName: (name: string) => set({userName: name}),
             totalPoints: 0,
             multiplier: 1,
             increasePoints: () => {
-                const { totalPoints, multiplier } = get();
-                set({ totalPoints: parseFloat((totalPoints + multiplier).toFixed(1)) });
+                const {totalPoints, multiplier} = get();
+                set({totalPoints: parseFloat((totalPoints + multiplier).toFixed(1))});
             },
             setTotalPoints: (totalPoints: number) => set({totalPoints: totalPoints}),
             sessionLeft: 0,
@@ -47,6 +68,8 @@ const useGameStore = create<GameStore>()(
             setSessionUntil: (sessionUntil: number) => set({sessionUntil: sessionUntil}),
             sessionStart: 0,
             setSessionStart: (sessionStart: number) => set({sessionStart: sessionStart}),
+            leadersList: [],
+            setLeadersList: (leadersList: User[]) => set({leadersList: leadersList}),
         })
     )
 );

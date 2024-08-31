@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import clsx from 'clsx';
 
 import {Points, UserImage} from "@/components/common";
-import DiamondPointsIcon from "/public/images/diamond-points.svg";
 
 import styles from './UserItem.module.css';
 
@@ -18,7 +17,7 @@ const UserItem: FC<LeaderboardItemProps> = ({placement, image, name, points}) =>
         className={clsx(styles.root, placement && styles.placementItem, placement && placement < 4 && styles.leader)}>
         {placement && <span className={styles.placement}>{placement}</span>}
 
-        <UserImage image={image}/>
+        <UserImage image={image} letter={name.slice(0, 1)}/>
 
         <span className={styles.name}>{name}</span>
 

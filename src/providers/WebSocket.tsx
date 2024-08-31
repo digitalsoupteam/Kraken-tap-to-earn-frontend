@@ -1,6 +1,6 @@
 'use client';
 
-import React, {FC, useState, useEffect, PropsWithChildren} from 'react';
+import React, {FC, useEffect, PropsWithChildren} from 'react';
 import { useSearchParams } from 'next/navigation'
 import useWebSocket from 'react-use-websocket';
 import useWebSocketStore from "@/stores/useWebSocketStore";
@@ -12,6 +12,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     const {
         setSendMessage,
         setMessages,
+        getUser,
         setReadyState,
         connectionStatus,
         setLastMessage,
@@ -20,6 +21,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     } = useWebSocketStore((state) => ({
         setSendMessage: state.setSendMessage,
         setMessages: state.setMessages,
+        getUser: state.getUser,
         setReadyState: state.setReadyState,
         connectionStatus: state.connectionStatus,
         setLastMessage: state.setLastMessage,
@@ -28,8 +30,22 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     }));
 
     const {
+        userId,
+        setUserId,
+        setTotalPoints,
+        setSessionLeft,
+        setCalmUntil,
+        setSessionUntil,
+        setUserName,
         telegramInitData,
     } = useGameStore((state) => ({
+        userId: state.userId,
+        setUserId: state.setUserId,
+        setTotalPoints: state.setTotalPoints,
+        setSessionLeft: state.setSessionLeft,
+        setCalmUntil: state.setCalmUntil,
+        setSessionUntil: state.setSessionUntil,
+        setUserName: state.setUserName,
         telegramInitData: state.telegramInitData,
     }));
 
@@ -83,6 +99,10 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     });
 
     useEffect(() => {
+        getUser();
+    }, []);
+
+    useEffect(() => {
         setSendMessage(sendMessage);
     }, [sendMessage]);
 
@@ -95,7 +115,23 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     }, [connectionStatus]);
 
     useEffect(() => {
+        if (!lastMessage) return;
+
         setLastMessage(lastMessage?.data);
+
+        if (userId) return;
+
+        const response = JSON.parse(lastMessage.data);
+
+        if (response.id !== 1000) return;
+        console.log(`[LOG]: Receive getUser data`, response);
+
+        setUserId(response.result[0].user_id);
+        setTotalPoints(response.result[0].taps);
+        setSessionLeft(response.result[0].session_left);
+        setCalmUntil(response.result[0].calm_until);
+        setSessionUntil(response.result[0].session_until);
+        setUserName(response.result[0].nickname);
     }, [lastMessage]);
 
     return <>{children}</>;
