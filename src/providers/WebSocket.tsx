@@ -69,12 +69,9 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     !jwt && getJWT();
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL, {
-        onOpen: () => setReadyState(readyState),
         onError: (error) => {
             console.error('WebSocket error: ', error);
-            setReadyState(readyState);
         },
-        onClose: () => setReadyState(readyState),
         onMessage: (message) => {
             // @ts-ignore
             setMessages((prevMessages) => [...prevMessages, message.data]);
@@ -86,20 +83,20 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     });
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-        }
-    }, []);
+        setSendMessage(sendMessage);
+    }, [sendMessage]);
 
     useEffect(() => {
-        setSendMessage(sendMessage);
         setReadyState(readyState);
-    }, [sendMessage, readyState, setSendMessage, setReadyState]);
+    }, [readyState]);
+
+    useEffect(() => {
+        console.log('[LOG]: WS status: ', connectionStatus);
+    }, [connectionStatus]);
 
     useEffect(() => {
         setLastMessage(lastMessage?.data);
     }, [lastMessage]);
-
-    console.log('[LOG]: WS status: ', connectionStatus);
 
     return <>{children}</>;
 };
