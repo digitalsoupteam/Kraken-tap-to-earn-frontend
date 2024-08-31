@@ -1,8 +1,8 @@
 'use client';
 
 import React, {FC, useEffect, PropsWithChildren} from 'react';
-import { useSearchParams } from 'next/navigation'
-import useWebSocket from 'react-use-websocket';
+import {useSearchParams} from 'next/navigation'
+import useWebSocket, {ReadyState} from 'react-use-websocket';
 import useWebSocketStore from "@/stores/useWebSocketStore";
 import {useGameStore} from "@/components/game";
 
@@ -64,8 +64,8 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    ...(referrerId && { referrerId }),
-                    ...(telegramInitData && { telegramInitData }),
+                    ...(referrerId && {referrerId}),
+                    ...(telegramInitData && {telegramInitData}),
                 }),
             });
 
@@ -99,15 +99,15 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     });
 
     useEffect(() => {
-        getUser();
-    }, []);
-
-    useEffect(() => {
         setSendMessage(sendMessage);
     }, [sendMessage]);
 
     useEffect(() => {
         setReadyState(readyState);
+
+        if (readyState === ReadyState.OPEN) {
+            getUser();
+        }
     }, [readyState]);
 
     useEffect(() => {
