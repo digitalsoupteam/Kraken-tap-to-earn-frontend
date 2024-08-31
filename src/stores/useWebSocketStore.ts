@@ -22,6 +22,7 @@ interface WebSocketState {
     setSendMessage: (sendMessage: (message: string) => void) => void;
     jwt: string;
     setJwt: (jwt: string) => void;
+    getUser: () => void;
 }
 
 const getLocalJwt = () => {
@@ -33,7 +34,7 @@ const getLocalJwt = () => {
 };
 
 const useWebSocketStore = create<WebSocketState>()(
-    devtools((set) => ({
+    devtools((set, get) => ({
         sendMessage: () => {},
         messages: [],
         lastMessage: null,
@@ -51,6 +52,17 @@ const useWebSocketStore = create<WebSocketState>()(
         setJwt: (jwt) => {
             getLocalJwt();
             set({ jwt });
+        },
+        getUser: () => {
+            const message = {
+                jsonrpc: '2.0',
+                id: 1000,
+                method: 'getUser',
+            };
+
+            const sendMessage = get().sendMessage;
+
+            sendMessage(JSON.stringify(message));
         },
     }))
 );

@@ -3,14 +3,21 @@ import clsx from 'clsx';
 
 import {UserImage} from "@/components/common";
 import styles from './ProgressTracker.module.css';
+import {useGameStore} from "@/components/game";
 
 interface ProgressTrackerProps {
     className?: string;
 }
 
 const ProgressTracker: FC<ProgressTrackerProps> = ({className}) => {
+    const {
+        userPhoto,
+    } = useGameStore((state) => ({
+        userPhoto: state.userPhoto,
+    }));
+
     return <div className={clsx(styles.root, className)}>
-        <UserImage/>
+        <UserImage image={userPhoto}/>
 
         <div className={styles.levelContainer}>
             <div className={styles.level}>Seaside</div>

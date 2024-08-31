@@ -1,6 +1,10 @@
-import React, {FC} from 'react';
+'use client';
+
+import React, {FC, useEffect, useState} from 'react';
 
 import {Points, UserImage} from "@/components/common";
+import {useGameStore} from "@/components/game";
+import useWebSocketStore from "@/stores/useWebSocketStore";
 import DiamondPointsIcon from "/public/images/diamond-points.svg";
 
 import styles from './UserProfile.module.css';

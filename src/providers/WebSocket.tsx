@@ -4,10 +4,9 @@ import React, {FC, useState, useEffect, PropsWithChildren} from 'react';
 import { useSearchParams } from 'next/navigation'
 import useWebSocket from 'react-use-websocket';
 import useWebSocketStore from "@/stores/useWebSocketStore";
-import WebApp from "@twa-dev/sdk";
+import {useGameStore} from "@/components/game";
 
 const WebSocket: FC<PropsWithChildren> = ({children}) => {
-    const [telegramInitData, setTelegramInitData] = useState('');
     const searchParams = useSearchParams();
 
     const {
@@ -26,6 +25,12 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setLastMessage: state.setLastMessage,
         jwt: state.jwt,
         setJwt: state.setJwt,
+    }));
+
+    const {
+        telegramInitData,
+    } = useGameStore((state) => ({
+        telegramInitData: state.telegramInitData,
     }));
 
     // const WS_URL = process.env.NEXT_PUBLIC_WS_URL || `https://game.releasethekraken.io/backend/ws`;
@@ -82,7 +87,6 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            setTelegramInitData(WebApp.initData);
         }
     }, []);
 
