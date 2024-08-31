@@ -12,12 +12,14 @@ interface ProgressTrackerProps {
 const ProgressTracker: FC<ProgressTrackerProps> = ({className}) => {
     const {
         userPhoto,
+        userName
     } = useGameStore((state) => ({
         userPhoto: state.userPhoto,
+        userName: state.userName,
     }));
 
     return <div className={clsx(styles.root, className)}>
-        <UserImage image={userPhoto}/>
+        <UserImage image={userPhoto} letter={userName.slice(0, 1)}/>
 
         <div className={styles.levelContainer}>
             <div className={styles.level}>Seaside</div>
