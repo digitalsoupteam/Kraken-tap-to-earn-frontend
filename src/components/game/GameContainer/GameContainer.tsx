@@ -20,10 +20,12 @@ const GameContainer: FC = () => {
         userId,
         setUserId,
         setTotalPoints,
+        setSessionLeft,
     } = useGameStore((state) => ({
         userId: state.userId,
         setUserId: state.setUserId,
         setTotalPoints: state.setTotalPoints,
+        setSessionLeft: state.setSessionLeft,
     }));
 
     useEffect(() => {
@@ -36,11 +38,14 @@ const GameContainer: FC = () => {
         if (userId) return;
 
         const response = JSON.parse(lastMessage);
+
+        if (response.id !== 1000) return;
         console.log(`[LOG]: Receive getUser data`, response);
 
         setUserId(response.result[0].user_id);
         setTotalPoints(response.result[0].taps);
-    }, [lastMessage, userId]);
+        setSessionLeft(response.result[0].session_left);
+    }, [lastMessage]);
 
     return <section className={styles.root}>
         <div className={styles.background}>
@@ -61,8 +66,6 @@ const GameContainer: FC = () => {
 
         <Wrapper>
             <div className={styles.inner}>
-                {/*<PageHeading title={'tap and go'} titleAccent={'into space'} size={'big'}/>*/}
-
                 <TotalPoints/>
 
                 <TapButton/>

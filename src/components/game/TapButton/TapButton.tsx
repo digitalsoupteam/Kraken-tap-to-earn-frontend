@@ -1,6 +1,6 @@
 'use client';
 
-import React, {FC, useState, useRef} from 'react';
+import React, {FC, useState, useRef, useEffect} from 'react';
 import {motion} from 'framer-motion';
 
 import KrakenBottomImage from '/public/images/kraken.svg';
@@ -10,15 +10,31 @@ import KrakenOuterSpaceImage from '/public/images/kraken-rock.svg';
 import {useGameStore} from '@/components/game';
 
 import styles from './TapButton.module.css';
+import useWebSocketStore from "@/stores/useWebSocketStore";
+import {sendMessage} from "@trezor/connect-web/lib/webextension/extensionPermissions";
 
 const TapButton: FC = () => {
     const tapEffectDuration = 500;
     const [taps, setTaps] = useState<{ id: number, x: number, y: number }[]>([]);
     const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
     const buttonRef = useRef<HTMLButtonElement>(null);
-    const {multiplier, increasePoints} = useGameStore((state) => ({
+
+    const {multiplier, increasePoints, sessionLeft, setSessionLeft} = useGameStore((state) => ({
         multiplier: state.multiplier,
         increasePoints: state.increasePoints,
+        sessionLeft: state.sessionLeft,
+        setSessionLeft: state.setSessionLeft,
+    }));
+
+    const isDisabled = !sessionLeft;
+    console.log(sessionLeft, isDisabled);
+
+    const {
+        sendMessage,
+        lastMessage
+    } = useWebSocketStore((state) => ({
+        sendMessage: state.sendMessage,
+        lastMessage: state.lastMessage
     }));
 
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
@@ -30,24 +46,20 @@ const TapButton: FC = () => {
         const x = clientX - buttonRect.left;
         const y = clientY - buttonRect.top;
 
-        // const message = {
-        //     jsonrpc: '2.0',
-        //     id: 1,
-        //     method: 'sendTaps',
-        //     params: {
-        //         userId,
-        //         taps: {
-        //             x,
-        //             y,
-        //         },
-        //     },
-        // };
-        // console.log(`[LOG]: Call sendTaps method, with data`, message);
-        // sendMessage(JSON.stringify(message));
+        const message = {
+            jsonrpc: '2.0',
+            id: 2000,
+            method: 'sendTaps',
+            params: [{
+                x,
+                y,
+            }],
+        };
+        console.log(`[LOG]: Call sendTaps method, with data`, message);
+        sendMessage(JSON.stringify(message));
 
         setTaps(prev => [...prev, {id, x, y}]);
 
-        setTaps((prev) => [...prev, {id, x, y}]);
         increasePoints();
 
         setTimeout(() => {
@@ -73,9 +85,30 @@ const TapButton: FC = () => {
         handleTap(e.clientX, e.clientY);
     };
 
+    useEffect(() => {
+        if (!lastMessage) return;
+        const response = JSON.parse(lastMessage);
+
+        if (response.id != 2000) return
+
+        console.log(`[LOG]: Receive sendTaps data`, response);
+        if (
+            !response ||
+            !response.result ||
+            !response.result.userInfo
+        )
+            return;
+
+        const userInfoFromTap = response.result.userInfo;
+        console.log(`[LOG]: Parse user from sendTaps data`, userInfoFromTap);
+
+        setSessionLeft(userInfoFromTap.session_left);
+        console.log(`[LOG]: Setting sessionLeft`, userInfoFromTap.session_left);
+    }, [lastMessage]);
+
     return <div className={styles.root}>
-        <button className={styles.button} ref={buttonRef} onTouchStart={handleTouch} onClick={handleClick}>
-            <motion.span className={styles.buttonInner} whileTap={{scale: 0.9, transition: {duration: 0.3}}}>
+        <button className={styles.button} ref={buttonRef} onTouchStart={handleTouch} onClick={handleClick} disabled={isDisabled}>
+            <motion.span className={styles.buttonInner} whileTap={isDisabled ? {} : {scale: 0.9, transition: {duration: 0.3}}}>
                 <span className={styles.image}>
                     <span className={styles.buttonBg}/>
                     <KrakenBottomImage/>

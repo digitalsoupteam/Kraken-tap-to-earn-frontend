@@ -13,6 +13,8 @@ interface GameStore {
     multiplier: number;
     increasePoints: () => void;
     setTotalPoints: (totalPoints: number) => void;
+    sessionLeft: number;
+    setSessionLeft: (sessionLeft: number) => void;
 }
 
 const useGameStore = create<GameStore>()(
@@ -31,6 +33,8 @@ const useGameStore = create<GameStore>()(
                 set({ totalPoints: parseFloat((totalPoints + multiplier).toFixed(1)) });
             },
             setTotalPoints: (totalPoints: number) => set({totalPoints: totalPoints}),
+            sessionLeft: 0,
+            setSessionLeft: (sessionLeft: number) => set({sessionLeft: sessionLeft}),
         })
     )
 );
