@@ -10,7 +10,7 @@ const ReferralsBar: FC = () => {
         <div className={styles.container}>
             <InviteButton/>
 
-            <CopyButton copyContent={'referral link'} />
+            {/*<CopyButton copyContent={'referral link'} />*/}
         </div>
     </BottomBar>
 };
