@@ -18,16 +18,18 @@ const TapButton: FC = () => {
     const [taps, setTaps] = useState<{ id: number, x: number, y: number }[]>([]);
     const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const [isDisabled, setIsDisabled] = useState(true);
 
-    const {multiplier, increasePoints, sessionLeft, setSessionLeft} = useGameStore((state) => ({
+    const {multiplier, increasePoints, sessionLeft, setSessionLeft, sessionUntil, setSessionUntil, sessionStart, setSessionStart} = useGameStore((state) => ({
         multiplier: state.multiplier,
         increasePoints: state.increasePoints,
         sessionLeft: state.sessionLeft,
         setSessionLeft: state.setSessionLeft,
+        sessionUntil: state.sessionUntil,
+        setSessionUntil: state.setSessionUntil,
+        sessionStart: state.sessionStart,
+        setSessionStart: state.setSessionStart
     }));
-
-    const isDisabled = !sessionLeft;
-    console.log(sessionLeft, isDisabled);
 
     const {
         sendMessage,
@@ -104,11 +106,24 @@ const TapButton: FC = () => {
 
         setSessionLeft(userInfoFromTap.session_left);
         console.log(`[LOG]: Setting sessionLeft`, userInfoFromTap.session_left);
+
+        if (sessionStart) return;
+
+        setSessionStart(userInfoFromTap.session_start);
+        setSessionUntil(userInfoFromTap.session_until);
+        console.log(`[LOG]: Setting sessionStart`, userInfoFromTap.session_start);
+        console.log(`[LOG]: Setting sessionUntil`, userInfoFromTap.session_until);
     }, [lastMessage]);
 
+    useEffect(() => {
+        setIsDisabled(!sessionLeft);
+    }, [sessionLeft]);
+
     return <div className={styles.root}>
-        <button className={styles.button} ref={buttonRef} onTouchStart={handleTouch} onClick={handleClick} disabled={isDisabled}>
-            <motion.span className={styles.buttonInner} whileTap={isDisabled ? {} : {scale: 0.9, transition: {duration: 0.3}}}>
+        <button className={styles.button} ref={buttonRef} onTouchStart={handleTouch} onClick={handleClick}
+                disabled={isDisabled}>
+            <motion.span className={styles.buttonInner}
+                         whileTap={isDisabled ? {} : {scale: 0.9, transition: {duration: 0.3}}}>
                 <span className={styles.image}>
                     <span className={styles.buttonBg}/>
                     <KrakenBottomImage/>

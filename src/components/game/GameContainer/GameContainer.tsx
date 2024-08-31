@@ -21,11 +21,15 @@ const GameContainer: FC = () => {
         setUserId,
         setTotalPoints,
         setSessionLeft,
+        setCalmUntil,
+        setSessionUntil,
     } = useGameStore((state) => ({
         userId: state.userId,
         setUserId: state.setUserId,
         setTotalPoints: state.setTotalPoints,
         setSessionLeft: state.setSessionLeft,
+        setCalmUntil: state.setCalmUntil,
+        setSessionUntil: state.setSessionUntil,
     }));
 
     useEffect(() => {
@@ -45,6 +49,8 @@ const GameContainer: FC = () => {
         setUserId(response.result[0].user_id);
         setTotalPoints(response.result[0].taps);
         setSessionLeft(response.result[0].session_left);
+        setCalmUntil(response.result[0].calm_until);
+        setSessionUntil(response.result[0].session_until);
     }, [lastMessage]);
 
     return <section className={styles.root}>

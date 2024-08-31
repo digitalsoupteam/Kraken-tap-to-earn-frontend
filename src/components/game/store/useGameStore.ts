@@ -15,6 +15,12 @@ interface GameStore {
     setTotalPoints: (totalPoints: number) => void;
     sessionLeft: number;
     setSessionLeft: (sessionLeft: number) => void;
+    calmUntil: number;
+    setCalmUntil: (calmUntil: number) => void;
+    sessionUntil: number;
+    setSessionUntil: (sessionUntil: number) => void;
+    sessionStart: number;
+    setSessionStart: (sessionStart: number) => void;
 }
 
 const useGameStore = create<GameStore>()(
@@ -35,6 +41,12 @@ const useGameStore = create<GameStore>()(
             setTotalPoints: (totalPoints: number) => set({totalPoints: totalPoints}),
             sessionLeft: 0,
             setSessionLeft: (sessionLeft: number) => set({sessionLeft: sessionLeft}),
+            calmUntil: 0,
+            setCalmUntil: (calmUntil: number) => set({calmUntil: calmUntil}),
+            sessionUntil: 0,
+            setSessionUntil: (sessionUntil: number) => set({sessionUntil: sessionUntil}),
+            sessionStart: 0,
+            setSessionStart: (sessionStart: number) => set({sessionStart: sessionStart}),
         })
     )
 );
