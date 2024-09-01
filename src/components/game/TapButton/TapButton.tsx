@@ -73,9 +73,9 @@ const TapButton: FC = () => {
     };
 
     const handleTouch = (e: React.TouchEvent<HTMLButtonElement>) => {
-        if (!isTouchDevice) {
-            return;
-        }
+        if (isDisabled) return;
+
+        if (!isTouchDevice) return;
 
         Array.from(e.touches).forEach(touch => {
             handleTap(touch.clientX, touch.clientY, touch.identifier);
@@ -83,9 +83,9 @@ const TapButton: FC = () => {
     };
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (isTouchDevice) {
-            return;
-        }
+        if (isDisabled) return;
+
+        if (isTouchDevice) return;
 
         handleTap(e.clientX, e.clientY);
     };
