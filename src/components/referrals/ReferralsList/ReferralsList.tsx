@@ -45,8 +45,8 @@ const ReferralsList: FC = () => {
         </div>
 
         {
-            referralsList ? <div className={styles.list}>
-                {referralsList && referralsList.length && referralsList.map(referral => (
+            referralsList && referralsList.length > 0 ? <div className={styles.list}>
+                {referralsList.map(referral => (
                     <UserItem name={referral.nickname} points={referral.points} key={referral.id}/>
                 ))}
             </div> : <div className={styles.noReferrals}>You haven&apos;t invited anyone yet</div>
