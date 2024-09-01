@@ -39,6 +39,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setSessionUntil,
         setUserName,
         telegramInitData,
+        setMultiplier,
     } = useGameStore((state) => ({
         userId: state.userId,
         setUserId: state.setUserId,
@@ -48,6 +49,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setSessionUntil: state.setSessionUntil,
         setUserName: state.setUserName,
         telegramInitData: state.telegramInitData,
+        setMultiplier: state.setMultiplier,
     }));
 
     // const WS_URL = process.env.NEXT_PUBLIC_WS_URL || `https://game.releasethekraken.io/backend/ws`;
@@ -146,6 +148,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setCalmUntil(response.result[0].calm_until);
         setSessionUntil(response.result[0].session_until);
         setUserName(response.result[0].nickname);
+        setMultiplier(response.result[0].days_in_row);
     }, [lastMessage]);
 
     return <>{children}</>;

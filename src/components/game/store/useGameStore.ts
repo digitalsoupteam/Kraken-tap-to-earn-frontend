@@ -38,7 +38,6 @@ type Action = {
     setUserId: (userId: string) => void;
     setUserPhoto: (photo: string) => void;
     setUserName: (name: string) => void,
-    increasePoints: () => void;
     setTotalPoints: (totalPoints: number) => void;
     setSessionLeft: (sessionLeft: number) => void;
     setCalmUntil: (calmUntil: number) => void;
@@ -46,6 +45,7 @@ type Action = {
     setSessionStart: (sessionStart: number) => void;
     setLeadersList: (leadersList: User[]) => void;
     setReferralsList: (referralsList: User[]) => void;
+    setMultiplier: (multiplier: number) => void;
 }
 
 const useGameStore = create<State & Action>()(
@@ -67,10 +67,6 @@ const useGameStore = create<State & Action>()(
             setUserId: (userId: string) => set({userId: userId}),
             setUserPhoto: (photo: string) => set({userPhoto: photo}),
             setUserName: (name: string) => set({userName: name}),
-            increasePoints: () => {
-                const {totalPoints, multiplier} = get();
-                set({totalPoints: parseFloat((totalPoints + multiplier).toFixed(1))});
-            },
             setTotalPoints: (totalPoints: number) => set({totalPoints: totalPoints}),
             setSessionLeft: (sessionLeft: number) => set({sessionLeft: sessionLeft}),
             setCalmUntil: (calmUntil: number) => set({calmUntil: calmUntil}),
@@ -78,6 +74,11 @@ const useGameStore = create<State & Action>()(
             setSessionStart: (sessionStart: number) => set({sessionStart: sessionStart}),
             setLeadersList: (leadersList: User[]) => set({leadersList: leadersList}),
             setReferralsList: (referralsList: User[]) => set({referralsList: referralsList}),
+            setMultiplier: (daysInRaw: number) => {
+                const baseMultiplier: number = 1;
+
+                set({multiplier: baseMultiplier + daysInRaw / 10});
+            },
         })
     )
 );
