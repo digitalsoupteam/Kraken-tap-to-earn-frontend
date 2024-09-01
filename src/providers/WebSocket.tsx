@@ -137,10 +137,11 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         if (!response.result[0]) {
             getJWT();
             console.log(`[LOG]: JWT was updated`);
+            return;
         }
 
         setUserId(response.result[0].user_id);
-        setTotalPoints(response.result[0].taps);
+        setTotalPoints(response.result[0].points.toFixed(1));
         setSessionLeft(response.result[0].session_left);
         setCalmUntil(response.result[0].calm_until);
         setSessionUntil(response.result[0].session_until);
