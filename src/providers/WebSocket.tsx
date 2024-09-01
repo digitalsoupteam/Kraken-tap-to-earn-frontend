@@ -55,7 +55,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
 
     const getJWT = async () => {
-        const url = telegramInitData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
+        const url = WebApp.initData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
         const referrerId = searchParams.get('ref');
 
         if (typeof window !== 'undefined') {
