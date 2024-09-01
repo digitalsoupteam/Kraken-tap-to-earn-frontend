@@ -1,9 +1,8 @@
 import React, {FC, PropsWithChildren, Suspense} from "react";
-
-import clsx from "clsx";
-import type {Metadata} from "next";
+import type {Metadata, Viewport} from "next";
 import {Bebas_Neue} from "next/font/google";
 import localFont from 'next/font/local';
+import clsx from "clsx";
 
 import {AppWalletProvider, TelegramWebApp, WebSocket} from "@/providers/";
 import {Footer, Header} from "@/components/layout";
@@ -32,6 +31,13 @@ export const metadata: Metadata = {
     title: "Kraken tap and go into space",
     description: "Kraken tap and go into space",
 };
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+}
 
 const RootLayout: FC<PropsWithChildren> = ({children}) => {
     return (
