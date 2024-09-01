@@ -8,6 +8,7 @@ import CopyIcon from '/public/images/copy.svg';
 import CompleteIcon from '/public/images/complete.svg';
 
 import styles from './CopyButton.module.css';
+import WebApp from "@twa-dev/sdk";
 
 interface CopyButtonProps extends PropsWithChildren {
     className?: string;
@@ -19,11 +20,16 @@ const CopyButton: FC<CopyButtonProps> = ({className, copyContent, children}) => 
 
     const handlerClick = () => {
         navigator.clipboard.writeText(copyContent)
-            .then(function () { setIsCopied(true) })
             .then(function () {
+                setIsCopied(true);
+
                 setTimeout(() => {
                     setIsCopied(false);
-                }, 3000)
+                }, 3000);
+
+                if (typeof window !== 'undefined') {
+                    WebApp.HapticFeedback.notificationOccurred('success');
+                }
             })
             .catch(function (err) { console.error('Failed to copy:', err); });
     };
