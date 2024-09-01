@@ -22,7 +22,7 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
 
             setTelegramInitData(WebApp.initData);
 
-            const params = new URLSearchParams(telegramInitData);
+            const params = new URLSearchParams(telegramInitData || '');
             const userPhotoUrl = params.get('photo_url');
             userPhotoUrl && setUserPhoto(userPhotoUrl);
         }
