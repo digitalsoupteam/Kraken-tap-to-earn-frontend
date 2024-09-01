@@ -12,6 +12,7 @@ import {useGameStore} from '@/components/game';
 import styles from './TapButton.module.css';
 import useWebSocketStore from "@/stores/useWebSocketStore";
 import {sendMessage} from "@trezor/connect-web/lib/webextension/extensionPermissions";
+import WebApp from "@twa-dev/sdk";
 
 const TapButton: FC = () => {
     const tapEffectDuration = 500;
@@ -59,6 +60,10 @@ const TapButton: FC = () => {
         };
         console.log(`[LOG]: Call sendTaps method, with data`, message);
         sendMessage(JSON.stringify(message));
+
+        if (typeof window !== 'undefined') {
+            WebApp.HapticFeedback.impactOccurred('heavy');
+        }
 
         setTaps(prev => [...prev, {id, x, y}]);
 
