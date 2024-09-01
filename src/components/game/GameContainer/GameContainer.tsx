@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import Image from "next/image";
 
 import {Wrapper} from "@/components/layout";
@@ -26,13 +26,6 @@ const GameContainer: FC = () => {
 
         <Wrapper>
             <div className={styles.inner}>
-                <button onClick={() => {
-                    if (typeof window !== "undefined") {
-                        localStorage.removeItem('jwt');
-                    }
-                }}>
-                    remove jwt
-                </button>
                 <TotalPoints/>
 
                 <TapButton/>
