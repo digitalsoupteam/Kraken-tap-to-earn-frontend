@@ -10,6 +10,7 @@ interface User {
     is_blocked: boolean,
     session_taps_left: number,
     calm_left: number,
+    points: number;
     taps: number,
     calm_until: number,
     session_start: number,
