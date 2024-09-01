@@ -18,7 +18,7 @@ interface User {
 }
 
 interface GameStore {
-    telegramInitData: string;
+    telegramInitData: string | null;
     setTelegramInitData: (initData: string) => void;
     userId: string;
     setUserId: (userId: string) => void;
@@ -45,7 +45,7 @@ interface GameStore {
 const useGameStore = create<GameStore>()(
     devtools(
         (set: (partial: Partial<GameStore>) => void, get: () => GameStore) => ({
-            telegramInitData: '',
+            telegramInitData: null,
             setTelegramInitData: (initData: string) => set({telegramInitData: initData}),
             userId: '',
             setUserId: (userId: string) => set({userId: userId}),

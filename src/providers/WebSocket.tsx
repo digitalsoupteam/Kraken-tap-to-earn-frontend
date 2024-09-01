@@ -1,6 +1,6 @@
 'use client';
 
-import React, {FC, useEffect, PropsWithChildren} from 'react';
+import React, {FC, useState, useEffect, PropsWithChildren} from 'react';
 import {useSearchParams} from 'next/navigation'
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import useWebSocketStore from "@/stores/useWebSocketStore";
@@ -55,14 +55,14 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
 
     const getJWT = async () => {
-        const url = WebApp.initData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
+        const url = telegramInitData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
         const referrerId = searchParams.get('ref');
 
         if (typeof window !== 'undefined') {
             console.log('typeof initData', typeof WebApp.initData);
             console.log('tg init data', WebApp.initData);
             console.log('tg init data STORED', telegramInitData);
-            console.log('start param', new URLSearchParams(telegramInitData).get('start_param'));
+            console.log('start param', new URLSearchParams(telegramInitData || '').get('start_param'));
         }
 
         try {
@@ -90,7 +90,6 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         }
     };
 
-    !jwt && getJWT();
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL, {
         onError: (error) => {
@@ -105,6 +104,12 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
             jwt: jwt,
         }
     });
+
+    useEffect(() => {
+        if (telegramInitData) {
+            !jwt && getJWT();
+        }
+    }, [telegramInitData, jwt]);
 
     useEffect(() => {
         setSendMessage(sendMessage);
