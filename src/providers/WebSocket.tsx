@@ -58,13 +58,6 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         const url = telegramInitData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
         const referrerId = searchParams.get('ref');
 
-        if (typeof window !== 'undefined') {
-            console.log('typeof initData', typeof WebApp.initData);
-            console.log('tg init data', WebApp.initData);
-            console.log('tg init data STORED', telegramInitData);
-            console.log('start param', new URLSearchParams(telegramInitData || '').get('start_param'));
-        }
-
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -99,14 +92,14 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
             // @ts-ignore
             setMessages((prevMessages) => [...prevMessages, message.data]);
         },
-        shouldReconnect: (closeEvent) => true,
+        // shouldReconnect: (closeEvent) => true,
         queryParams: {
             jwt: jwt,
         }
     });
 
     useEffect(() => {
-        if (telegramInitData) {
+        if (typeof telegramInitData !== null) {
             !jwt && getJWT();
         }
     }, [telegramInitData, jwt]);
