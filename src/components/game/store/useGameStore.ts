@@ -18,62 +18,65 @@ interface User {
     user_id: string;
 }
 
-interface GameStore {
+type State = {
     telegramInitData: string | null;
-    setTelegramInitData: (initData: string) => void;
     userId: string;
-    setUserId: (userId: string) => void;
     userPhoto: string;
-    setUserPhoto: (photo: string) => void;
     totalPoints: number;
     userName: string,
-    setUserName: (name: string) => void,
     multiplier: number;
+    sessionLeft: number;
+    calmUntil: number;
+    sessionUntil: number;
+    sessionStart: number;
+    leadersList: User[];
+    referralsList: User[];
+}
+
+type Action = {
+    setTelegramInitData: (initData: string) => void;
+    setUserId: (userId: string) => void;
+    setUserPhoto: (photo: string) => void;
+    setUserName: (name: string) => void,
     increasePoints: () => void;
     setTotalPoints: (totalPoints: number) => void;
-    sessionLeft: number;
     setSessionLeft: (sessionLeft: number) => void;
-    calmUntil: number;
     setCalmUntil: (calmUntil: number) => void;
-    sessionUntil: number;
     setSessionUntil: (sessionUntil: number) => void;
-    sessionStart: number;
     setSessionStart: (sessionStart: number) => void;
-    leadersList: User[];
     setLeadersList: (leadersList: User[]) => void;
-    referralsList: User[];
     setReferralsList: (referralsList: User[]) => void;
 }
 
-const useGameStore = create<GameStore>()(
+const useGameStore = create<State & Action>()(
     devtools(
-        (set: (partial: Partial<GameStore>) => void, get: () => GameStore) => ({
+        (set, get) => ({
             telegramInitData: null,
-            setTelegramInitData: (initData: string) => set({telegramInitData: initData}),
             userId: '',
-            setUserId: (userId: string) => set({userId: userId}),
             userPhoto: '',
-            setUserPhoto: (photo: string) => set({userPhoto: photo}),
             userName: '',
-            setUserName: (name: string) => set({userName: name}),
             totalPoints: 0,
             multiplier: 1,
+            sessionLeft: 0,
+            calmUntil: 0,
+            sessionUntil: 0,
+            sessionStart: 0,
+            leadersList: [],
+            referralsList: [],
+            setTelegramInitData: (initData: string) => set({telegramInitData: initData}),
+            setUserId: (userId: string) => set({userId: userId}),
+            setUserPhoto: (photo: string) => set({userPhoto: photo}),
+            setUserName: (name: string) => set({userName: name}),
             increasePoints: () => {
                 const {totalPoints, multiplier} = get();
                 set({totalPoints: parseFloat((totalPoints + multiplier).toFixed(1))});
             },
             setTotalPoints: (totalPoints: number) => set({totalPoints: totalPoints}),
-            sessionLeft: 0,
             setSessionLeft: (sessionLeft: number) => set({sessionLeft: sessionLeft}),
-            calmUntil: 0,
             setCalmUntil: (calmUntil: number) => set({calmUntil: calmUntil}),
-            sessionUntil: 0,
             setSessionUntil: (sessionUntil: number) => set({sessionUntil: sessionUntil}),
-            sessionStart: 0,
             setSessionStart: (sessionStart: number) => set({sessionStart: sessionStart}),
-            leadersList: [],
             setLeadersList: (leadersList: User[]) => set({leadersList: leadersList}),
-            referralsList: [],
             setReferralsList: (referralsList: User[]) => set({referralsList: referralsList}),
         })
     )

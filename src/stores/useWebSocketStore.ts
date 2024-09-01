@@ -10,22 +10,26 @@ const connectionStatuses: Record<ReadyState, string> = {
     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
 };
 
-interface WebSocketState {
-    sendMessage: (message: string) => void;
+type State = {
     messages: string[];
     lastMessage: string | null;
-    setLastMessage: (message: string) => void;
     connectionStatus: string;
     readyState: ReadyState;
+    jwt: string;
+}
+
+type Action = {
+    sendMessage: (message: string) => void;
+    setLastMessage: (message: string) => void;
     setMessages: (messages: string[]) => void;
     setReadyState: (state: ReadyState) => void;
     setSendMessage: (sendMessage: (message: string) => void) => void;
-    jwt: string;
     setJwt: (jwt: string) => void;
     getUser: () => void;
     getTopUsers: () => void;
     getTopReferrals: () => void;
 }
+
 
 const getLocalJwt = () => {
     if (typeof window !== 'undefined') {
@@ -35,14 +39,15 @@ const getLocalJwt = () => {
     return '';
 };
 
-const useWebSocketStore = create<WebSocketState>()(
+const useWebSocketStore = create<State & Action>()(
     devtools((set, get) => ({
-        sendMessage: () => {},
         messages: [],
         lastMessage: null,
-        setLastMessage: (message) => set({ lastMessage: message }),
         connectionStatus: 'Disconnected',
         readyState: ReadyState.CLOSED,
+        jwt: getLocalJwt(),
+        sendMessage: () => {},
+        setLastMessage: (message) => set({ lastMessage: message }),
         setMessages: (messages) => set({ messages }),
         setReadyState: (state) =>
             set({
@@ -50,7 +55,6 @@ const useWebSocketStore = create<WebSocketState>()(
                 connectionStatus: connectionStatuses[state],
             }),
         setSendMessage: (sendMessage) => set({ sendMessage }),
-        jwt: getLocalJwt(),
         setJwt: (jwt) => {
             if (typeof window !== 'undefined') {
                 localStorage.setItem('jwt', jwt);
