@@ -73,7 +73,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
                 },
                 body: JSON.stringify({
                     ...(referrerId && {referrerId}),
-                    ...(telegramInitData && {telegramInitData}),
+                    ...(telegramInitData && {initData: telegramInitData}),
                 }),
             });
 
