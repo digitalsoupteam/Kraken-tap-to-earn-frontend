@@ -21,9 +21,9 @@ const TapButton: FC = () => {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const [isDisabled, setIsDisabled] = useState(true);
 
-    const {multiplier, increasePoints, sessionLeft, setSessionLeft, sessionUntil, setSessionUntil, sessionStart, setSessionStart} = useGameStore((state) => ({
+    const {multiplier, setTotalPoints, sessionLeft, setSessionLeft, sessionUntil, setSessionUntil, sessionStart, setSessionStart} = useGameStore((state) => ({
         multiplier: state.multiplier,
-        increasePoints: state.increasePoints,
+        setTotalPoints: state.setTotalPoints,
         sessionLeft: state.sessionLeft,
         setSessionLeft: state.setSessionLeft,
         sessionUntil: state.sessionUntil,
@@ -67,8 +67,6 @@ const TapButton: FC = () => {
 
         setTaps(prev => [...prev, {id, x, y}]);
 
-        increasePoints();
-
         setTimeout(() => {
             setTaps((prev) => prev.filter(tap => tap.id !== id));
         }, tapEffectDuration);
@@ -108,6 +106,8 @@ const TapButton: FC = () => {
 
         const userInfoFromTap = response.result.userInfo;
         console.log(`[LOG]: Parse user from sendTaps data`, userInfoFromTap);
+
+        setTotalPoints(parseFloat(userInfoFromTap.points.toFixed(1)));
 
         setSessionLeft(userInfoFromTap.session_left);
         console.log(`[LOG]: Setting sessionLeft`, userInfoFromTap.session_left);

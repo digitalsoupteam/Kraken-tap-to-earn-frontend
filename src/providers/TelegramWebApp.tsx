@@ -29,26 +29,6 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
     }, []);
 
     return <>
-        {
-            typeof window !== 'undefined' && <>
-                <div style={{zIndex: 999, position: 'absolute'}}>
-                    <button onClick={() => {
-                        WebApp.HapticFeedback.notificationOccurred('error')
-                    }} style={{padding: 10}}>notificationOccurred - error
-                    </button>
-
-                    <button onClick={() => {
-                        WebApp.HapticFeedback.notificationOccurred('success')
-                    }} style={{padding: 10}}>notificationOccurred - success
-                    </button>
-
-                    <button onClick={() => {
-                        WebApp.HapticFeedback.notificationOccurred('warning')
-                    }} style={{padding: 10}}>notificationOccurred - warning
-                    </button>
-                </div>
-            </>
-        }
         {children}
     </>
 };
