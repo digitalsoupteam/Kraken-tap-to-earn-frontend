@@ -56,7 +56,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
     const getJWT = async () => {
         const url = telegramInitData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
-        const referrerId = searchParams.get('ref');
+        const referrerId = telegramInitData && new URLSearchParams(telegramInitData).get('start_param');
 
         try {
             const response = await fetch(url, {

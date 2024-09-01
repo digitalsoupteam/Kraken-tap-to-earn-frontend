@@ -1,12 +1,23 @@
+'use client';
+
 import React, {FC} from 'react';
 
-import {Button} from "@/components/ui";
 import {CopyButton} from '@/components/common'
+import {useGameStore} from "@/components/game";
 
 import styles from './InviteButton.module.css';
 
 const InviteButton: FC = () => {
-    return <CopyButton className={styles.button} copyContent={'ref link'}>Invite a friend</CopyButton>
+    const {
+        userId: userId,
+    } = useGameStore((state) => ({
+        userId: state.userId,
+    }));
+
+    return <CopyButton className={styles.button}
+                       copyContent={`https://t.me/kraken_tap_to_earn_bot/kraken_tap_to_earn?startapp=${userId}`}>
+        Invite a friend
+    </CopyButton>
 };
 
 export default InviteButton;
