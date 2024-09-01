@@ -77,7 +77,9 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
             const data = await response.json();
             const jwtToken = data.jwt;
 
-            jwtToken && setJwt(jwtToken)
+            jwtToken && setJwt(jwtToken);
+
+            return jwtToken;
         } catch (error) {
             console.error('Error:', error);
         }
@@ -92,7 +94,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
             // @ts-ignore
             setMessages((prevMessages) => [...prevMessages, message.data]);
         },
-        // shouldReconnect: (closeEvent) => true,
+        shouldReconnect: (closeEvent) => true,
         queryParams: {
             jwt: jwt,
         }
@@ -131,6 +133,11 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         if (response.id !== 1000) return;
         console.log(`[LOG]: Receive getUser data`, response);
+
+        if (!response.result[0]) {
+            getJWT();
+            console.log(`[LOG]: JWT was updated`);
+        }
 
         setUserId(response.result[0].user_id);
         setTotalPoints(response.result[0].taps);
