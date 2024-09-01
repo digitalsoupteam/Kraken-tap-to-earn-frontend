@@ -1,10 +1,11 @@
 'use client';
 
-import React, {FC, PropsWithChildren} from 'react';
+import React, {FC, useState, PropsWithChildren} from 'react';
 import clsx from 'clsx';
 
-import CopyIcon from '/public/images/copy.svg';
 import {Button} from "@/components/ui";
+import CopyIcon from '/public/images/copy.svg';
+import CompleteIcon from '/public/images/complete.svg';
 
 import styles from './CopyButton.module.css';
 
@@ -14,15 +15,22 @@ interface CopyButtonProps extends PropsWithChildren {
 }
 
 const CopyButton: FC<CopyButtonProps> = ({className, copyContent, children}) => {
+    const [isCopied, setIsCopied] = useState(false);
+
     const handlerClick = () => {
         navigator.clipboard.writeText(copyContent)
-            .then(function () { alert('copied: ' + copyContent); })
+            .then(function () { setIsCopied(true) })
+            .then(function () {
+                setTimeout(() => {
+                    setIsCopied(false);
+                }, 3000)
+            })
             .catch(function (err) { console.error('Failed to copy:', err); });
     };
 
-    return <Button className={clsx(styles.root, className)} isLight={true} onClick={handlerClick}>
-        {children}
-        <CopyIcon/>
+    return <Button className={clsx(styles.root, className)} isLight={true} onClick={handlerClick} disabled={isCopied}>
+        {isCopied ? 'Link has been copied' : children}
+        {isCopied ? <CompleteIcon/> : <CopyIcon/>}
     </Button>
 };
 

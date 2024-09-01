@@ -1,4 +1,5 @@
 .root svg {
+    color: var(--white);
     width: 24px;
     height: 24px;
 }
