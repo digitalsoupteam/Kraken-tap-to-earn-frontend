@@ -19,6 +19,7 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
         if (typeof window !== 'undefined') {
             WebApp.ready();
             WebApp.expand();
+            WebApp.disableVerticalSwipes();
 
             setTelegramInitData(WebApp.initData);
 
