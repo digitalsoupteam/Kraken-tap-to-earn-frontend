@@ -1,7 +1,6 @@
 'use client';
 
 import React, {FC, useEffect, PropsWithChildren} from 'react';
-import eruda from 'eruda'
 import WebApp from "@twa-dev/sdk";
 import {useGameStore} from "@/components/game";
 
@@ -28,8 +27,6 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
             userPhotoUrl && setUserPhoto(userPhotoUrl);
         }
     }, []);
-
-    eruda.init();
 
     return <>
         {children}
