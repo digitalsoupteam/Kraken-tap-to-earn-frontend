@@ -24,6 +24,7 @@ interface WebSocketState {
     setJwt: (jwt: string) => void;
     getUser: () => void;
     getTopUsers: () => void;
+    getTopReferrals: () => void;
 }
 
 const getLocalJwt = () => {
@@ -72,6 +73,20 @@ const useWebSocketStore = create<WebSocketState>()(
                 jsonrpc: '2.0',
                 id: 3000,
                 method: 'getTopUsers',
+                params: {
+                    limit: 15,
+                }
+            };
+
+            const sendMessage = get().sendMessage;
+
+            sendMessage(JSON.stringify(message));
+        },
+        getTopReferrals: () => {
+            const message = {
+                jsonrpc: '2.0',
+                id: 4000,
+                method: 'getTopReferrals',
                 params: {
                     limit: 15,
                 }

@@ -40,6 +40,8 @@ interface GameStore {
     setSessionStart: (sessionStart: number) => void;
     leadersList: User[];
     setLeadersList: (leadersList: User[]) => void;
+    referralsList: User[];
+    setReferralsList: (referralsList: User[]) => void;
 }
 
 const useGameStore = create<GameStore>()(
@@ -70,6 +72,8 @@ const useGameStore = create<GameStore>()(
             setSessionStart: (sessionStart: number) => set({sessionStart: sessionStart}),
             leadersList: [],
             setLeadersList: (leadersList: User[]) => set({leadersList: leadersList}),
+            referralsList: [],
+            setReferralsList: (referralsList: User[]) => set({referralsList: referralsList}),
         })
     )
 );
