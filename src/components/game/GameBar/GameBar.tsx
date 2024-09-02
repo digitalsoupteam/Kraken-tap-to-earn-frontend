@@ -3,15 +3,17 @@
 import React, {FC} from 'react';
 
 import {BottomBar} from "@/components/common";
-import {ProgressTracker} from "@/components/game";
-import CustomWalletConnectButton from "@/components/common/CustomWalletConnectButton/CustomWalletConnectButton";
+import {ProgressTracker, useGameStore} from "@/components/game";
+import WalletConnectButton from "@/components/common/WalletConnectButton/WalletConnectButton";
 
 
 const GameBar: FC = () => {
+    const {wallet} = useGameStore((state) => ({wallet: state.wallet}));
+
     return <BottomBar>
         <ProgressTracker/>
 
-        <CustomWalletConnectButton size={'medium'}/>
+        {!wallet && <WalletConnectButton size={'medium'}/>}
     </BottomBar>
 };
 

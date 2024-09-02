@@ -1,6 +1,6 @@
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { ReadyState } from 'react-use-websocket';
+import {devtools} from 'zustand/middleware';
+import {ReadyState} from 'react-use-websocket';
 
 const connectionStatuses: Record<ReadyState, string> = {
     [ReadyState.CONNECTING]: 'Connecting',
@@ -28,6 +28,10 @@ type Action = {
     getUser: () => void;
     getTopUsers: () => void;
     getTopReferrals: () => void;
+    updateProfile: (data: {
+        nickname?: string;
+        wallet?: string;
+    }) => void;
 }
 
 
@@ -46,20 +50,21 @@ const useWebSocketStore = create<State & Action>()(
         connectionStatus: 'Disconnected',
         readyState: ReadyState.CLOSED,
         jwt: getLocalJwt(),
-        sendMessage: () => {},
-        setLastMessage: (message) => set({ lastMessage: message }),
-        setMessages: (messages) => set({ messages }),
+        sendMessage: () => {
+        },
+        setLastMessage: (message) => set({lastMessage: message}),
+        setMessages: (messages) => set({messages}),
         setReadyState: (state) =>
             set({
                 readyState: state,
                 connectionStatus: connectionStatuses[state],
             }),
-        setSendMessage: (sendMessage) => set({ sendMessage }),
+        setSendMessage: (sendMessage) => set({sendMessage}),
         setJwt: (jwt) => {
             if (typeof window !== 'undefined') {
                 localStorage.setItem('jwt', jwt);
             }
-            set({ jwt });
+            set({jwt});
         },
         getUser: () => {
             const message = {
@@ -93,6 +98,23 @@ const useWebSocketStore = create<State & Action>()(
                 method: 'getTopReferrals',
                 params: {
                     limit: 15,
+                }
+            };
+
+            const sendMessage = get().sendMessage;
+
+            sendMessage(JSON.stringify(message));
+        },
+        updateProfile: (
+            data
+        ) => {
+            const message = {
+                jsonrpc: '2.0',
+                id: 5000,
+                method: 'updateProfile',
+                params: {
+                    ...(data.nickname && {nickname: data.nickname}),
+                    ...(data.wallet && {wallet: data.wallet}),
                 }
             };
 

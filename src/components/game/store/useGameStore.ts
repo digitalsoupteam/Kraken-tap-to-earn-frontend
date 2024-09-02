@@ -31,6 +31,7 @@ type State = {
     sessionStart: number;
     leadersList: User[];
     referralsList: User[];
+    wallet: string;
 }
 
 type Action = {
@@ -46,6 +47,7 @@ type Action = {
     setLeadersList: (leadersList: User[]) => void;
     setReferralsList: (referralsList: User[]) => void;
     setMultiplier: (multiplier: number) => void;
+    setWallet: (wallet: string) => void;
 }
 
 const useGameStore = create<State & Action>()(
@@ -63,6 +65,7 @@ const useGameStore = create<State & Action>()(
             sessionStart: 0,
             leadersList: [],
             referralsList: [],
+            wallet: '',
             setTelegramInitData: (initData: string) => set({telegramInitData: initData}),
             setUserId: (userId: string) => set({userId: userId}),
             setUserPhoto: (photo: string) => set({userPhoto: photo}),
@@ -79,6 +82,7 @@ const useGameStore = create<State & Action>()(
 
                 set({multiplier: baseMultiplier + daysInRaw / 10});
             },
+            setWallet: (wallet: string) => set({wallet: wallet}),
         })
     )
 );

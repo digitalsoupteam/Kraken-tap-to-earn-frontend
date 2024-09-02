@@ -1,11 +1,15 @@
 import React, {FC} from 'react';
 
 import {BottomBar} from "@/components/common";
-import CustomWalletConnectButton from "@/components/common/CustomWalletConnectButton/CustomWalletConnectButton";
+import WalletConnectButton from "@/components/common/WalletConnectButton/WalletConnectButton";
+import {useGameStore} from "@/components/game";
 
 const QuestsBar: FC = () => {
+    const {wallet} = useGameStore((state) => ({wallet: state.wallet}));
+
+
     return <BottomBar>
-        <CustomWalletConnectButton size={'big'}/>
+        {!wallet && <WalletConnectButton size={'big'}/>}
     </BottomBar>
 };
 

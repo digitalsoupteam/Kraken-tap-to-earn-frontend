@@ -40,6 +40,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setUserName,
         telegramInitData,
         setMultiplier,
+        setWallet,
     } = useGameStore((state) => ({
         userId: state.userId,
         setUserId: state.setUserId,
@@ -50,6 +51,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setUserName: state.setUserName,
         telegramInitData: state.telegramInitData,
         setMultiplier: state.setMultiplier,
+        setWallet: state.setWallet,
     }));
 
     // const WS_URL = process.env.NEXT_PUBLIC_WS_URL || `https://game.releasethekraken.io/backend/ws`;
@@ -142,13 +144,15 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
             return;
         }
 
-        setUserId(response.result[0].user_id);
-        setTotalPoints(response.result[0].points.toFixed(1));
-        setSessionLeft(response.result[0].session_left);
-        setCalmUntil(response.result[0].calm_until);
-        setSessionUntil(response.result[0].session_until);
-        setUserName(response.result[0].nickname);
-        setMultiplier(response.result[0].days_in_row);
+        const userInfo = response.result[0];
+        setUserId(userInfo.user_id);
+        setTotalPoints(userInfo.points.toFixed(1));
+        setSessionLeft(userInfo.session_left);
+        setCalmUntil(userInfo.calm_until);
+        setSessionUntil(userInfo.session_until);
+        setUserName(userInfo.nickname);
+        setMultiplier(userInfo.days_in_row);
+        setWallet(userInfo.wallet);
     }, [lastMessage]);
 
     return <>{children}</>;
