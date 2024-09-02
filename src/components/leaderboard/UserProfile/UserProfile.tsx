@@ -20,7 +20,7 @@ const UserProfile: FC = () => {
 
 
     return <div className={styles.root}>
-        <UserImage image={userPhoto} letter={'userName'.slice(0, 1)}/>
+        <UserImage image={userPhoto} letter={userName.slice(0, 1)}/>
 
         <div className={styles.info}>
             <span className={styles.name}>
