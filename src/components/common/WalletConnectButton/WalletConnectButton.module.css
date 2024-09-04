@@ -1,0 +1,12 @@
+.root {
+    line-height: 1;
+}
+
+.root.medium {
+    font-size: 14px;
+}
+
+.root.big {
+    width: 100%;
+    font-size: 20px;
+}

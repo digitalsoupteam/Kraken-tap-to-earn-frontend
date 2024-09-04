@@ -4,8 +4,9 @@ import {Bebas_Neue} from "next/font/google";
 import localFont from 'next/font/local';
 import clsx from "clsx";
 
-import {AppWalletProvider, TelegramWebApp, WebSocket} from "@/providers/";
+import {TelegramWebApp, WebSocket} from "@/providers/";
 import {Footer, Header} from "@/components/layout";
+import {WalletConnectModal} from "@/components/common";
 
 import "./globals.css";
 
@@ -44,21 +45,20 @@ const RootLayout: FC<PropsWithChildren> = ({children}) => {
         <html lang="en">
         <body className={clsx(BebasNeue.className, DarkHornetItalic.variable)}>
         <Suspense fallback={<div>Loading...</div>}>
-            <AppWalletProvider>
-                <TelegramWebApp>
-                    <WebSocket>
-                        <Header/>
-                        <main>
-                            {children}
-                        </main>
-                        <Footer/>
-                    </WebSocket>
-                </TelegramWebApp>
-            </AppWalletProvider>
+            <TelegramWebApp>
+                <WebSocket>
+                    <Header/>
+                    <main>
+                        {children}
+                    </main>
+                    <WalletConnectModal/>
+                    <Footer/>
+                </WebSocket>
+            </TelegramWebApp>
         </Suspense>
         </body>
         </html>
-    );
+    )
 }
 
 export default RootLayout;

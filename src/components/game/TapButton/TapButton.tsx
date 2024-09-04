@@ -11,7 +11,6 @@ import {useGameStore} from '@/components/game';
 
 import styles from './TapButton.module.css';
 import useWebSocketStore from "@/stores/useWebSocketStore";
-import {sendMessage} from "@trezor/connect-web/lib/webextension/extensionPermissions";
 import WebApp from "@twa-dev/sdk";
 
 const TapButton: FC = () => {
