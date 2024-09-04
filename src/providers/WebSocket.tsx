@@ -86,12 +86,14 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         }
     };
 
-    const logData = {
-        platform: WebApp.platform,
-        initData: WebApp.initData,
-        storedInitData: telegramInitData,
-    };
-    console.log('[LOG]: log data: ', logData);
+    if (typeof window !== 'undefined') {
+        const logData = {
+            platform: WebApp.platform,
+            initData: WebApp.initData,
+            storedInitData: telegramInitData,
+        };
+        console.log('[LOG]: log data: ', logData);
+    }
 
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL, {
         onError: (error) => {
