@@ -9,9 +9,9 @@ import useWebSocketStore from "@/stores/useWebSocketStore";
 import {useGameStore} from "@/components/game";
 
 import styles from './WalletConnectModal.module.css';
+import {Modal} from "@/components/common";
 
 const WalletConnectModal: FC = () => {
-    const innerRef = useRef<HTMLDivElement>(null);
     const [walletValue, setWalletValue] = useState('');
 
     const {
@@ -29,12 +29,6 @@ const WalletConnectModal: FC = () => {
         lastMessage: state.lastMessage,
         setLastMessage: state.setLastMessage,
     }))
-
-    const handleOutsideClick = (evt: React.MouseEvent) => {
-        if (innerRef.current && !innerRef.current.contains(evt.target as Node)) {
-            closeWalletConnect();
-        }
-    };
 
     const handlerWalletInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
         setWalletValue(evt.target.value);
@@ -64,25 +58,23 @@ const WalletConnectModal: FC = () => {
         console.log('[LOG]: Wallet was updated successfully ', response.result.wallet);
     }, [lastMessage]);
 
-    return <div className={clsx(styles.root, isWalletConnectOpened && styles.opened)} onClick={handleOutsideClick}>
-        <div className={styles.inner} ref={innerRef}>
-            {wallet ? <>
-                <div className={styles.title}>Your wallet connected successfully</div>
+    return <Modal isOpen={isWalletConnectOpened} closeModal={closeWalletConnect}>
+        {wallet ? <>
+            <div className={styles.title}>Your wallet connected successfully</div>
 
-                <Button className={styles.button} isLight={true} onClick={closeWalletConnect}>Close</Button>
-            </> : <>
-                <div className={styles.title}>Connect Wallet</div>
+            <Button className={styles.button} isLight={true} onClick={closeWalletConnect}>Close</Button>
+        </> : <>
+            <div className={styles.title}>Connect Wallet</div>
 
-                <div className={styles.text}>Enter your Solana wallet address</div>
+            <div className={styles.text}>Enter your Solana wallet address</div>
 
-                <form onSubmit={handlerSubmit}>
-                    <Input className={styles.input} value={walletValue} onChange={handlerWalletInput}/>
+            <form onSubmit={handlerSubmit}>
+                <Input className={styles.input} value={walletValue} onChange={handlerWalletInput}/>
 
-                    <Button className={styles.button} isLight={true}>Submit</Button>
-                </form>
-            </>}
-        </div>
-    </div>
+                <Button className={styles.button} isLight={true}>Submit</Button>
+            </form>
+        </>}
+    </Modal>
 };
 
 export default WalletConnectModal;
