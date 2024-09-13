@@ -95,7 +95,7 @@ const Settings: FC = () => {
             <div className={styles.item}>
                 Vibration
                 <Button onClick={toggleVibration}
-                        isLight={isVibrationOn}>{isVibrationOn ? 'on' : 'off'}</Button>
+                        isLight={isVibrationOn}>{typeof window !== 'undefined' && isVibrationOn ? 'on' : 'off'}</Button>
             </div>
 
             <form className={styles.item} onSubmit={handlerSubmitChangeNickname}>
