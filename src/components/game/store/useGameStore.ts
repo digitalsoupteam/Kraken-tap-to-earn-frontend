@@ -83,8 +83,8 @@ const useGameStore = create<State & Action>()(
             setReferralsList: (referralsList: User[]) => set({referralsList: referralsList}),
             setMultiplier: (daysInRaw: number) => {
                 const baseMultiplier: number = 1;
-
-                set({multiplier: baseMultiplier + daysInRaw / 10});
+                const additionalMultiplier = Math.min(daysInRaw / 10, 1);
+                set({multiplier: baseMultiplier + additionalMultiplier});
             },
             setWallet: (wallet: string) => set({wallet: wallet}),
             toggleVibration: () => {
