@@ -88,12 +88,11 @@ const useGameStore = create<State & Action>()(
             },
             setWallet: (wallet: string) => set({wallet: wallet}),
             toggleVibration: () => {
-                const currentVibrationState = get().isVibrationOn;
-                set({ isVibrationOn: !currentVibrationState });
-                localStorage.setItem('vibration', currentVibrationState ? 'on' : 'off');
+                set({ isVibrationOn: !get().isVibrationOn });
+                localStorage.setItem('vibration', get().isVibrationOn ? 'on' : 'off');
 
                 if (typeof window !== 'undefined') {
-                    currentVibrationState && WebApp.HapticFeedback.impactOccurred('heavy');
+                    get().isVibrationOn && WebApp.HapticFeedback.impactOccurred('heavy');
                 }
             },
         })
