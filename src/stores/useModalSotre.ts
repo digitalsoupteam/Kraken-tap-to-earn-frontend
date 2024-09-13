@@ -18,7 +18,7 @@ const useModalStore = create<State & Action>()(
         isWalletConnectOpened: false,
         openWalletConnect: () => set({ isWalletConnectOpened: true }),
         closeWalletConnect: () => set({ isWalletConnectOpened: false }),
-        isSettingsOpened: true,
+        isSettingsOpened: false,
         openSettings: () => set({ isSettingsOpened: true }),
         closeSettings: () => set({ isSettingsOpened: false }),
     }))
