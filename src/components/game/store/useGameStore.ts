@@ -1,5 +1,6 @@
 import {create} from 'zustand';
 import {devtools} from 'zustand/middleware';
+import WebApp from "@twa-dev/sdk";
 
 interface User {
     level: number[],
@@ -89,6 +90,10 @@ const useGameStore = create<State & Action>()(
             toggleVibration: () => {
                 set({ isVibrationOn: !get().isVibrationOn });
                 localStorage.setItem('vibration', get().isVibrationOn ? 'on' : 'off');
+
+                if (typeof window !== 'undefined') {
+                    WebApp.HapticFeedback.impactOccurred('heavy');
+                }
             },
         })
     )
