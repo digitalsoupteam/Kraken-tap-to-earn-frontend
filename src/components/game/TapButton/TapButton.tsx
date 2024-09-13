@@ -20,7 +20,16 @@ const TapButton: FC = () => {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const [isDisabled, setIsDisabled] = useState(true);
 
-    const {multiplier, setTotalPoints, sessionLeft, setSessionLeft, sessionUntil, setSessionUntil, sessionStart, setSessionStart} = useGameStore((state) => ({
+    const {
+        multiplier,
+        setTotalPoints,
+        sessionLeft,
+        setSessionLeft, sessionUntil,
+        setSessionUntil,
+        sessionStart,
+        setSessionStart,
+        isVibrationOn,
+    } = useGameStore((state) => ({
         multiplier: state.multiplier,
         setTotalPoints: state.setTotalPoints,
         sessionLeft: state.sessionLeft,
@@ -28,7 +37,8 @@ const TapButton: FC = () => {
         sessionUntil: state.sessionUntil,
         setSessionUntil: state.setSessionUntil,
         sessionStart: state.sessionStart,
-        setSessionStart: state.setSessionStart
+        setSessionStart: state.setSessionStart,
+        isVibrationOn: state.isVibrationOn,
     }));
 
     const {
@@ -57,11 +67,12 @@ const TapButton: FC = () => {
                 y,
             }],
         };
+
         console.log(`[LOG]: Call sendTaps method, with data`, message);
         sendMessage(JSON.stringify(message));
 
         if (typeof window !== 'undefined') {
-            WebApp.HapticFeedback.impactOccurred('heavy');
+            isVibrationOn && WebApp.HapticFeedback.impactOccurred('heavy');
         }
 
         setTaps(prev => [...prev, {id, x, y}]);
