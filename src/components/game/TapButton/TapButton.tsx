@@ -13,6 +13,13 @@ import styles from './TapButton.module.css';
 import useWebSocketStore from "@/stores/useWebSocketStore";
 import WebApp from "@twa-dev/sdk";
 
+const krakens = [
+    <KrakenBottomImage key={'first-level'}/>,
+    <KrakenSeasideImage key={'second-level'}/>,
+    <KrakenTroposphereImage key={'third-level'}/>,
+    <KrakenOuterSpaceImage key={'fourth-level'}/>,
+];
+
 const TapButton: FC = () => {
     const tapEffectDuration = 500;
     const [taps, setTaps] = useState<{ id: number, x: number, y: number }[]>([]);
@@ -29,6 +36,7 @@ const TapButton: FC = () => {
         sessionStart,
         setSessionStart,
         isVibrationOn,
+        level,
     } = useGameStore((state) => ({
         multiplier: state.multiplier,
         setTotalPoints: state.setTotalPoints,
@@ -39,6 +47,7 @@ const TapButton: FC = () => {
         sessionStart: state.sessionStart,
         setSessionStart: state.setSessionStart,
         isVibrationOn: state.isVibrationOn,
+        level: state.level,
     }));
 
     const {
@@ -141,10 +150,7 @@ const TapButton: FC = () => {
                          whileTap={isDisabled ? {} : {scale: 0.9, transition: {duration: 0.3}}}>
                 <span className={styles.image}>
                     <span className={styles.buttonBg}/>
-                    <KrakenBottomImage/>
-                    {/*<KrakenSeasideImage/>*/}
-                    {/*<KrakenTroposphereImage/>*/}
-                    {/*<KrakenOuterSpaceImage/>*/}
+                    {krakens[level]}
                 </span>
             </motion.span>
         </button>

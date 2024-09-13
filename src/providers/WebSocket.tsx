@@ -38,6 +38,8 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         telegramInitData,
         setMultiplier,
         setWallet,
+        levelsGates: levelsGates,
+        setLevel,
     } = useGameStore((state) => ({
         userId: state.userId,
         setUserId: state.setUserId,
@@ -49,6 +51,8 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         telegramInitData: state.telegramInitData,
         setMultiplier: state.setMultiplier,
         setWallet: state.setWallet,
+        levelsGates: state.levelsGates,
+        setLevel: state.setLevel,
     }));
 
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
@@ -141,8 +145,12 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         }
 
         const userInfo = response.result[0];
+        const totalPoints = userInfo.points.toFixed(1);
+        const level = levelsGates.findLastIndex((item) => totalPoints >= item);
+
         setUserId(userInfo.user_id);
-        setTotalPoints(userInfo.points.toFixed(1));
+        setTotalPoints(totalPoints);
+        setLevel(level);
         setSessionLeft(userInfo.session_left);
         setCalmUntil(userInfo.calm_until);
         setSessionUntil(userInfo.session_until);

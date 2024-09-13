@@ -16,7 +16,6 @@ interface User {
     calm_until: number,
     session_start: number,
     session_until: number,
-    user_id: string;
 }
 
 type State = {
@@ -34,6 +33,8 @@ type State = {
     referralsList: User[];
     wallet: string;
     isVibrationOn: boolean;
+    levelsGates: number[];
+    level: number;
 }
 
 type Action = {
@@ -51,6 +52,7 @@ type Action = {
     setMultiplier: (multiplier: number) => void;
     setWallet: (wallet: string) => void;
     toggleVibration: () => void;
+    setLevel: (level: number) => void;
 }
 
 const useGameStore = create<State & Action>()(
@@ -70,6 +72,8 @@ const useGameStore = create<State & Action>()(
             referralsList: [],
             wallet: '',
             isVibrationOn: typeof window !== 'undefined' && localStorage.getItem('vibration') ? localStorage.getItem('vibration') === 'on' : true,
+            levelsGates : [0, 350000, 850000, 1350000],
+            level: 0,
             setTelegramInitData: (initData: string) => set({telegramInitData: initData}),
             setUserId: (userId: string) => set({userId: userId}),
             setUserPhoto: (photo: string) => set({userPhoto: photo}),
@@ -95,6 +99,7 @@ const useGameStore = create<State & Action>()(
                     get().isVibrationOn && WebApp.HapticFeedback.impactOccurred('heavy');
                 }
             },
+            setLevel: (level: number) => set({level: level}),
         })
     )
 );
