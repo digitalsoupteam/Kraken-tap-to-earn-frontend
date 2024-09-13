@@ -32,6 +32,7 @@ type State = {
     leadersList: User[];
     referralsList: User[];
     wallet: string;
+    isVibrationOn: boolean;
 }
 
 type Action = {
@@ -48,6 +49,7 @@ type Action = {
     setReferralsList: (referralsList: User[]) => void;
     setMultiplier: (multiplier: number) => void;
     setWallet: (wallet: string) => void;
+    toggleVibration: () => void;
 }
 
 const useGameStore = create<State & Action>()(
@@ -66,6 +68,7 @@ const useGameStore = create<State & Action>()(
             leadersList: [],
             referralsList: [],
             wallet: '',
+            isVibrationOn: typeof window !== 'undefined' ? localStorage.getItem('vibration') === 'on' : true,
             setTelegramInitData: (initData: string) => set({telegramInitData: initData}),
             setUserId: (userId: string) => set({userId: userId}),
             setUserPhoto: (photo: string) => set({userPhoto: photo}),
@@ -83,6 +86,10 @@ const useGameStore = create<State & Action>()(
                 set({multiplier: baseMultiplier + daysInRaw / 10});
             },
             setWallet: (wallet: string) => set({wallet: wallet}),
+            toggleVibration: () => {
+                set({ isVibrationOn: !get().isVibrationOn });
+                localStorage.setItem('vibration', get().isVibrationOn ? 'on' : 'off');
+            },
         })
     )
 );

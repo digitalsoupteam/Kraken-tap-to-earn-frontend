@@ -1,7 +1,6 @@
 'use client';
 
-import React, {FC, useRef, useState, useEffect} from 'react';
-import clsx from 'clsx';
+import React, {FC, useState, useEffect} from 'react';
 
 import useModalStore from "@/stores/useModalSotre";
 import {Button, Input} from '@/components/ui';
@@ -50,8 +49,6 @@ const WalletConnectModal: FC = () => {
         const response = JSON.parse(lastMessage);
 
         if (response.id !== 5000) return;
-        console.log(`[LOG]: Set wallet feedback data`, response);
-
         if (!response.result.wallet.length) return;
 
         setWallet(response.result.wallet);

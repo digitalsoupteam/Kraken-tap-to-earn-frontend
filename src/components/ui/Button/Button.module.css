@@ -49,3 +49,8 @@
         }
     }
 }
+
+.root:disabled {
+    color: var(--light);
+    background-color: var(--secondary);
+}

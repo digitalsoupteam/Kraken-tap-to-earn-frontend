@@ -3,11 +3,14 @@ import { devtools } from 'zustand/middleware';
 
 type State = {
     isWalletConnectOpened: boolean;
+    isSettingsOpened: boolean;
 }
 
 type Action = {
     openWalletConnect: () => void;
     closeWalletConnect: () => void;
+    openSettings: () => void;
+    closeSettings: () => void;
 }
 
 const useModalStore = create<State & Action>()(
@@ -15,6 +18,9 @@ const useModalStore = create<State & Action>()(
         isWalletConnectOpened: false,
         openWalletConnect: () => set({ isWalletConnectOpened: true }),
         closeWalletConnect: () => set({ isWalletConnectOpened: false }),
+        isSettingsOpened: true,
+        openSettings: () => set({ isSettingsOpened: true }),
+        closeSettings: () => set({ isSettingsOpened: false }),
     }))
 );
 

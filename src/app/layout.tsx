@@ -7,6 +7,7 @@ import clsx from "clsx";
 import {TelegramWebApp, WebSocket} from "@/providers/";
 import {Footer, Header} from "@/components/layout";
 import {WalletConnectModal} from "@/components/common";
+import {Settings} from "@/components/game";
 
 import "./globals.css";
 
@@ -51,6 +52,7 @@ const RootLayout: FC<PropsWithChildren> = ({children}) => {
                     <main>
                         {children}
                     </main>
+                    <Settings/>
                     <WalletConnectModal/>
                     <Footer/>
                 </WebSocket>

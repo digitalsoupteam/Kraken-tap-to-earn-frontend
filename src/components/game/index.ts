@@ -5,5 +5,6 @@ import EnergyTracker from "./EnergyTracker/EnergyTracker";
 import GameBar from "./GameBar/GameBar";
 import ProgressTracker from "./ProgressTracker/ProgressTracker";
 import useGameStore from "./store/useGameStore";
+import Settings from './Settings/Settings';
 
-export {GameContainer, TotalPoints, TapButton, EnergyTracker, GameBar, ProgressTracker, useGameStore};
+export {GameContainer, TotalPoints, TapButton, EnergyTracker, GameBar, ProgressTracker, useGameStore, Settings};
