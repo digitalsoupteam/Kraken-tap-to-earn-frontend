@@ -21,13 +21,24 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
             WebApp.expand();
             WebApp.disableVerticalSwipes();
 
+            const logData = {
+                platform: WebApp.platform,
+                initData: WebApp.initData,
+                storedInitData: telegramInitData,
+            };
+            console.log('[LOG]: Initial data: ', logData);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined' && WebApp.initData) {
             setTelegramInitData(WebApp.initData);
 
             const params = new URLSearchParams(telegramInitData || '');
             const userPhotoUrl = params.get('photo_url');
             userPhotoUrl && setUserPhoto(userPhotoUrl);
         }
-    }, []);
+    }, [WebApp.initData]);
 
     return <>
         {children}
