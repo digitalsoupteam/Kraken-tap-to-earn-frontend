@@ -15,6 +15,8 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
         setUserPhoto: state.setUserPhoto,
     }));
 
+    const nativeInitData = typeof window !== 'undefined' ? WebApp.initData : null;
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             WebApp.ready();
@@ -31,14 +33,14 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
     }, []);
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && WebApp.initData) {
+        if (typeof window !== 'undefined' && nativeInitData) {
             setTelegramInitData(WebApp.initData);
 
             const params = new URLSearchParams(telegramInitData || '');
             const userPhotoUrl = params.get('photo_url');
             userPhotoUrl && setUserPhoto(userPhotoUrl);
         }
-    }, [WebApp.initData]);
+    }, [nativeInitData]);
 
     return <>
         {children}
