@@ -68,7 +68,7 @@ const useGameStore = create<State & Action>()(
             leadersList: [],
             referralsList: [],
             wallet: '',
-            isVibrationOn: typeof window !== 'undefined' ? localStorage.getItem('vibration') === 'on' : true,
+            isVibrationOn: typeof window !== 'undefined' && localStorage.getItem('vibration') ? localStorage.getItem('vibration') === 'on' : true,
             setTelegramInitData: (initData: string) => set({telegramInitData: initData}),
             setUserId: (userId: string) => set({userId: userId}),
             setUserPhoto: (photo: string) => set({userPhoto: photo}),
