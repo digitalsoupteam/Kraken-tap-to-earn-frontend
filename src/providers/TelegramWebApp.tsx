@@ -38,6 +38,7 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
 
             const params = new URLSearchParams(telegramInitData || '');
             const userPhotoUrl = params.get('photo_url');
+
             userPhotoUrl && setUserPhoto(userPhotoUrl);
         }
     }, [nativeInitData]);

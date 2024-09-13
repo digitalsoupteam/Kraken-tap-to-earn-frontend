@@ -51,8 +51,6 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setWallet: state.setWallet,
     }));
 
-    // const WS_URL = process.env.NEXT_PUBLIC_WS_URL || `https://game.releasethekraken.io/backend/ws`;
-    // const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://194.67.88.140:3000/ws';
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
 
     const getJWT = async () => {
@@ -101,9 +99,11 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     });
 
     useEffect(() => {
-        if (typeof telegramInitData !== null) {
-            !jwt && getJWT();
-        }
+        if (typeof telegramInitData === null) return;
+
+        if (jwt || telegramInitData) return;
+
+        getJWT();
     }, [telegramInitData, jwt]);
 
     useEffect(() => {
