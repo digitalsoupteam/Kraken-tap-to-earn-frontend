@@ -18,10 +18,11 @@ const GameBar: FC = () => {
     return <BottomBar>
         <ProgressTracker/>
 
+        {!wallet && <WalletConnectButton className={styles.walletConnect} size={'medium'}/>}
+
         <Button className={styles.settings} onClick={openSettings}>
             <SettingsIcon/>
         </Button>
-        {!wallet && <WalletConnectButton size={'medium'}/>}
     </BottomBar>
 };
 
