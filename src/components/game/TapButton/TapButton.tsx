@@ -22,7 +22,7 @@ const krakens = [
 ];
 
 const TapButton: FC = () => {
-    const [playSound] = useSound('/sounds/bubble4.wav');
+    const [playSound] = useSound('/sounds/bubble.mp3');
     const tapEffectDuration = 500;
     const [taps, setTaps] = useState<{ id: number, x: number, y: number }[]>([]);
     const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
