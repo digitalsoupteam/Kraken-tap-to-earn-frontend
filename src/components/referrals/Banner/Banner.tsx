@@ -15,7 +15,7 @@ const Banner: FC = () => {
     return <div className={styles.root}>
         <div className={styles.text}>
             Invite a friend and get a reward
-            <br/>+ <Points points={20000}/> for you and your friend
+            <br/>+ <Points points={10000}/> for you and your friend
         </div>
 
         <div className={styles.tentacles}>
