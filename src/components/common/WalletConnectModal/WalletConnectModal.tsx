@@ -49,7 +49,7 @@ const WalletConnectModal: FC = () => {
         const response = JSON.parse(lastMessage);
 
         if (response.id !== 5000) return;
-        if (!response.result.wallet.length) return;
+        if (!response.result.wallet) return;
 
         setWallet(response.result.wallet);
         console.log('[LOG]: Wallet was updated successfully ', response.result.wallet);
