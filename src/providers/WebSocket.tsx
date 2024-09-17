@@ -69,7 +69,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
                 },
                 body: JSON.stringify({
                     ...(referrerId && {referrer_id: referrerId}),
-                    ...(WebApp.initData && {initData: WebApp.initData}),
+                    ...(typeof window !== 'undefined' && WebApp.initData && {initData: WebApp.initData}),
                 }),
             });
 
