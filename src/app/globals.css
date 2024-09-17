@@ -67,7 +67,6 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
   user-select: none;
 }
 
@@ -79,13 +78,4 @@ main {
   background-repeat: no-repeat;
   background-position: top right;
   padding-top: var(--header-height);
-  overflow: auto;
-}
-
-main {
-  scrollbar-width: none;
-}
-
-main::-webkit-scrollbar {
-  display: none;
 }

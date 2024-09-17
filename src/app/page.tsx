@@ -1,9 +1,20 @@
 'use client';
+import React, {FC, useEffect} from 'react';
 
 import {GameContainer} from "@/components/game";
 
-export default function Home() {
+const Home: FC = () =>  {
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
+
     return (
         <GameContainer/>
     );
 }
+
+export default Home;
