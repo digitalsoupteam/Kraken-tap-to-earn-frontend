@@ -17,6 +17,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-use-websocket": "^4.8.1",
+    "use-sound": "^4.0.3",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

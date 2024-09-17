@@ -1,17 +1,18 @@
 'use client';
 
 import React, {FC, useState, useRef, useEffect} from 'react';
+import WebApp from "@twa-dev/sdk";
 import {motion} from 'framer-motion';
+import useSound from 'use-sound';
 
 import KrakenBottomImage from '/public/images/kraken.svg';
 import KrakenSeasideImage from '/public/images/kraken-smirking.svg';
 import KrakenTroposphereImage from '/public/images/kraken-smiling.svg';
 import KrakenOuterSpaceImage from '/public/images/kraken-rock.svg';
 import {useGameStore} from '@/components/game';
+import useWebSocketStore from "@/stores/useWebSocketStore";
 
 import styles from './TapButton.module.css';
-import useWebSocketStore from "@/stores/useWebSocketStore";
-import WebApp from "@twa-dev/sdk";
 
 const krakens = [
     <KrakenBottomImage key={'first-level'}/>,
@@ -21,6 +22,7 @@ const krakens = [
 ];
 
 const TapButton: FC = () => {
+    const [playSound] = useSound('/sounds/bubble4.wav');
     const tapEffectDuration = 500;
     const [taps, setTaps] = useState<{ id: number, x: number, y: number }[]>([]);
     const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
@@ -57,11 +59,6 @@ const TapButton: FC = () => {
         sendMessage: state.sendMessage,
         lastMessage: state.lastMessage
     }));
-
-    const playSound = () => {
-        const sound = new Audio('/sounds/bubble.mp3');
-        sound.play();
-    };
 
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
         playSound();
