@@ -58,8 +58,9 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
 
     const getJWT = async () => {
-        const url = telegramInitData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
-        const referrerId = telegramInitData && new URLSearchParams(telegramInitData).get('start_param');
+        const nativeInitData = typeof window !== 'undefined' && WebApp.initData;
+        const url = nativeInitData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
+        const referrerId = nativeInitData && new URLSearchParams(nativeInitData).get('start_param');
 
         try {
             const response = await fetch(url, {
@@ -69,7 +70,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
                 },
                 body: JSON.stringify({
                     ...(referrerId && {referrer_id: referrerId}),
-                    ...(typeof window !== 'undefined' && WebApp.initData && {initData: WebApp.initData}),
+                    ...(nativeInitData && {initData: nativeInitData}),
                 }),
             });
 
