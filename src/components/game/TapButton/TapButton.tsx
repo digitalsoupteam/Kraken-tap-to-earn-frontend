@@ -58,7 +58,14 @@ const TapButton: FC = () => {
         lastMessage: state.lastMessage
     }));
 
+    const playSound = () => {
+        const sound = new Audio('/sounds/bubble.mp3');
+        sound.play();
+    };
+
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
+        playSound();
+
         const id = Date.now() + (touchIdentifier || 0);
 
         const buttonRect = buttonRef.current?.getBoundingClientRect();
