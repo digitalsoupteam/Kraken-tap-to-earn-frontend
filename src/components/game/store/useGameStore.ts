@@ -29,6 +29,7 @@ type State = {
     calmUntil: number;
     sessionUntil: number;
     sessionStart: number;
+    timeOffset: number;
     leadersList: User[];
     referralsList: User[];
     wallet: string;
@@ -47,6 +48,7 @@ type Action = {
     setCalmUntil: (calmUntil: number) => void;
     setSessionUntil: (sessionUntil: number) => void;
     setSessionStart: (sessionStart: number) => void;
+    setTimeOffset: (timeOffset: number) => void;
     setLeadersList: (leadersList: User[]) => void;
     setReferralsList: (referralsList: User[]) => void;
     setMultiplier: (multiplier: number) => void;
@@ -68,6 +70,7 @@ const useGameStore = create<State & Action>()(
             calmUntil: 0,
             sessionUntil: 0,
             sessionStart: 0,
+            timeOffset: typeof window !== 'undefined' && Number(localStorage.getItem('timeOffset')) || 0,
             leadersList: [],
             referralsList: [],
             wallet: '',
@@ -83,6 +86,10 @@ const useGameStore = create<State & Action>()(
             setCalmUntil: (calmUntil: number) => set({calmUntil: calmUntil}),
             setSessionUntil: (sessionUntil: number) => set({sessionUntil: sessionUntil}),
             setSessionStart: (sessionStart: number) => set({sessionStart: sessionStart}),
+            setTimeOffset: (timeOffset: number) => {
+                set({timeOffset: timeOffset})
+                localStorage.setItem('timeOffset', String(timeOffset));
+            },
             setLeadersList: (leadersList: User[]) => set({leadersList: leadersList}),
             setReferralsList: (referralsList: User[]) => set({referralsList: referralsList}),
             setMultiplier: (daysInRaw: number) => {

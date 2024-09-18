@@ -35,8 +35,8 @@ const TapButton: FC = () => {
         sessionLeft,
         setSessionLeft, sessionUntil,
         setSessionUntil,
-        sessionStart,
         setSessionStart,
+        setCalmUntil,
         isVibrationOn,
         level,
     } = useGameStore((state) => ({
@@ -46,8 +46,8 @@ const TapButton: FC = () => {
         setSessionLeft: state.setSessionLeft,
         sessionUntil: state.sessionUntil,
         setSessionUntil: state.setSessionUntil,
-        sessionStart: state.sessionStart,
         setSessionStart: state.setSessionStart,
+        setCalmUntil: state.setCalmUntil,
         isVibrationOn: state.isVibrationOn,
         level: state.level,
     }));
@@ -131,16 +131,10 @@ const TapButton: FC = () => {
         console.log(`[LOG]: Parse user from sendTaps data`, userInfoFromTap);
 
         setTotalPoints(parseFloat(userInfoFromTap.points.toFixed(1)));
-
         setSessionLeft(userInfoFromTap.session_left);
-        console.log(`[LOG]: Setting sessionLeft`, userInfoFromTap.session_left);
-
-        if (sessionStart) return;
-
         setSessionStart(userInfoFromTap.session_start);
         setSessionUntil(userInfoFromTap.session_until);
-        console.log(`[LOG]: Setting sessionStart`, userInfoFromTap.session_start);
-        console.log(`[LOG]: Setting sessionUntil`, userInfoFromTap.session_until);
+        setCalmUntil(userInfoFromTap.calm_until);
     }, [lastMessage]);
 
     useEffect(() => {

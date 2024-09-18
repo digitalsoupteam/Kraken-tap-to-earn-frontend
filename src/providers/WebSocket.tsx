@@ -33,6 +33,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setTotalPoints,
         setSessionLeft,
         setCalmUntil,
+        setSessionStart,
         setSessionUntil,
         setUserName,
         telegramInitData,
@@ -40,12 +41,14 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setWallet,
         levelsGates: levelsGates,
         setLevel,
+        setTimeOffset,
     } = useGameStore((state) => ({
         userId: state.userId,
         setUserId: state.setUserId,
         setTotalPoints: state.setTotalPoints,
         setSessionLeft: state.setSessionLeft,
         setCalmUntil: state.setCalmUntil,
+        setSessionStart: state.setSessionStart,
         setSessionUntil: state.setSessionUntil,
         setUserName: state.setUserName,
         telegramInitData: state.telegramInitData,
@@ -53,6 +56,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setWallet: state.setWallet,
         levelsGates: state.levelsGates,
         setLevel: state.setLevel,
+        setTimeOffset: state.setTimeOffset,
     }));
 
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
@@ -155,9 +159,11 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setSessionLeft(userInfo.session_left);
         setCalmUntil(userInfo.calm_until);
         setSessionUntil(userInfo.session_until);
+        setSessionStart(userInfo.session_start);
         setUserName(userInfo.nickname);
         setMultiplier(userInfo.days_in_row);
         setWallet(userInfo.wallet);
+        !userInfo.session_until && setTimeOffset(Math.floor(Date.now() / 1000) - userInfo.session_start);
     }, [lastMessage]);
 
     return <>{children}</>;

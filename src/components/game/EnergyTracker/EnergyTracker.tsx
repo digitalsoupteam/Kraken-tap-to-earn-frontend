@@ -11,132 +11,163 @@ import {useGameStore} from "@/components/game";
 import useWebSocketStore from "@/stores/useWebSocketStore";
 
 const EnergyTracker: FC = () => {
-    const [calmTime, setCalmTime] = useState('00:00');
-    const [sessionTime, setSessionTime] = useState('00:00');
-    const [isEnergyFull, setIsEnergyFull] = useState(false);
-    const [isSessionStart, setIsSessionStart] = useState(false);
-    const [energy, setEnergy] = useState(100);
+        const {
+            calmUntil,
+            sessionUntil,
+            sessionStart,
+            sessionLeft,
+            timeOffset,
+            setTimeOffset,
+            setCalmUntil,
+        } = useGameStore((state) => ({
+            calmUntil: state.calmUntil,
+            sessionUntil: state.sessionUntil,
+            sessionStart: state.sessionStart,
+            sessionLeft: state.sessionLeft,
+            timeOffset: state.timeOffset,
+            setTimeOffset: state.setTimeOffset,
+            setCalmUntil: state.setCalmUntil,
+        }));
 
-    const {
-        calmUntil,
-        sessionUntil,
-        sessionStart,
-    } = useGameStore((state) => ({
-        calmUntil: state.calmUntil,
-        sessionUntil: state.sessionUntil,
-        sessionStart: state.sessionStart,
-    }));
+        const {
+            getUser,
+            lastMessage
+        } = useWebSocketStore((state) => ({
+            getUser: state.getUser,
+            lastMessage: state.lastMessage,
+        }));
 
-    const padWithZero = (number: number): string => {
-        return number < 10 ? `0${number}` : number.toString();
-    }
+        const [calmTime, setCalmTime] = useState('00:00');
+        const [sessionTime, setSessionTime] = useState('00:00');
+        const [isEnergyFull, setIsEnergyFull] = useState(false);
+        const [isSessionActive, setIsSessionActive] = useState(false);
+        const [energy, setEnergy] = useState(100);
+        const [currentTime, setCurrentTime] = useState(0);
 
-    useEffect(() => {
-        if (!calmUntil) {
-            setIsEnergyFull(true);
-            return;
+        const padWithZero = (number: number): string => {
+            return number < 10 ? `0${number}` : number.toString();
         }
 
-        setIsEnergyFull(false);
+        // sessionLeft - contains data of the previous tap. If used for timer, an extra tap will be available
+        // sessionStart - always not equal to 0
+        // sessionUntil - not reset before recovery
+        // calmUntil - reset after recovery
 
-        const currentTimestamp = sessionUntil;
-        const duration = calmUntil - currentTimestamp;
-        const initialTimestamp = currentTimestamp;
+        // Current time
+        useEffect(() => {
+            const timer = setInterval(() => {
+                setCurrentTime(Math.floor(Date.now() / 1000) + timeOffset);
+            }, 1000);
 
-        const timer = setInterval(() => {
-            const currentTime = Math.floor(Date.now() / 1000);
+            return () => clearInterval(timer);
+        }, [timeOffset]);
+
+        // Time offset update
+        useEffect(() => {
+            const currentTimestamp = Math.floor(Date.now() / 1000);
+            const currentTimeOffset = sessionLeft === 120 ? sessionStart - currentTimestamp : Number(localStorage.getItem('timeOffset'));
+
+            timeOffset !== currentTimeOffset && setTimeOffset(currentTimeOffset);
+        }, [sessionLeft, sessionStart]);
+
+        // Session active update
+        useEffect(() => {
+            setIsSessionActive(currentTime < sessionUntil);
+        }, [currentTime, sessionUntil]);
+
+        useEffect(() => {
+            getUser();
+        }, [isSessionActive]);
+
+        // Energy full update
+        useEffect(() => {
+            setIsEnergyFull(energy === 100);
+        }, [energy]);
+
+        // Active session action
+        useEffect(() => {
+            if (!isSessionActive) return;
+
+            const totalDuration = sessionUntil - sessionStart;
+
+            if (currentTime >= sessionUntil) {
+                setEnergy(0);
+                return;
+            }
+
+            const remainingTime = sessionUntil - currentTime;
+            const minutes = padWithZero(Math.floor(remainingTime / 60));
+            const seconds = padWithZero(remainingTime % 60);
+            const remainingEnergy = (remainingTime / totalDuration) * 100;
+
+            setSessionTime(`${minutes}:${seconds}`);
+            setEnergy(remainingEnergy);
+
+        }, [sessionUntil, sessionStart, currentTime, isSessionActive]);
+
+        // Restore energy action
+        useEffect(() => {
+            if (isSessionActive) return;
+
+            const totalDuration = calmUntil - sessionUntil;
 
             if (currentTime >= calmUntil) {
-                clearInterval(timer);
-                setIsEnergyFull(true);
-                setEnergy(100); // Устанавливаем энергию на 100, когда таймер заканчивается
+                setEnergy(100);
                 return;
             }
 
             const timeDifference = calmUntil - currentTime;
             const minutes = padWithZero(Math.floor(timeDifference / 60));
             const seconds = padWithZero(timeDifference % 60);
+            const currentEnergy = (timeDifference / totalDuration) * 100;
 
             setCalmTime(`${minutes}:${seconds}`);
+            setEnergy(currentEnergy);
 
-            const elapsedTime = currentTime - initialTimestamp;
-            const currentEnergy = (elapsedTime / duration) * 100;
+        }, [calmUntil, currentTime, isSessionActive]);
 
-            setEnergy(currentEnergy); // Устанавливаем энергию на основе прошедшего времени
-        }, 1000);
+        useEffect(() => {
+            if (!lastMessage) return;
 
-        return () => clearInterval(timer);
-    }, [calmUntil]);
+            const response = JSON.parse(lastMessage);
 
-    useEffect(() => {
-        if (!sessionStart || !sessionUntil) {
-            setIsSessionStart(false);
-            return;
-        }
+            if (response.id !== 1000) return;
 
-        setIsEnergyFull(false);
-        setIsSessionStart(true);
+            setCalmUntil(response.result[0].calm_until);
+        }, [lastMessage]);
 
-        const duration = sessionUntil - sessionStart;
-        const currentTimestamp = Math.floor(Date.now() / 1000);
-        const targetTimestamp = currentTimestamp + duration;
-
-        const timer = setInterval(() => {
-            const currentTime = Math.floor(Date.now() / 1000);
-
-            if (currentTime >= targetTimestamp) {
-                setIsSessionStart(false);
-                setEnergy(0);
-                clearInterval(timer);
-                return;
-            }
-
-            const timeDifference = targetTimestamp - currentTime;
-            const minutes = padWithZero(Math.floor(timeDifference / 60));
-            const seconds = padWithZero(timeDifference % 60);
-
-            setSessionTime(`${minutes}:${seconds}`);
-
-            const elapsed = duration - timeDifference;
-            const remainingEnergy = (timeDifference / duration) * 100;
-
-            setEnergy(remainingEnergy);
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [sessionStart, sessionUntil]);
-
-    return <div className={styles.root}>
-        <div className={styles.inner}>
-            <div className={styles.tentacles}>
-                <div
-                    className={clsx(styles.tentaclesItem, styles.tentaclesLeft, isEnergyFull && styles.tentaclesItemShow)}>
-                    <Image src={'/images/tentacles-1.png'} width={'74'} height={'33'} alt={'kraken tentacles'}/>
+        return <div className={styles.root}>
+            <div className={styles.inner}>
+                <div className={styles.tentacles}>
+                    <div
+                        className={clsx(styles.tentaclesItem, styles.tentaclesLeft, isEnergyFull && styles.tentaclesItemShow)}>
+                        <Image src={'/images/tentacles-1.png'} width={'74'} height={'33'} alt={'kraken tentacles'}/>
+                    </div>
+                    <div
+                        className={clsx(styles.tentaclesItem, styles.tentaclesRight, isEnergyFull && styles.tentaclesItemShow)}>
+                        <Image src={'/images/tentacles-2.png'} width={'76'} height={'73'} alt={'kraken tentacles'}/>
+                    </div>
                 </div>
-                <div
-                    className={clsx(styles.tentaclesItem, styles.tentaclesRight, isEnergyFull && styles.tentaclesItemShow)}>
-                    <Image src={'/images/tentacles-2.png'} width={'76'} height={'73'} alt={'kraken tentacles'}/>
-                </div>
-            </div>
 
-            <div className={clsx(styles.time, !isSessionStart && isEnergyFull && styles.timeCentered)}>
+                <div className={clsx(styles.time, !isSessionActive && isEnergyFull && styles.timeCentered)}>
                 <span className={styles.energy}>
                     <EnergyIcon/>
                     2 min
                 </span>
 
-                {!isEnergyFull && !isSessionStart && <span>full restore: {calmTime}</span>}
+                    {!isEnergyFull && !isSessionActive && <span>full restore: {calmTime}</span>}
 
-                {isSessionStart && <span>Time remaining: {sessionTime}</span>}
-            </div>
+                    {isSessionActive && <span>Time remaining: {sessionTime}</span>}
+                </div>
 
-            <div className={styles.tracker}>
-                <div className={styles.bar}>
-                    <div className={styles.progress} style={{width: `${energy}%`}}/>
+                <div className={styles.tracker}>
+                    <div className={styles.bar}>
+                        <div className={styles.progress} style={{width: `${energy}%`}}/>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-};
+    }
+;
 
 export default EnergyTracker;
