@@ -27,8 +27,9 @@ const LeaderboardList: FC = () => {
     }));
 
     useEffect(() => {
+        console.log('req');
         getTopUsers();
-    }, []);
+    }, [getTopUsers]);
 
     useEffect(() => {
         if (!lastMessage) return;
