@@ -83,7 +83,7 @@ const useWebSocketStore = create<State & Action>()(
                 id: 3000,
                 method: 'getTopUsers',
                 params: {
-                    limit: 15,
+                    limit: 100,
                 }
             };
 
