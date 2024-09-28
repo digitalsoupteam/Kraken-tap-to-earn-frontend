@@ -30,16 +30,14 @@ const LeaderboardList: FC = () => {
 
     useEffect(() => {
         if (readyState !== 1) return;
-        console.log(readyState);
+
         getTopUsers();
     }, [getTopUsers, readyState]);
 
     useEffect(() => {
-        console.log('lm', lastMessage);
         if (!lastMessage) return;
 
         const response = JSON.parse(lastMessage);
-        console.log('response', response);
 
         if (response.id !== 3000) return;
         console.log(`[LOG]: Receive top users data`, response.result);

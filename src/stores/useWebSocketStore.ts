@@ -87,7 +87,6 @@ const useWebSocketStore = create<State & Action>()(
             };
 
             const sendMessage = get().sendMessage;
-            console.log('sm', sendMessage)
             sendMessage(JSON.stringify(message));
         },
         getTopReferrals: () => {
