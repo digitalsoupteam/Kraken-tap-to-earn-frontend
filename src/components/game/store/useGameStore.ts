@@ -31,6 +31,7 @@ type State = {
     sessionStart: number;
     timeOffset: number;
     leadersList: User[];
+    leaderboardPosition: number;
     referralsList: User[];
     wallet: string;
     isVibrationOn: boolean;
@@ -50,6 +51,7 @@ type Action = {
     setSessionStart: (sessionStart: number) => void;
     setTimeOffset: (timeOffset: number) => void;
     setLeadersList: (leadersList: User[]) => void;
+    setLeaderboardPosition: (position: number) => void;
     setReferralsList: (referralsList: User[]) => void;
     setMultiplier: (multiplier: number) => void;
     setWallet: (wallet: string) => void;
@@ -72,6 +74,7 @@ const useGameStore = create<State & Action>()(
             sessionStart: 0,
             timeOffset: typeof window !== 'undefined' && Number(localStorage.getItem('timeOffset')) || 0,
             leadersList: [],
+            leaderboardPosition: 0,
             referralsList: [],
             wallet: '',
             isVibrationOn: typeof window !== 'undefined' && localStorage.getItem('vibration') ? localStorage.getItem('vibration') === 'on' : true,
@@ -91,6 +94,7 @@ const useGameStore = create<State & Action>()(
                 localStorage.setItem('timeOffset', String(timeOffset));
             },
             setLeadersList: (leadersList: User[]) => set({leadersList: leadersList}),
+            setLeaderboardPosition: (position: number) => set({leaderboardPosition: position}),
             setReferralsList: (referralsList: User[]) => set({referralsList: referralsList}),
             setMultiplier: (daysInRaw: number) => {
                 const baseMultiplier: number = 1;

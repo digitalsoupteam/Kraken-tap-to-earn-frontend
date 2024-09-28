@@ -42,6 +42,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         levelsGates: levelsGates,
         setLevel,
         setTimeOffset,
+        setLeaderboardPosition,
     } = useGameStore((state) => ({
         userId: state.userId,
         setUserId: state.setUserId,
@@ -57,6 +58,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         levelsGates: state.levelsGates,
         setLevel: state.setLevel,
         setTimeOffset: state.setTimeOffset,
+        setLeaderboardPosition: state.setLeaderboardPosition,
     }));
 
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
@@ -164,6 +166,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setMultiplier(userInfo.days_in_row);
         setWallet(userInfo.wallet);
         !userInfo.session_until && setTimeOffset(Math.floor(Date.now() / 1000) - userInfo.session_start);
+        setLeaderboardPosition(userInfo.position);
     }, [lastMessage]);
 
     return <>{children}</>;

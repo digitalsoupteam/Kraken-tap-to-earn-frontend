@@ -3,12 +3,14 @@
     background-color: var(--primary);
     padding: 8px 14px;
     display: grid;
-    grid-template-columns: 40px 1fr max-content;
+    grid-template-columns: min-content 40px 1fr max-content;
     align-items: center;
     gap: 8px;
     max-width: 600px;
     margin: 0 auto;
 }
+
+
 
 .info {
     font-size: 14px;
