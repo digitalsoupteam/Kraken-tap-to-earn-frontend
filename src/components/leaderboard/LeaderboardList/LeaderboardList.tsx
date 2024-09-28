@@ -11,9 +11,11 @@ import styles from './LeaderboardList.module.css';
 
 const LeaderboardList: FC = () => {
     const {
+        readyState,
         getTopUsers,
         lastMessage,
     } = useWebSocketStore((state) => ({
+        readyState: state.readyState,
         getTopUsers: state.getTopUsers,
         lastMessage: state.lastMessage,
     }));
@@ -27,9 +29,10 @@ const LeaderboardList: FC = () => {
     }));
 
     useEffect(() => {
+        if (readyState !== 1) return;
+        console.log(readyState);
         getTopUsers();
-        console.log('req');
-    }, [getTopUsers]);
+    }, [getTopUsers, readyState]);
 
     useEffect(() => {
         console.log('lm', lastMessage);

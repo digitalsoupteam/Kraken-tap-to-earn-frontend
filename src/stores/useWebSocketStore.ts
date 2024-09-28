@@ -50,8 +50,7 @@ const useWebSocketStore = create<State & Action>()(
         connectionStatus: 'Disconnected',
         readyState: ReadyState.CLOSED,
         jwt: getLocalJwt(),
-        sendMessage: () => {
-        },
+        sendMessage: () => {},
         setLastMessage: (message) => set({lastMessage: message}),
         setMessages: (messages) => set({messages}),
         setReadyState: (state) =>
