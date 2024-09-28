@@ -97,7 +97,7 @@ const useWebSocketStore = create<State & Action>()(
                 id: 4000,
                 method: 'getTopReferrals',
                 params: {
-                    limit: 15,
+                    limit: 100,
                 }
             };
 
