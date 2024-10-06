@@ -61,7 +61,7 @@ const useWebSocketStore = create<State & Action>()(
             }),
         setSendMessage: (sendMessage) => set({sendMessage}),
         getJwt: async  (initData: string) => {
-            const url = initData ? 'https://game.releasethekraken.io/backend/api/telegram_sessiom' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
+            const url = initData ? 'https://game.releasethekraken.io/backend/api/telegram_sessiom' : 'https://game.releasethekraken.io/backend/api/anonymous_sessio';
             const referrerId = initData && new URLSearchParams(initData).get('start_param');
 
             const maxRetries = 10;
@@ -101,6 +101,7 @@ const useWebSocketStore = create<State & Action>()(
                             clearInterval(interval);
                             console.error('All attempts to fetch JWT failed.');
                             reject(new Error('All attempts to fetch JWT failed.'));
+                            alert('Connection error. Please try again later');
                         }
                     }
                 }, 1000);
