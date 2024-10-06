@@ -24,6 +24,7 @@ type Action = {
     setMessages: (messages: string[]) => void;
     setReadyState: (state: ReadyState) => void;
     setSendMessage: (sendMessage: (message: string) => void) => void;
+    getJwt: (initData: string) => void;
     setJwt: (jwt: string) => void;
     getUser: () => void;
     getTopUsers: () => void;
@@ -59,6 +60,52 @@ const useWebSocketStore = create<State & Action>()(
                 connectionStatus: connectionStatuses[state],
             }),
         setSendMessage: (sendMessage) => set({sendMessage}),
+        getJwt: async  (initData: string) => {
+            const url = initData ? 'https://game.releasethekraken.io/backend/api/telegram_sessiom' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
+            const referrerId = initData && new URLSearchParams(initData).get('start_param');
+
+            const maxRetries = 10;
+            let attempts = 0;
+
+            return new Promise((resolve, reject) => {
+                const interval = setInterval(async () => {
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                ...(referrerId && { referrer_id: referrerId }),
+                                ...(initData && { initData: initData }),
+                            }),
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const data = await response.json();
+                        const jwtToken = data.jwt;
+
+                        if (jwtToken) {
+                            get().setJwt(jwtToken);
+                            clearInterval(interval);
+                            resolve(jwtToken);
+                        }
+                    } catch (error) {
+                        console.error('Attempt:', attempts + 1, 'Error:', error);
+                        attempts++;
+
+                        if (attempts >= maxRetries) {
+                            clearInterval(interval);
+                            console.error('All attempts to fetch JWT failed.');
+                            reject(new Error('All attempts to fetch JWT failed.'));
+                        }
+                    }
+                }, 1000);
+            });
+        },
         setJwt: (jwt) => {
             if (typeof window !== 'undefined') {
                 localStorage.setItem('jwt', jwt);

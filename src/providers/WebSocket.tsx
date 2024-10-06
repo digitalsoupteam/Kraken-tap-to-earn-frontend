@@ -12,10 +12,9 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setMessages,
         getUser,
         setReadyState,
-        connectionStatus,
         setLastMessage,
         jwt,
-        setJwt,
+        getJwt,
     } = useWebSocketStore((state) => ({
         setSendMessage: state.setSendMessage,
         setMessages: state.setMessages,
@@ -24,7 +23,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         connectionStatus: state.connectionStatus,
         setLastMessage: state.setLastMessage,
         jwt: state.jwt,
-        setJwt: state.setJwt,
+        getJwt: state.getJwt,
     }));
 
     const {
@@ -63,38 +62,6 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
 
-    const getJWT = async () => {
-        const nativeInitData = typeof window !== 'undefined' && WebApp.initData;
-        const url = nativeInitData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
-        const referrerId = nativeInitData && new URLSearchParams(nativeInitData).get('start_param');
-
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ...(referrerId && {referrer_id: referrerId}),
-                    ...(nativeInitData && {initData: nativeInitData}),
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const jwtToken = data.jwt;
-
-            jwtToken && setJwt(jwtToken);
-
-            return jwtToken;
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL, {
         onError: (error) => {
             console.error('WebSocket error: ', error);
@@ -114,7 +81,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         if (jwt || telegramInitData) return;
 
-        getJWT();
+        getJwt(typeof window !== 'undefined' && WebApp.initData || '');
     }, [telegramInitData, jwt]);
 
     useEffect(() => {
@@ -130,10 +97,6 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     }, [readyState]);
 
     useEffect(() => {
-        console.log('[LOG]: WS status: ', connectionStatus);
-    }, [connectionStatus]);
-
-    useEffect(() => {
         if (!lastMessage) return;
 
         setLastMessage(lastMessage?.data);
@@ -146,7 +109,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         console.log(`[LOG]: Receive getUser data`, response);
 
         if (!response.result[0]) {
-            getJWT();
+            getJwt(typeof window !== 'undefined' && WebApp.initData || '');
             console.log(`[LOG]: JWT was updated`);
             return;
         }
