@@ -133,7 +133,7 @@ const EnergyTracker: FC = () => {
 
             if (response.id !== 1000) return;
 
-            setCalmUntil(response.result.calm_until);
+            setCalmUntil(response.result.calmUntil);
         }, [lastMessage]);
 
         return <div className={styles.root}>
