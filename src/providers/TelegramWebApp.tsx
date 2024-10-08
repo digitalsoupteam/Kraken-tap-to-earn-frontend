@@ -6,11 +6,9 @@ import {useGameStore} from "@/components/game";
 
 const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
     const {
-        telegramInitData,
         setTelegramInitData,
         setUserPhoto,
     } = useGameStore((state) => ({
-        telegramInitData: state.telegramInitData,
         setTelegramInitData: state.setTelegramInitData,
         setUserPhoto: state.setUserPhoto,
     }));
@@ -23,12 +21,12 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
 
             setTelegramInitData(WebApp.initData);
 
-            const params = new URLSearchParams(telegramInitData || '');
+            const params = new URLSearchParams(WebApp.initData || '');
             const userPhotoUrl = params.get('photo_url');
 
             userPhotoUrl && setUserPhoto(userPhotoUrl);
         }
-    }, [WebApp]);
+    }, []);
 
     return <>
         {children}
