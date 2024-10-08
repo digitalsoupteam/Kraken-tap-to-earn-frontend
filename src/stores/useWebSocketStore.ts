@@ -61,50 +61,81 @@ const useWebSocketStore = create<State & Action>()(
             }),
         setSendMessage: (sendMessage) => set({sendMessage}),
         getJwt: async  (initData: string) => {
+            console.log('[LOG]: GetJwt call');
             const url = initData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
             const referrerId = initData && new URLSearchParams(initData).get('start_param');
 
             const maxRetries = 10;
             let attempts = 0;
 
+            const fetchJwt = async () => {
+                try {
+                    console.log(`[LOG]: Connection attempt #${attempts}`);
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            ...(referrerId && { referrer_id: referrerId }),
+                            ...(initData && { initData: initData }),
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    const jwtToken = data.jwt;
+
+                    if (jwtToken) {
+                        get().setJwt(jwtToken);
+                        return jwtToken;
+                    } else {
+                        throw new Error('No JWT token received');
+                    }
+                } catch (error) {
+                    console.error('Attempt:', attempts + 1, 'Error:', error);
+                    attempts++;
+                    if (attempts < maxRetries) {
+                        return null;
+                    } else {
+                        throw new Error('All attempts to fetch JWT failed.');
+                    }
+                }
+            };
+
             return new Promise((resolve, reject) => {
-                const interval = setInterval(async () => {
+                const attemptFetch = async () => {
                     try {
-                        const response = await fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                ...(referrerId && { referrer_id: referrerId }),
-                                ...(initData && { initData: initData }),
-                            }),
-                        });
-
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-
-                        const data = await response.json();
-                        const jwtToken = data.jwt;
-
+                        const jwtToken = await fetchJwt();
                         if (jwtToken) {
-                            get().setJwt(jwtToken);
-                            clearInterval(interval);
                             resolve(jwtToken);
+                        } else {
+                            const interval = setInterval(async () => {
+                                try {
+                                    const retryJwtToken = await fetchJwt();
+                                    if (retryJwtToken) {
+                                        clearInterval(interval);
+                                        resolve(retryJwtToken);
+                                    }
+                                } catch (error) {
+                                    if (attempts >= maxRetries) {
+                                        clearInterval(interval);
+                                        console.error('All attempts to fetch JWT failed.');
+                                        reject(new Error('All attempts to fetch JWT failed.'));
+                                        alert('Connection error. Please try again later');
+                                    }
+                                }
+                            }, 5000);
                         }
                     } catch (error) {
-                        console.error('Attempt:', attempts + 1, 'Error:', error);
-                        attempts++;
-
-                        if (attempts >= maxRetries) {
-                            clearInterval(interval);
-                            console.error('All attempts to fetch JWT failed.');
-                            reject(new Error('All attempts to fetch JWT failed.'));
-                            alert('Connection error. Please try again later');
-                        }
+                        reject(error);
                     }
-                }, 5000);
+                };
+
+                attemptFetch();
             });
         },
         setJwt: (jwt) => {

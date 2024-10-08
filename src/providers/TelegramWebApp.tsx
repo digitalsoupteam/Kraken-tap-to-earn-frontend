@@ -15,25 +15,12 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
         setUserPhoto: state.setUserPhoto,
     }));
 
-    const nativeInitData = typeof window !== 'undefined' ? WebApp.initData : null;
-
     useEffect(() => {
         if (typeof window !== 'undefined') {
             WebApp.ready();
             WebApp.expand();
             WebApp.disableVerticalSwipes();
 
-            const logData = {
-                platform: WebApp.platform,
-                initData: WebApp.initData,
-                storedInitData: telegramInitData,
-            };
-            console.log('[LOG]: Initial data: ', logData);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined' && nativeInitData) {
             setTelegramInitData(WebApp.initData);
 
             const params = new URLSearchParams(telegramInitData || '');
@@ -41,7 +28,7 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
 
             userPhotoUrl && setUserPhoto(userPhotoUrl);
         }
-    }, [nativeInitData]);
+    }, [WebApp]);
 
     return <>
         {children}
