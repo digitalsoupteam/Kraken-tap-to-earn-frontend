@@ -77,9 +77,9 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     });
 
     useEffect(() => {
-        if (typeof telegramInitData === null) return;
+        if (telegramInitData === null) return;
 
-        if (jwt || telegramInitData) return;
+        if (jwt) return;
 
         getJwt(typeof window !== 'undefined' && WebApp.initData || '');
     }, [telegramInitData, jwt]);
