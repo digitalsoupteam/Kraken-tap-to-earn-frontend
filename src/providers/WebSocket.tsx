@@ -108,27 +108,27 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         if (response.id !== 1000) return;
         console.log(`[LOG]: Receive getUser data`, response);
 
-        if (!response.result[0]) {
+        if (!response.result) {
             getJwt(typeof window !== 'undefined' && WebApp.initData || '');
             console.log(`[LOG]: JWT was updated`);
             return;
         }
 
-        const userInfo = response.result[0];
+        const userInfo = response.result;
         const totalPoints = userInfo.points.toFixed(1);
         const level = levelsGates.findLastIndex((item) => totalPoints >= item);
 
         setUserId(userInfo.user_id);
         setTotalPoints(totalPoints);
         setLevel(level);
-        setSessionLeft(userInfo.session_left);
-        setCalmUntil(userInfo.calm_until);
-        setSessionUntil(userInfo.session_until);
-        setSessionStart(userInfo.session_start);
+        setSessionLeft(userInfo.sessionLeft);
+        setCalmUntil(userInfo.calmUntil);
+        setSessionUntil(userInfo.sessionUntil);
+        setSessionStart(userInfo.sessionStart);
         setUserName(userInfo.nickname);
-        setMultiplier(userInfo.days_in_row);
+        setMultiplier(userInfo.daysInRow);
         setWallet(userInfo.wallet);
-        !userInfo.session_until && setTimeOffset(Math.floor(Date.now() / 1000) - userInfo.session_start);
+        !userInfo.sessionUntil && setTimeOffset(Math.floor(Date.now() / 1000) - userInfo.sessionStart);
         setLeaderboardPosition(userInfo.position);
     }, [lastMessage]);
 

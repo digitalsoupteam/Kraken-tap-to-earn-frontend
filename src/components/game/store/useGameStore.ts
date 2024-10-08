@@ -8,14 +8,14 @@ interface User {
     id: number,
     nickname: string,
     session_taps: number,
-    is_blocked: boolean,
-    session_taps_left: number,
+    isBlocked: boolean,
+    sessionTapsLeft: number,
     calm_left: number,
     points: number;
     taps: number,
-    calm_until: number,
-    session_start: number,
-    session_until: number,
+    calmUntil: number,
+    sessionStart: number,
+    sessionUntil: number,
 }
 
 type State = {

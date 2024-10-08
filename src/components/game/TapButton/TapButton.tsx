@@ -131,10 +131,10 @@ const TapButton: FC = () => {
         console.log(`[LOG]: Parse user from sendTaps data`, userInfoFromTap);
 
         setTotalPoints(parseFloat(userInfoFromTap.points.toFixed(1)));
-        setSessionLeft(userInfoFromTap.session_left);
-        setSessionStart(userInfoFromTap.session_start);
-        setSessionUntil(userInfoFromTap.session_until);
-        setCalmUntil(userInfoFromTap.calm_until);
+        setSessionLeft(userInfoFromTap.sessionLeft);
+        setSessionStart(userInfoFromTap.sessionStart);
+        setSessionUntil(userInfoFromTap.sessionUntil);
+        setCalmUntil(userInfoFromTap.calmUntil);
     }, [lastMessage]);
 
     useEffect(() => {
