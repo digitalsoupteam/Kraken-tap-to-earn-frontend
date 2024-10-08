@@ -104,7 +104,7 @@ const useWebSocketStore = create<State & Action>()(
                             alert('Connection error. Please try again later');
                         }
                     }
-                }, 1000);
+                }, 5000);
             });
         },
         setJwt: (jwt) => {
