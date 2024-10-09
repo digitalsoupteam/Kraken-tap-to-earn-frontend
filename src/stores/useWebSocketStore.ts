@@ -185,9 +185,10 @@ const useWebSocketStore = create<State & Action>()(
         updateProfile: (
             data
         ) => {
+            console.log(data);
             const message = {
                 jsonrpc: '2.0',
-                id: 5000,
+                id: data.wallet ? 5001 : 5000,
                 method: 'updateProfile',
                 params: {
                     ...(data.nickname && {nickname: data.nickname}),

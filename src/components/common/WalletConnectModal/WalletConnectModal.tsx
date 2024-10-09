@@ -47,8 +47,8 @@ const WalletConnectModal: FC = () => {
         if (!lastMessage) return;
 
         const response = JSON.parse(lastMessage);
-
-        if (response.id !== 5000) return;
+        if (response.id !== 5001) return;
+        console.log('wres', response);
         if (!response.result.wallet) return;
 
         setWallet(response.result.wallet);
