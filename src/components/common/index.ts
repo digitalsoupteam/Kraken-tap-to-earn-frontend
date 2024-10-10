@@ -7,5 +7,6 @@ import Points from "./Points/Points";
 import Modal from './Modal/Modal';
 import WalletConnectButton from "./WalletConnectButton/WalletConnectButton";
 import WalletConnectModal from "./WalletConnectModal/WalletConnectModal";
+import Loader from "./Loader/Loader";
 
-export {PageHeading, BottomBar, UserImage, CopyButton, UserItem, Points, Modal, WalletConnectButton, WalletConnectModal}
+export {PageHeading, BottomBar, UserImage, CopyButton, UserItem, Points, Modal, WalletConnectButton, WalletConnectModal, Loader}

@@ -1,6 +1,8 @@
 'use client';
+
 import React, {FC, useEffect} from 'react';
 
+import {Loader} from '@/components/common';
 import {GameContainer} from "@/components/game";
 
 const Home: FC = () =>  {
@@ -13,7 +15,10 @@ const Home: FC = () =>  {
     }, []);
 
     return (
-        <GameContainer/>
+        <>
+            <Loader />
+            <GameContainer/>
+        </>
     );
 }
 

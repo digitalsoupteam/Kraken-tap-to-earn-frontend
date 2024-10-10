@@ -15,6 +15,7 @@ type State = {
     lastMessage: string | null;
     connectionStatus: string;
     readyState: ReadyState;
+    connectionDelay: number;
     jwt: string;
 }
 
@@ -24,6 +25,7 @@ type Action = {
     setMessages: (messages: string[]) => void;
     setReadyState: (state: ReadyState) => void;
     setSendMessage: (sendMessage: (message: string) => void) => void;
+    setConnectionDelay: (delay: number) => void;
     getJwt: (initData: string) => void;
     setJwt: (jwt: string) => void;
     getUser: () => void;
@@ -50,6 +52,7 @@ const useWebSocketStore = create<State & Action>()(
         lastMessage: null,
         connectionStatus: 'Disconnected',
         readyState: ReadyState.CLOSED,
+        connectionDelay: 0,
         jwt: getLocalJwt(),
         sendMessage: () => {},
         setLastMessage: (message) => set({lastMessage: message}),
@@ -60,6 +63,7 @@ const useWebSocketStore = create<State & Action>()(
                 connectionStatus: connectionStatuses[state],
             }),
         setSendMessage: (sendMessage) => set({sendMessage}),
+        setConnectionDelay: (delay: number) => set({connectionDelay: delay}),
         getJwt: async  (initData: string) => {
             console.log('[LOG]: GetJwt call');
             const url = initData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';

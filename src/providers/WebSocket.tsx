@@ -1,10 +1,12 @@
 'use client';
 
-import React, {FC, useEffect, PropsWithChildren} from 'react';
+import React, {FC, useEffect, useState, PropsWithChildren} from 'react';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import useWebSocketStore from "@/stores/useWebSocketStore";
 import {useGameStore} from "@/components/game";
 import WebApp from "@twa-dev/sdk";
+
+import {getRandomValue} from "@/utils";
 
 const WebSocket: FC<PropsWithChildren> = ({children}) => {
     const {
@@ -14,6 +16,8 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setReadyState,
         setLastMessage,
         jwt,
+        connectionDelay,
+        setConnectionDelay,
         getJwt,
     } = useWebSocketStore((state) => ({
         setSendMessage: state.setSendMessage,
@@ -23,6 +27,8 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         connectionStatus: state.connectionStatus,
         setLastMessage: state.setLastMessage,
         jwt: state.jwt,
+        connectionDelay: state.connectionDelay,
+        setConnectionDelay: state.setConnectionDelay,
         getJwt: state.getJwt,
     }));
 
@@ -60,29 +66,48 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setLeaderboardPosition: state.setLeaderboardPosition,
     }));
 
+    const [shouldConnect, setShouldConnect] = useState(false);
+
+    if (!connectionDelay) setConnectionDelay(getRandomValue(1000, 3000));
+
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
 
-    const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL, {
-        onError: (error) => {
-            console.error('WebSocket error: ', error);
-        },
-        onMessage: (message) => {
-            // @ts-ignore
-            setMessages((prevMessages) => [...prevMessages, message.data]);
-        },
-        shouldReconnect: (closeEvent) => true,
-        queryParams: {
-            jwt: jwt,
+    const { sendMessage, lastMessage, readyState } = useWebSocket(
+        shouldConnect && jwt ? WS_URL : null,
+        {
+            onError: (error) => {
+                console.error('WebSocket error: ', error);
+            },
+            onMessage: (message) => {
+                // @ts-ignore
+                setMessages((prevMessages) => [...prevMessages, message.data]);
+            },
+            shouldReconnect: (closeEvent) => true,
+            queryParams: {
+                jwt: jwt,
+            }
         }
-    });
+    );
 
     useEffect(() => {
         if (telegramInitData === null) return;
 
-        if (jwt) return;
+        if (jwt) {
+            const timer = setTimeout(() => {
+                setShouldConnect(true);
+            }, connectionDelay);
 
-        getJwt(typeof window !== 'undefined' && WebApp.initData || '');
-    }, [telegramInitData, jwt]);
+            return () => clearTimeout(timer);
+        }
+
+        if (!jwt) {
+            const timer = setTimeout(() => {
+                getJwt(typeof window !== 'undefined' && WebApp.initData || '');
+            }, connectionDelay);
+
+            return () => clearTimeout(timer);
+        }
+    }, [telegramInitData, jwt, connectionDelay]);
 
     useEffect(() => {
         setSendMessage(sendMessage);
