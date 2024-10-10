@@ -37,6 +37,7 @@ type State = {
     isVibrationOn: boolean;
     levelsGates: number[];
     level: number;
+    gameIsReady: boolean;
 }
 
 type Action = {
@@ -57,6 +58,7 @@ type Action = {
     setWallet: (wallet: string) => void;
     toggleVibration: () => void;
     setLevel: (level: number) => void;
+    setGameIsReady: (readiness: boolean) => void;
 }
 
 const useGameStore = create<State & Action>()(
@@ -80,6 +82,7 @@ const useGameStore = create<State & Action>()(
             isVibrationOn: typeof window !== 'undefined' && localStorage.getItem('vibration') ? localStorage.getItem('vibration') === 'on' : true,
             levelsGates : [0, 350000, 850000, 1350000],
             level: 0,
+            gameIsReady: false,
             setTelegramInitData: (initData: string) => set({telegramInitData: initData}),
             setUserId: (userId: string) => set({userId: userId}),
             setUserPhoto: (photo: string) => set({userPhoto: photo}),
@@ -111,6 +114,7 @@ const useGameStore = create<State & Action>()(
                 }
             },
             setLevel: (level: number) => set({level: level}),
+            setGameIsReady: (readiness: boolean) => set({gameIsReady: readiness})
         })
     )
 );
