@@ -109,6 +109,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         }
 
         if (jwt) {
+            alert('jwt upd');
             const timer = setTimeout(() => {
                 setShouldConnect(true);
             }, connectionDelay);
