@@ -70,6 +70,10 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
     if (!connectionDelay) setConnectionDelay(getRandomValue(1000, 3000));
 
+    const params = new URLSearchParams(typeof window !== 'undefined' && WebApp.initData || '');
+    const userData = params.get('user');
+    const tgUserId =  JSON.parse(decodeURIComponent(userData || "{}"))?.id;
+
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://game.releasethekraken.io/backend/ws';
 
     const { sendMessage, lastMessage, readyState } = useWebSocket(
@@ -100,7 +104,9 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
             return () => clearTimeout(timer);
         }
 
-        if (!jwt) {
+        const localTgId = typeof window !== 'undefined' && localStorage.getItem('tgUserId');
+
+        if (!jwt || localTgId === tgUserId) {
             const timer = setTimeout(() => {
                 getJwt(typeof window !== 'undefined' && WebApp.initData || '');
             }, connectionDelay);
@@ -138,6 +144,8 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
             console.log(`[LOG]: JWT was updated`);
             return;
         }
+
+        typeof window !== 'undefined' && localStorage.setItem('tgUserId', tgUserId);
 
         const userInfo = response.result;
         const totalPoints = userInfo.points.toFixed(1);
