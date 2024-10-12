@@ -98,7 +98,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         const localTgId = typeof window !== 'undefined' && localStorage.getItem('tgUserId');
 
-        alert(`${(jwt)}, ${localTgId}, ${tgUserId}, ${(!jwt || localTgId !== tgUserId)}`);
+        alert(`${(jwt)}, ${localTgId}, ${tgUserId}, ${(!jwt || String(localTgId) !== String(tgUserId))}`);
 
         if (!jwt || String(localTgId) !== String(tgUserId)) {
             const timer = setTimeout(() => {
