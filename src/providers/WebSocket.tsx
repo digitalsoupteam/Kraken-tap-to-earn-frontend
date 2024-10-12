@@ -98,18 +98,17 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         const localTgId = typeof window !== 'undefined' && localStorage.getItem('tgUserId');
 
-        alert(`${(jwt)}, ${localTgId}, ${tgUserId}, ${(!jwt || String(localTgId) !== String(tgUserId))}`);
 
         if (!jwt || String(localTgId) !== String(tgUserId)) {
             const timer = setTimeout(() => {
                 getJwt(typeof window !== 'undefined' && WebApp.initData || '');
+                setShouldConnect(true);
             }, connectionDelay);
 
             return () => clearTimeout(timer);
         }
 
         if (jwt) {
-            alert('jwt upd');
             const timer = setTimeout(() => {
                 setShouldConnect(true);
             }, connectionDelay);
