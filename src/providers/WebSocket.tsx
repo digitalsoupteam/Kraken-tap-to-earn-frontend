@@ -100,7 +100,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         alert(`${(jwt)}, ${localTgId}, ${tgUserId}, ${(!jwt || localTgId !== tgUserId)}`);
 
-        if (!jwt || localTgId !== tgUserId) {
+        if (!jwt || String(localTgId) !== String(tgUserId)) {
             const timer = setTimeout(() => {
                 getJwt(typeof window !== 'undefined' && WebApp.initData || '');
             }, connectionDelay);
