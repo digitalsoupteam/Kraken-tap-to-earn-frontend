@@ -27,6 +27,7 @@ const TapButton: FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDisabled, setIsDisabled] = useState(true);
     // const [tapsCounter, setTapsCounter] = useState(0);
+    // const [resCounter, setResCounter] = useState(0);
 
     const {
         multiplier,
@@ -51,11 +52,13 @@ const TapButton: FC = () => {
     }));
 
     const {
-        sendMessage,
-        lastMessage
+        sendTaps,
+        lastMessage,
+        // sendTapsCount
     } = useWebSocketStore((state) => ({
-        sendMessage: state.sendMessage,
-        lastMessage: state.lastMessage
+        sendTaps: state.sendTaps,
+        lastMessage: state.lastMessage,
+        // sendTapsCount: state.sendTapsCount
     }));
 
     const drawTapEffects = () => {
@@ -94,17 +97,8 @@ const TapButton: FC = () => {
         const x = Math.round(clientX - buttonRect.left);
         const y = Math.round(clientY - buttonRect.top);
 
-        const message = {
-            jsonrpc: '2.0',
-            id: 2000,
-            method: 'sendTaps',
-            params: [{
-                x,
-                y,
-            }],
-        };
-        // setTapsCounter(tapsCounter + 1);
-        sendMessage(JSON.stringify(message));
+        // setTapsCounter(prev => prev + 1);
+        sendTaps([{x, y}]);
         if (isVibrationOn && typeof window !== 'undefined') {
             WebApp.HapticFeedback.impactOccurred('heavy');
         }
@@ -131,6 +125,7 @@ const TapButton: FC = () => {
         const response = JSON.parse(lastMessage);
 
         if (response.id !== 2000) return;
+        // setResCounter(prev => prev + 1);
         const userInfoFromTap = response.result.userInfo;
         setTotalPoints(parseFloat(userInfoFromTap.points.toFixed(1)));
         setSessionLeft(userInfoFromTap.sessionLeft);
@@ -153,10 +148,18 @@ const TapButton: FC = () => {
             {/*<div*/}
             {/*    style={{*/}
             {/*        position: 'fixed',*/}
-            {/*        top: '50px',*/}
+            {/*        top: '100px',*/}
             {/*        left: '50px',*/}
             {/*    }}*/}
-            {/*>{tapsCounter}</div>*/}
+            {/*>*/}
+            {/*    taps - {tapsCounter}*/}
+            {/*    <br/>*/}
+            {/*    <br/>*/}
+            {/*    sendTaps - {sendTapsCount}*/}
+            {/*    <br/>*/}
+            {/*    <br/>*/}
+            {/*    resCounter - {resCounter}*/}
+            {/*</div>*/}
 
             <button
                 className={styles.button}

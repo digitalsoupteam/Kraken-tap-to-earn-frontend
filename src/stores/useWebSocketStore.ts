@@ -17,6 +17,7 @@ type State = {
     readyState: ReadyState;
     connectionDelay: number;
     jwt: string;
+    // sendTapsCount: number;
 }
 
 type Action = {
@@ -29,6 +30,10 @@ type Action = {
     getJwt: (initData: string) => void;
     setJwt: (jwt: string) => void;
     getUser: () => void;
+    sendTaps: (taps: {
+        x: number,
+        y: number,
+    }[]) => void;
     getTopUsers: () => void;
     getTopReferrals: () => void;
     updateProfile: (data: {
@@ -54,6 +59,7 @@ const useWebSocketStore = create<State & Action>()(
         readyState: ReadyState.CLOSED,
         connectionDelay: 0,
         jwt: getLocalJwt(),
+        sendTapsCount: 0,
         sendMessage: () => {},
         setLastMessage: (message) => set({lastMessage: message}),
         setMessages: (messages) => set({messages}),
@@ -159,6 +165,18 @@ const useWebSocketStore = create<State & Action>()(
 
             sendMessage(JSON.stringify(message));
         },
+        sendTaps: (taps) => {
+            const message = {
+                jsonrpc: '2.0',
+                id: 2000,
+                method: 'sendTaps',
+                params: taps,
+            };
+
+            const sendMessage = get().sendMessage;
+            sendMessage(JSON.stringify(message));
+            // set((state) => ({ sendTapsCount: state.sendTapsCount + 1 }));
+        },
         getTopUsers: () => {
             const message = {
                 jsonrpc: '2.0',
@@ -189,7 +207,6 @@ const useWebSocketStore = create<State & Action>()(
         updateProfile: (
             data
         ) => {
-            console.log(data);
             const message = {
                 jsonrpc: '2.0',
                 id: data.wallet ? 5001 : 5000,
