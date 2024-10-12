@@ -106,6 +106,8 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         const localTgId = typeof window !== 'undefined' && localStorage.getItem('tgUserId');
 
+        alert(`${(jwt)}, ${localTgId}, ${tgUserId}, ${(!jwt || localTgId !== tgUserId)}`);
+
         if (!jwt || localTgId !== tgUserId) {
             const timer = setTimeout(() => {
                 getJwt(typeof window !== 'undefined' && WebApp.initData || '');
