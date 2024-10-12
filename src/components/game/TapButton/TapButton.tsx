@@ -26,7 +26,6 @@ const TapButton: FC = () => {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDisabled, setIsDisabled] = useState(true);
-    const [tapsCounter, setTapsCounter] = useState(0);
 
     const {
         multiplier,
@@ -109,7 +108,6 @@ const TapButton: FC = () => {
             WebApp.HapticFeedback.impactOccurred('heavy');
         }
 
-        setTapsCounter(tapsCounter + 1);
         setTaps(prevTaps => [...prevTaps, { id: Date.now(), x, y, startTime: performance.now() }]);
     };
 
@@ -151,14 +149,6 @@ const TapButton: FC = () => {
 
     return (
         <div className={styles.root}>
-            <div
-                style={{
-                    position: 'fixed',
-                    top: '50px',
-                    left: '50px',
-                }}
-            >{tapsCounter}</div>
-
             <button
                 className={styles.button}
                 ref={buttonRef}
