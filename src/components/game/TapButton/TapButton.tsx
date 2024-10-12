@@ -91,8 +91,8 @@ const TapButton: FC = () => {
         const buttonRect = buttonRef.current?.getBoundingClientRect();
         if (!buttonRect) return;
 
-        const x = clientX - buttonRect.left;
-        const y = clientY - buttonRect.top;
+        const x = Math.round(clientX - buttonRect.left);
+        const y = Math.round(clientY - buttonRect.top);
 
         const message = {
             jsonrpc: '2.0',
