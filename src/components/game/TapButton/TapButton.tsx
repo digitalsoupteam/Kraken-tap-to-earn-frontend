@@ -26,6 +26,7 @@ const TapButton: FC = () => {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDisabled, setIsDisabled] = useState(true);
+    // const [tapsCounter, setTapsCounter] = useState(0);
 
     const {
         multiplier,
@@ -102,7 +103,7 @@ const TapButton: FC = () => {
                 y,
             }],
         };
-
+        // setTapsCounter(tapsCounter + 1);
         sendMessage(JSON.stringify(message));
         if (isVibrationOn && typeof window !== 'undefined') {
             WebApp.HapticFeedback.impactOccurred('heavy');
@@ -149,15 +150,23 @@ const TapButton: FC = () => {
 
     return (
         <div className={styles.root}>
+            {/*<div*/}
+            {/*    style={{*/}
+            {/*        position: 'fixed',*/}
+            {/*        top: '50px',*/}
+            {/*        left: '50px',*/}
+            {/*    }}*/}
+            {/*>{tapsCounter}</div>*/}
+
             <button
                 className={styles.button}
                 ref={buttonRef}
-                onTouchEnd={handleTouch}
+                onTouchStart={handleTouch}
                 onClick={handleClick}
                 disabled={isDisabled}>
                 <span className={styles.buttonInner}>
                     <span className={styles.image}>
-                        <span className={styles.buttonBg} />
+                        <span className={styles.buttonBg}/>
                         {krakens[level]}
                     </span>
                 </span>
