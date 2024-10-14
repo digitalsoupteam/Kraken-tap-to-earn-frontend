@@ -9,7 +9,7 @@ import {ReadyState} from 'react-use-websocket';
 import useWebSocketStore from "@/stores/useWebSocketStore";
 
 import styles from './Loader.module.css';
-import {Title} from "@/components/ui";
+import {Spinner, Title} from "@/components/ui";
 import {useGameStore} from "@/components/game";
 
 const Loader: FC = () => {
@@ -56,8 +56,7 @@ const Loader: FC = () => {
         <div className={styles.container}>
             {loadingPercent < TARGET_PERCENT &&
                 <>
-                    <Image className={styles.spinner} src={"/images/spinner.png"} width={"110"} height={"110"}
-                           alt={"loading"}/>
+                    <Spinner />
                     <span className={styles.loading}>{loadingPercent.toString().padStart(2, '0')}% Loading</span>
                 </>
             }

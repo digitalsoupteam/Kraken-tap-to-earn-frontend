@@ -1,14 +1,15 @@
 'use client';
 
 import React, {FC, useEffect, useState} from 'react';
+import Image from "next/image";
 import clsx from 'clsx';
 
 import EnergyIcon from '/public/images/energy.svg';
+import useWebSocketStore from "@/stores/useWebSocketStore";
+import {useGameStore} from "@/components/game";
+import {Spinner} from "@/components/ui";
 
 import styles from './EnergyTracker.module.css';
-import Image from "next/image";
-import {useGameStore} from "@/components/game";
-import useWebSocketStore from "@/stores/useWebSocketStore";
 
 const EnergyTracker: FC = () => {
         const {
@@ -95,6 +96,8 @@ const EnergyTracker: FC = () => {
                 return;
             }
 
+            if (currentTime === 0) return;
+
             const remainingTime = sessionUntil - currentTime;
             const minutes = padWithZero(Math.floor(remainingTime / 60));
             const seconds = padWithZero(remainingTime % 60);
@@ -117,6 +120,9 @@ const EnergyTracker: FC = () => {
             }
 
             const timeDifference = calmUntil - currentTime;
+
+            if (currentTime === 0) return;
+
             const minutes = padWithZero(Math.floor(timeDifference / 60));
             const seconds = padWithZero(timeDifference % 60);
             const currentEnergy = (timeDifference / totalDuration) * 100;
@@ -138,6 +144,8 @@ const EnergyTracker: FC = () => {
 
         return <div className={styles.root}>
             <div className={styles.inner}>
+                {
+                    currentTime > 0 && <>
                 <div className={styles.tentacles}>
                     <div
                         className={clsx(styles.tentaclesItem, styles.tentaclesLeft, isEnergyFull && styles.tentaclesItemShow)}>
@@ -150,10 +158,10 @@ const EnergyTracker: FC = () => {
                 </div>
 
                 <div className={clsx(styles.time, !isSessionActive && isEnergyFull && styles.timeCentered)}>
-                <span className={styles.energy}>
-                    <EnergyIcon/>
-                    2 min
-                </span>
+                    <span className={styles.energy}>
+                        <EnergyIcon/>
+                        2 min
+                    </span>
 
                     {!isEnergyFull && !isSessionActive && <span>full restore: {calmTime}</span>}
 
@@ -165,6 +173,9 @@ const EnergyTracker: FC = () => {
                         <div className={styles.progress} style={{width: `${energy}%`}}/>
                     </div>
                 </div>
+                    </>
+                }
+                {currentTime <= 0 && <Spinner className={styles.spinner}/>}
             </div>
         </div>
     }
