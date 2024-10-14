@@ -106,12 +106,21 @@ const TapButton: FC = () => {
         setTaps(prevTaps => [...prevTaps, { id: Date.now(), x, y, startTime: performance.now() }]);
     };
 
-    const handleTouch = (e: React.TouchEvent<HTMLButtonElement>) => {
+    const handledTouchIds = useRef<Set<number>>(new Set());
+
+    const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
         if (isDisabled || !isTouchDevice) return;
 
         Array.from(e.touches).forEach(touch => {
-            handleTap(touch.clientX, touch.clientY, touch.identifier);
+            if (!handledTouchIds.current.has(touch.identifier)) {
+                handledTouchIds.current.add(touch.identifier);
+                handleTap(touch.clientX, touch.clientY, touch.identifier);
+            }
         });
+    };
+
+    const handleTouchEnd = () => {
+        handledTouchIds.current.clear();
     };
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -126,7 +135,9 @@ const TapButton: FC = () => {
 
         if (response.id !== 2000) return;
         // setResCounter(prev => prev + 1);
-        const userInfoFromTap = response.result.userInfo;
+        const userInfoFromTap = response?.result?.userInfo;
+
+        if (!userInfoFromTap) return;
         setTotalPoints(parseFloat(userInfoFromTap.points.toFixed(1)));
         setSessionLeft(userInfoFromTap.sessionLeft);
         setSessionUntil(userInfoFromTap.sessionUntil);
@@ -164,7 +175,8 @@ const TapButton: FC = () => {
             <button
                 className={styles.button}
                 ref={buttonRef}
-                onTouchStart={handleTouch}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
                 onClick={handleClick}
                 disabled={isDisabled}>
                 <span className={styles.buttonInner}>

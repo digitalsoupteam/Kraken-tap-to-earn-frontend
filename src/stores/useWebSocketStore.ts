@@ -59,7 +59,7 @@ const useWebSocketStore = create<State & Action>()(
         readyState: ReadyState.CLOSED,
         connectionDelay: 0,
         jwt: getLocalJwt(),
-        sendTapsCount: 0,
+        // sendTapsCount: 0,
         sendMessage: () => {},
         setLastMessage: (message) => set({lastMessage: message}),
         setMessages: (messages) => set({messages}),
