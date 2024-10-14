@@ -100,7 +100,7 @@ const TapButton: FC = () => {
             sendTaps([{ x: clientX, y: clientY }]);
             firstTapRef.current = false;
         } else {
-            tapQueueRef.current.push({ x: clientX, y: clientY });
+            tapQueueRef.current.push({ x: Math.round(clientX), y: Math.round(clientY) });
         }
 
         if (isVibrationOn && typeof window !== 'undefined') {
