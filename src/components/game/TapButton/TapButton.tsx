@@ -1,21 +1,21 @@
 'use client';
 
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, {FC, useState, useRef, useEffect} from 'react';
 import WebApp from "@twa-dev/sdk";
 import useSound from 'use-sound';
 import KrakenBottomImage from '/public/images/kraken.svg';
 import KrakenSeasideImage from '/public/images/kraken-smirking.svg';
 import KrakenTroposphereImage from '/public/images/kraken-smiling.svg';
 import KrakenOuterSpaceImage from '/public/images/kraken-rock.svg';
-import { useGameStore } from '@/components/game';
+import {useGameStore} from '@/components/game';
 import useWebSocketStore from "@/stores/useWebSocketStore";
 import styles from './TapButton.module.css';
 
 const krakens = [
-    <KrakenBottomImage key={'first-level'} />,
-    <KrakenSeasideImage key={'second-level'} />,
-    <KrakenTroposphereImage key={'third-level'} />,
-    <KrakenOuterSpaceImage key={'fourth-level'} />,
+    <KrakenBottomImage key={'first-level'}/>,
+    <KrakenSeasideImage key={'second-level'}/>,
+    <KrakenTroposphereImage key={'third-level'}/>,
+    <KrakenOuterSpaceImage key={'fourth-level'}/>,
 ];
 
 const TapButton: FC = () => {
@@ -26,10 +26,12 @@ const TapButton: FC = () => {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDisabled, setIsDisabled] = useState(true);
-    // const [tapsCounter, setTapsCounter] = useState(0);
-    // const [resCounter, setResCounter] = useState(0);
     const tapQueueRef = useRef<{ x: number, y: number }[]>([]);
     const tapCooldown = 800;
+    // const [tapsCounter, setTapsCounter] = useState(0);
+    // const [resCounter, setResCounter] = useState(0);
+    // const [prevPayload, setPrevPayload] = useState<{ x: number, y: number }[]>([]);
+    // const [allPayload, setAllPayload] = useState<{ x: number, y: number }[][]>([]);
 
     const {
         multiplier,
@@ -99,18 +101,20 @@ const TapButton: FC = () => {
         const x = Math.round(clientX - buttonRect.left);
         const y = Math.round(clientY - buttonRect.top);
 
-        tapQueueRef.current.push({ x, y });
+        tapQueueRef.current.push({x, y});
 
         if (isVibrationOn && typeof window !== 'undefined') {
             WebApp.HapticFeedback.impactOccurred('heavy');
         }
 
-        setTaps(prevTaps => [...prevTaps, { id: Date.now(), x, y, startTime: performance.now() }]);
+        setTaps(prevTaps => [...prevTaps, {id: Date.now(), x, y, startTime: performance.now()}]);
     };
+
 
     const sendQueuedTaps = () => {
         if (tapQueueRef.current.length > 0) {
             sendTaps(tapQueueRef.current);
+            // setPrevPayload(tapQueueRef.current);
             tapQueueRef.current = [];
         }
     };
@@ -119,17 +123,21 @@ const TapButton: FC = () => {
 
     const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
         if (isDisabled || !isTouchDevice) return;
-        // setTapsCounter(prev => prev + 1);
+
+
         Array.from(e.touches).forEach(touch => {
             if (!handledTouchIds.current.has(touch.identifier)) {
                 handledTouchIds.current.add(touch.identifier);
                 handleTap(touch.clientX, touch.clientY, touch.identifier);
+                // setTapsCounter(prev => prev + 1);
             }
         });
     };
 
-    const handleTouchEnd = () => {
-        handledTouchIds.current.clear();
+    const handleTouchEnd = (e: React.TouchEvent<HTMLButtonElement>) => {
+        Array.from(e.changedTouches).forEach(touch => {
+            handledTouchIds.current.delete(touch.identifier);
+        });
     };
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -168,6 +176,13 @@ const TapButton: FC = () => {
         return () => cancelAnimationFrame(animationFrame);
     }, [taps]);
 
+
+    // useEffect(() => {
+    //     if (prevPayload.length > 0) {
+    //         setAllPayload(prev => [...prev, prevPayload]);
+    //     }
+    // }, [prevPayload]);
+
     return (
         <div className={styles.root}>
             {/*<div*/}
@@ -184,6 +199,23 @@ const TapButton: FC = () => {
             {/*    <br/>*/}
             {/*    <br/>*/}
             {/*    resCounter - {resCounter}*/}
+            {/*    <br/>*/}
+            {/*    <br/>*/}
+            {/*    payload:*/}
+            {/*    <div>allPayload - {allPayload.flat().length}</div>*/}
+            {/*    <div>prevPayload - {prevPayload.length}</div>*/}
+            {/*    {prevPayload.length > 0 && prevPayload.map((item, index) => (*/}
+            {/*        <>*/}
+            {/*            /!*<div key={item.x + index + item.y}>{index} - {item.x} {item.y}</div>*!/*/}
+            {/*        </>*/}
+            {/*    ))}*/}
+            {/*    <textarea*/}
+            {/*        style={{position: 'relative', zIndex: 999, height: 300}}*/}
+            {/*        value={allPayload*/}
+            {/*            .map((innerArray, index) =>*/}
+            {/*                `${index}: [${innerArray.map(item => `{x: ${item.x}, y: ${item.y}}`).join(', ')}]`*/}
+            {/*            )*/}
+            {/*            .join('\n')}/>*/}
             {/*</div>*/}
 
             <button
