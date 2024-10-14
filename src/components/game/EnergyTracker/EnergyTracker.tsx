@@ -67,7 +67,6 @@ const EnergyTracker: FC = () => {
         useEffect(() => {
             const currentTimestamp = Math.floor(Date.now() / 1000);
             const currentTimeOffset = sessionLeft === 120 ? sessionStart - currentTimestamp : Number(localStorage.getItem('timeOffset'));
-
             timeOffset !== currentTimeOffset && setTimeOffset(currentTimeOffset);
         }, [sessionLeft, sessionStart]);
 
@@ -146,33 +145,33 @@ const EnergyTracker: FC = () => {
             <div className={styles.inner}>
                 {
                     currentTime > 0 && <>
-                <div className={styles.tentacles}>
-                    <div
-                        className={clsx(styles.tentaclesItem, styles.tentaclesLeft, isEnergyFull && styles.tentaclesItemShow)}>
-                        <Image src={'/images/tentacles-1.png'} width={'74'} height={'33'} alt={'kraken tentacles'}/>
-                    </div>
-                    <div
-                        className={clsx(styles.tentaclesItem, styles.tentaclesRight, isEnergyFull && styles.tentaclesItemShow)}>
-                        <Image src={'/images/tentacles-2.png'} width={'76'} height={'73'} alt={'kraken tentacles'}/>
-                    </div>
-                </div>
+                        <div className={styles.tentacles}>
+                            <div
+                                className={clsx(styles.tentaclesItem, styles.tentaclesLeft, isEnergyFull && styles.tentaclesItemShow)}>
+                                <Image src={'/images/tentacles-1.png'} width={'74'} height={'33'} alt={'kraken tentacles'}/>
+                            </div>
+                            <div
+                                className={clsx(styles.tentaclesItem, styles.tentaclesRight, isEnergyFull && styles.tentaclesItemShow)}>
+                                <Image src={'/images/tentacles-2.png'} width={'76'} height={'73'} alt={'kraken tentacles'}/>
+                            </div>
+                        </div>
 
-                <div className={clsx(styles.time, !isSessionActive && isEnergyFull && styles.timeCentered)}>
+                        <div className={clsx(styles.time, !isSessionActive && isEnergyFull && styles.timeCentered)}>
                     <span className={styles.energy}>
                         <EnergyIcon/>
                         2 min
                     </span>
 
-                    {!isEnergyFull && !isSessionActive && <span>full restore: {calmTime}</span>}
+                            {!isEnergyFull && !isSessionActive && <span>full restore: {calmTime}</span>}
 
-                    {isSessionActive && <span>Time remaining: {sessionTime}</span>}
-                </div>
+                            {isSessionActive && <span>Time remaining: {sessionTime}</span>}
+                        </div>
 
-                <div className={styles.tracker}>
-                    <div className={styles.bar}>
-                        <div className={styles.progress} style={{width: `${energy}%`}}/>
-                    </div>
-                </div>
+                        <div className={styles.tracker}>
+                            <div className={styles.bar}>
+                                <div className={styles.progress} style={{width: `${energy}%`}}/>
+                            </div>
+                        </div>
                     </>
                 }
                 {currentTime <= 0 && <Spinner className={styles.spinner}/>}

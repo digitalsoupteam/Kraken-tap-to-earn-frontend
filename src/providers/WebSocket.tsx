@@ -163,7 +163,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         setUserName(userInfo.nickname);
         setMultiplier(userInfo.daysInRow);
         setWallet(userInfo.wallet);
-        !userInfo.sessionUntil && setTimeOffset(Math.floor(Date.now() / 1000) - userInfo.sessionStart);
+        !userInfo.sessionUntil && setTimeOffset(userInfo.sessionStart - Math.floor(Date.now() / 1000));
         setLeaderboardPosition(userInfo.position);
     }, [lastMessage]);
 
