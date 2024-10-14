@@ -28,6 +28,8 @@ const TapButton: FC = () => {
     const [isDisabled, setIsDisabled] = useState(true);
     // const [tapsCounter, setTapsCounter] = useState(0);
     // const [resCounter, setResCounter] = useState(0);
+    const tapQueueRef = useRef<{ x: number, y: number }[]>([]);
+    const tapCooldown = 800;
 
     const {
         multiplier,
@@ -97,8 +99,8 @@ const TapButton: FC = () => {
         const x = Math.round(clientX - buttonRect.left);
         const y = Math.round(clientY - buttonRect.top);
 
-        // setTapsCounter(prev => prev + 1);
-        sendTaps([{x, y}]);
+        tapQueueRef.current.push({ x, y });
+
         if (isVibrationOn && typeof window !== 'undefined') {
             WebApp.HapticFeedback.impactOccurred('heavy');
         }
@@ -106,11 +108,18 @@ const TapButton: FC = () => {
         setTaps(prevTaps => [...prevTaps, { id: Date.now(), x, y, startTime: performance.now() }]);
     };
 
+    const sendQueuedTaps = () => {
+        if (tapQueueRef.current.length > 0) {
+            sendTaps(tapQueueRef.current);
+            tapQueueRef.current = [];
+        }
+    };
+
     const handledTouchIds = useRef<Set<number>>(new Set());
 
     const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
         if (isDisabled || !isTouchDevice) return;
-
+        // setTapsCounter(prev => prev + 1);
         Array.from(e.touches).forEach(touch => {
             if (!handledTouchIds.current.has(touch.identifier)) {
                 handledTouchIds.current.add(touch.identifier);
@@ -148,6 +157,11 @@ const TapButton: FC = () => {
     useEffect(() => {
         setIsDisabled(!sessionLeft);
     }, [sessionLeft]);
+
+    useEffect(() => {
+        const interval = setInterval(sendQueuedTaps, tapCooldown);
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         const animationFrame = requestAnimationFrame(drawTapEffects);
