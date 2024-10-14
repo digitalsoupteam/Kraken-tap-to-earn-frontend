@@ -98,16 +98,13 @@ const TapButton: FC = () => {
         const buttonRect = buttonRef.current?.getBoundingClientRect();
         if (!buttonRect) return;
 
-        const x = Math.round(clientX - buttonRect.left);
-        const y = Math.round(clientY - buttonRect.top);
-
-        tapQueueRef.current.push({x, y});
+        tapQueueRef.current.push({x: clientX, y: clientY});
 
         if (isVibrationOn && typeof window !== 'undefined') {
             WebApp.HapticFeedback.impactOccurred('heavy');
         }
 
-        setTaps(prevTaps => [...prevTaps, {id: Date.now(), x, y, startTime: performance.now()}]);
+        setTaps(prevTaps => [...prevTaps, {id: Date.now(), x: clientX, y: clientY, startTime: performance.now()}]);
     };
 
 
@@ -236,8 +233,8 @@ const TapButton: FC = () => {
             <canvas
                 ref={canvasRef}
                 className={styles.canvas}
-                width={buttonRef.current?.offsetWidth}
-                height={buttonRef.current?.offsetHeight}
+                width={typeof window !== 'undefined' ? window.innerWidth : buttonRef.current?.offsetWidth}
+                height={typeof window !== 'undefined' ? window.innerHeight : buttonRef.current?.offsetHeight}
             />
         </div>
     );
