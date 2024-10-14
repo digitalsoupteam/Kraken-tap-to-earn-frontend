@@ -94,8 +94,6 @@ const TapButton: FC = () => {
     };
 
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
-        playSound();
-
         if (firstTapRef.current) {
             sendTaps([{ x: clientX, y: clientY }]);
             firstTapRef.current = false;
@@ -124,6 +122,7 @@ const TapButton: FC = () => {
     const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
         if (isDisabled || !isTouchDevice) return;
 
+        playSound();
 
         Array.from(e.touches).forEach(touch => {
             if (!handledTouchIds.current.has(touch.identifier)) {
@@ -143,6 +142,7 @@ const TapButton: FC = () => {
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (isDisabled || isTouchDevice) return;
 
+        playSound();
         handleTap(e.clientX, e.clientY);
     };
 
