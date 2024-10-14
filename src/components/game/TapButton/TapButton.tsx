@@ -27,6 +27,7 @@ const TapButton: FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDisabled, setIsDisabled] = useState(true);
     const tapQueueRef = useRef<{ x: number, y: number }[]>([]);
+    const firstTapRef = useRef(true);
     const tapCooldown = 800;
     // const [tapsCounter, setTapsCounter] = useState(0);
     // const [resCounter, setResCounter] = useState(0);
@@ -95,10 +96,12 @@ const TapButton: FC = () => {
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
         playSound();
 
-        const buttonRect = buttonRef.current?.getBoundingClientRect();
-        if (!buttonRect) return;
-
-        tapQueueRef.current.push({x: clientX, y: clientY});
+        if (firstTapRef.current) {
+            sendTaps([{ x: clientX, y: clientY }]);
+            firstTapRef.current = false;
+        } else {
+            tapQueueRef.current.push({ x: clientX, y: clientY });
+        }
 
         if (isVibrationOn && typeof window !== 'undefined') {
             WebApp.HapticFeedback.impactOccurred('heavy');
