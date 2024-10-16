@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:network": "cross-env NEXT_PUBLIC_HOST=%npm_config_host% next dev -H %npm_config_host%",
+    "dev:network": "cross-env next dev -H %npm_config_host%",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

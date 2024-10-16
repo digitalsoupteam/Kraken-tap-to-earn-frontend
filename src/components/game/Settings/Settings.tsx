@@ -46,6 +46,7 @@ const Settings: FC = () => {
 
     const [nickname, setNickname] = useState(userName);
     const [isResetStarted, setIsResetStarted] = useState(false);
+    const [hostname, setHostname] = useState('192.168.100.5');
     const [isDeveloper, setIsDeveloper] = useState(false);
 
     useEffect(() => {
@@ -82,7 +83,7 @@ const Settings: FC = () => {
     const handlerSwitchToLocalClick = () => {
         const currentUrl = new URL(window.location.href);
 
-        currentUrl.hostname = process.env.NEXT_PUBLIC_HOST || '192.168.100.5';
+        currentUrl.hostname = hostname
         currentUrl.port = '3000';
         currentUrl.protocol = 'http';
 
@@ -146,7 +147,17 @@ const Settings: FC = () => {
                     <Input placeholder={'type here - reset'} onChange={handlerSubmitReset}/>
                 </>}
             </div>
-            {isDeveloper && <Button onClick={handlerSwitchToLocalClick}>Switch to local project</Button>}
+            {isDeveloper &&
+                <div className={clsx(styles.item, styles.itemVertical)}>
+                    Switch to local project
+                    <div style={{display: 'flex', gap: '10px', width:'100%'}}>
+                        <Input  placeholder={'enter hostname'} onChange={(evt) => setHostname(evt.target.value)} value={hostname}/>
+                        <Button onClick={handlerSwitchToLocalClick} style={{width: '100%'}} isLight={true}>
+                            Go
+                        </Button>
+                    </div>
+                </div>
+            }
         </div>
     </Modal>
 };
