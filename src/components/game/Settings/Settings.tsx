@@ -64,7 +64,7 @@ const Settings: FC = () => {
 
     const handlerSubmitChangeNickname = (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
-        const regex = /^[A-Za-z0-9 ]{3,}$/;
+        const regex = /[1-9A-HJ-NP-Za-km-z]{32,44}/;
 
         if (!regex.test(nickname)) return;
 
