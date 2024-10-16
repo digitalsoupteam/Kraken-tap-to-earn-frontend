@@ -103,7 +103,7 @@ const Settings: FC = () => {
     }, [lastMessage]);
 
     useEffect(() => {
-        const ALLOWED_USERS = [1065327387];
+        const ALLOWED_USERS = [6202760963];
         const params = new URLSearchParams(telegramInitData || '');
         const user = params.get('user');
 
