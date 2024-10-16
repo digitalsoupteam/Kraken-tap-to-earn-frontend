@@ -21,12 +21,14 @@ const Settings: FC = () => {
     }));
 
     const {
+        telegramInitData,
         isVibrationOn,
         toggleVibration,
         userName,
         setUserName,
         wallet,
     } = useGameStore((state) => ({
+        telegramInitData: state.telegramInitData,
         isVibrationOn: state.isVibrationOn,
         toggleVibration: state.toggleVibration,
         userName: state.userName,
@@ -44,6 +46,7 @@ const Settings: FC = () => {
 
     const [nickname, setNickname] = useState(userName);
     const [isResetStarted, setIsResetStarted] = useState(false);
+    const [isDeveloper, setIsDeveloper] = useState(false);
 
     useEffect(() => {
         setNickname(userName)
@@ -76,6 +79,16 @@ const Settings: FC = () => {
         window.location.reload();
     };
 
+    const handlerSwitchToLocalClick = () => {
+        const currentUrl = new URL(window.location.href);
+
+        currentUrl.hostname = process.env.NEXT_PUBLIC_HOST || '192.168.100.5';
+        currentUrl.port = '3000';
+        currentUrl.protocol = 'http';
+
+        window.location.href = currentUrl.href;
+    };
+
     useEffect(() => {
         if (!lastMessage) return;
 
@@ -88,6 +101,18 @@ const Settings: FC = () => {
         setUserName(response.result.nickname);
         console.log('[LOG]: Nickname was updated successfully ', response.result.nickname);
     }, [lastMessage]);
+
+    useEffect(() => {
+        const ALLOWED_USERS = [1065327387];
+        const params = new URLSearchParams(telegramInitData || '');
+        const user = params.get('user');
+
+        if (!user) return;
+
+        const userId = JSON.parse(user).id;
+
+        setIsDeveloper(ALLOWED_USERS.includes(userId));
+    }, [telegramInitData])
 
     return <Modal isOpen={isSettingsOpened} closeModal={closeSettings}>
         <div className={styles.title}>Settings</div>
@@ -121,6 +146,7 @@ const Settings: FC = () => {
                     <Input placeholder={'type here - reset'} onChange={handlerSubmitReset}/>
                 </>}
             </div>
+            {isDeveloper && <Button onClick={handlerSwitchToLocalClick}>Switch to local project</Button>}
         </div>
     </Modal>
 };
