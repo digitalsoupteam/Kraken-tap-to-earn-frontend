@@ -153,7 +153,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         const totalPoints = userInfo.points.toFixed(1);
         const level = levelsGates.findLastIndex((item) => totalPoints >= item);
 
-        setUserId(userInfo.user_id);
+        setUserId(userInfo.userId);
         setTotalPoints(totalPoints);
         setLevel(level);
         setSessionLeft(userInfo.sessionLeft);
