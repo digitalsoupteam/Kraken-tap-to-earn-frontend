@@ -96,7 +96,9 @@ const Settings: FC = () => {
         const response = JSON.parse(lastMessage);
 
         if (response.id !== 5000) return;
-        console.log('nres', response);
+
+        if (response.error) throw new Error(response.error);
+
         if (!response.result.nickname) return;
 
         setUserName(response.result.nickname);
