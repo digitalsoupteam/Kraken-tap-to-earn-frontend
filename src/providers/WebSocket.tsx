@@ -35,6 +35,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     const {
         userId,
         setUserId,
+        totalPoints,
         setTotalPoints,
         setSessionLeft,
         setCalmUntil,
@@ -51,6 +52,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     } = useGameStore((state) => ({
         userId: state.userId,
         setUserId: state.setUserId,
+        totalPoints: state.totalPoints,
         setTotalPoints: state.setTotalPoints,
         setSessionLeft: state.setSessionLeft,
         setCalmUntil: state.setCalmUntil,
@@ -148,11 +150,10 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         const userInfo = response.result;
         const totalPoints = userInfo.points.toFixed(1);
-        const level = levelsGates.findLastIndex((item) => totalPoints >= item);
+
 
         setUserId(userInfo.userId);
         setTotalPoints(totalPoints);
-        setLevel(level);
         setSessionLeft(userInfo.sessionLeft);
         setCalmUntil(userInfo.calmUntil);
         setSessionUntil(userInfo.sessionUntil);
@@ -163,6 +164,13 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         !userInfo.sessionUntil && setTimeOffset(userInfo.sessionStart - Math.floor(Date.now() / 1000));
         setLeaderboardPosition(userInfo.position);
     }, [lastMessage]);
+
+    useEffect(() => {
+        if (!totalPoints) return;
+
+        const level = levelsGates.findLastIndex((item) => totalPoints >= item);
+        setLevel(level);
+    }, [levelsGates])
 
     return <>{children}</>;
 };
