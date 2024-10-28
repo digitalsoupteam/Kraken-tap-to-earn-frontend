@@ -95,7 +95,7 @@ const TapButton: FC = () => {
 
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
         if (firstTapRef.current) {
-            sendTaps([{ x: clientX, y: clientY }]);
+            sendTaps([{ x: Math.round(clientX), y: Math.round(clientY) }]);
             firstTapRef.current = false;
         } else {
             tapQueueRef.current.push({ x: Math.round(clientX), y: Math.round(clientY) });
