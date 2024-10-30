@@ -43,7 +43,7 @@ export const viewport: Viewport = {
 
 const RootLayout: FC<PropsWithChildren> = ({children}) => {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning={true}>
         <body className={clsx(BebasNeue.className, DarkHornetItalic.variable)}>
         <Suspense fallback={<div>Loading...</div>}>
             <TelegramWebApp>

@@ -95,10 +95,10 @@ const TapButton: FC = () => {
 
     const handleTap = (clientX: number, clientY: number, touchIdentifier?: number) => {
         if (firstTapRef.current) {
-            sendTaps([{ x: Math.round(clientX), y: Math.round(clientY) }]);
+            sendTaps([{x: Math.round(clientX), y: Math.round(clientY)}]);
             firstTapRef.current = false;
         } else {
-            tapQueueRef.current.push({ x: Math.round(clientX), y: Math.round(clientY) });
+            tapQueueRef.current.push({x: Math.round(clientX), y: Math.round(clientY)});
         }
 
         if (isVibrationOn && typeof window !== 'undefined') {
@@ -176,6 +176,15 @@ const TapButton: FC = () => {
         return () => cancelAnimationFrame(animationFrame);
     }, [taps]);
 
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        if (!canvasRef.current) return;
+
+        canvasRef.current.height = window.innerHeight;
+        canvasRef.current.width = window.innerWidth;
+     }, [canvasRef]);
+
 
     // useEffect(() => {
     //     if (prevPayload.length > 0) {
@@ -236,8 +245,8 @@ const TapButton: FC = () => {
             <canvas
                 ref={canvasRef}
                 className={styles.canvas}
-                width={typeof window !== 'undefined' ? window.innerWidth : buttonRef.current?.offsetWidth}
-                height={typeof window !== 'undefined' ? window.innerHeight : buttonRef.current?.offsetHeight}
+                width={'300'}
+                height={'300'}
             />
         </div>
     );
