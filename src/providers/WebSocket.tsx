@@ -45,7 +45,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         telegramInitData,
         setMultiplier,
         setWallet,
-        levelsGates: levelsGates,
+        levelsGates,
         setLevel,
         setTimeOffset,
         setLeaderboardPosition,
@@ -166,11 +166,11 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     }, [lastMessage]);
 
     useEffect(() => {
-        if (!totalPoints) return;
+        if (!totalPoints || !levelsGates) return;
 
         const level = levelsGates.findLastIndex((item) => totalPoints >= item);
         setLevel(level);
-    }, [levelsGates])
+    }, [levelsGates, totalPoints]);
 
     return <>{children}</>;
 };
