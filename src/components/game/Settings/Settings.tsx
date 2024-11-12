@@ -48,6 +48,8 @@ const Settings: FC = () => {
     const [isResetStarted, setIsResetStarted] = useState(false);
     const [hostname, setHostname] = useState('192.168.100.5');
     const [isDeveloper, setIsDeveloper] = useState(false);
+    const [isNicknameValid, setIsNicknameValid] = useState(true);
+    const [isNicknameChanged, setIsNicknameChanged] = useState(false);
 
     useEffect(() => {
         setNickname(userName)
@@ -59,14 +61,19 @@ const Settings: FC = () => {
 
         if (!regex.test(value)) return;
 
+        setIsNicknameValid(true);
+        setIsNicknameChanged(false);
         setNickname(evt.target.value);
     };
 
     const handlerSubmitChangeNickname = (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
-        const regex = /[1-9A-HJ-NP-Za-km-z]{32,44}/;
+        const regex = /^[A-Za-z0-9 ]{3,}$/;
 
-        if (!regex.test(nickname)) return;
+        if (!regex.test(nickname)) {
+            setIsNicknameValid(false);
+            return
+        }
 
         updateProfile({nickname: nickname});
     };
@@ -102,6 +109,7 @@ const Settings: FC = () => {
         if (!response.result.nickname) return;
 
         setUserName(response.result.nickname);
+        setIsNicknameChanged(true);
         console.log('[LOG]: Nickname was updated successfully ', response.result.nickname);
     }, [lastMessage]);
 
@@ -128,8 +136,11 @@ const Settings: FC = () => {
             </div>
 
             <form className={styles.item} onSubmit={handlerSubmitChangeNickname}>
-                <Input type={"text"} value={nickname} onChange={handlerNicknameInput}/>
-                <Button isLight={true} type="submit" disabled={userName === nickname}>Change</Button>
+                <Input type={"text"} value={nickname} onChange={handlerNicknameInput} isInvalid={!isNicknameValid} />
+                <Button isLight={true} type="submit" disabled={userName === nickname}>
+                    {isNicknameChanged && 'Done'}
+                    {!isNicknameChanged && (isNicknameValid ? 'Change' : 'Incorrect')}
+                </Button>
             </form>
 
             <div className={styles.item}>

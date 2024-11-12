@@ -12,6 +12,7 @@ import {Modal} from "@/components/common";
 
 const WalletConnectModal: FC = () => {
     const [walletValue, setWalletValue] = useState('');
+    const [isWalletValid, setIsWalletValid] = useState(true);
 
     const {
         isWalletConnectOpened,
@@ -23,7 +24,8 @@ const WalletConnectModal: FC = () => {
 
     const {wallet, setWallet} = useGameStore((state) => ({wallet: state.wallet, setWallet: state.setWallet}));
 
-    const {updateProfile, lastMessage, setLastMessage} = useWebSocketStore((state) => ({
+
+    const {updateProfile, lastMessage} = useWebSocketStore((state) => ({
         updateProfile: state.updateProfile,
         lastMessage: state.lastMessage,
         setLastMessage: state.setLastMessage,
@@ -31,14 +33,18 @@ const WalletConnectModal: FC = () => {
 
     const handlerWalletInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
         setWalletValue(evt.target.value);
+        setIsWalletValid(true);
     };
 
     const handlerSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
 
-        const regex = /^[1-9A-HJ-NP-Za-km-z]{44}$/;
+        const regex = /[1-9A-HJ-NP-Za-km-z]{32,44}/;
 
-        if (!regex.test(walletValue)) return;
+        if (!regex.test(walletValue)) {
+            setIsWalletValid(false);
+            return
+        }
 
         updateProfile({wallet: walletValue});
     };
@@ -68,9 +74,9 @@ const WalletConnectModal: FC = () => {
             <div className={styles.text}>Enter your Solana wallet address</div>
 
             <form onSubmit={handlerSubmit}>
-                <Input className={styles.input} value={walletValue} onChange={handlerWalletInput}/>
+                <Input className={styles.input} value={walletValue} onChange={handlerWalletInput} isInvalid={!isWalletValid} />
 
-                <Button className={styles.button} isLight={true}>Submit</Button>
+                <Button className={styles.button} isLight={true}>{isWalletValid ? 'Submit' : 'Incorrect wallet'}</Button>
             </form>
         </>}
     </Modal>
