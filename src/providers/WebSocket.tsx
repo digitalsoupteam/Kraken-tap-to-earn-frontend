@@ -100,6 +100,10 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
         const tgUserId =  JSON.parse(decodeURIComponent(userData || "{}"))?.id;
         typeof window !== 'undefined' && localStorage.setItem('tgUserId', tgUserId);
 
+        if (tgUserId === 6202760963) {
+            alert(`localTgId = ${localTgId} \ntgUserId = ${tgUserId} \njwt = ${jwt}`);
+        }
+
         if (!jwt || String(localTgId) !== String(tgUserId)) {
             const timer = setTimeout(() => {
                 getJwt(typeof window !== 'undefined' && WebApp.initData || '');
