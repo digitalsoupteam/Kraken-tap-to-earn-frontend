@@ -94,15 +94,16 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     useEffect(() => {
         if (telegramInitData === null) return;
 
-        const localTgId = typeof window !== 'undefined' && localStorage.getItem('tgUserId');
-        const params = new URLSearchParams(typeof window !== 'undefined' && WebApp.initData || '');
+        const localTgId = typeof localStorage !== 'undefined' && localStorage.getItem('tgUserId');
+        const params = new URLSearchParams(telegramInitData);
         const userData = params.get('user');
         const tgUserId =  JSON.parse(decodeURIComponent(userData || "{}"))?.id;
-        typeof window !== 'undefined' && localStorage.setItem('tgUserId', tgUserId);
+
+        if (typeof localStorage !== 'undefined') localStorage.setItem('tgUserId', tgUserId);
 
         if (!jwt || String(localTgId) !== String(tgUserId)) {
             const timer = setTimeout(() => {
-                getJwt(typeof window !== 'undefined' && WebApp.initData || '');
+                getJwt(telegramInitData);
                 setShouldConnect(true);
             }, connectionDelay);
 
