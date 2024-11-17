@@ -145,7 +145,7 @@ const Settings: FC = () => {
 
             <div className={styles.item}>
                 Wallet
-                {wallet && <span>{wallet.slice(0, 4) + '...' + wallet.slice(-5, -1)}</span>}
+                {wallet && <span>{wallet.slice(0, 4) + '...' + wallet.slice(-4)}</span>}
                 {!wallet && <WalletConnectButton size={'big'}/>}
             </div>
 
