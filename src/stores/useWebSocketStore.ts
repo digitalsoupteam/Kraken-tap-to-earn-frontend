@@ -1,4 +1,4 @@
-import create from 'zustand';
+import {create} from 'zustand';
 import {devtools} from 'zustand/middleware';
 import {ReadyState} from 'react-use-websocket';
 
@@ -71,7 +71,8 @@ const useWebSocketStore = create<State & Action>()(
         setSendMessage: (sendMessage) => set({sendMessage}),
         setConnectionDelay: (delay: number) => set({connectionDelay: delay}),
         getJwt: async  (initData: string) => {
-            console.log('[LOG]: GetJwt call with initData - ', initData);
+            console.log('[LOG]: GetJwt call');
+
             const url = initData ? 'https://game.releasethekraken.io/backend/api/telegram_session' : 'https://game.releasethekraken.io/backend/api/anonymous_session';
             const referrerId = initData && new URLSearchParams(initData).get('start_param');
 

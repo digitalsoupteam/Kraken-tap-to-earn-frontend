@@ -19,7 +19,7 @@ const TelegramWebApp: FC<PropsWithChildren> = ({children}) => {
             WebApp.expand();
             WebApp.disableVerticalSwipes();
 
-            setTelegramInitData(WebApp.initData);
+            if (typeof WebApp.initData === 'string') setTelegramInitData(WebApp.initData);
 
             const userPhotoUrl = WebApp.initDataUnsafe && WebApp.initDataUnsafe.user?.photo_url;
 
