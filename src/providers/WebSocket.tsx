@@ -92,7 +92,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
     );
 
     useEffect(() => {
-        if (telegramInitData === null) return;
+        if (typeof telegramInitData !== 'string') return;
 
         const localTgId = typeof localStorage !== 'undefined' && localStorage.getItem('tgUserId');
         const params = new URLSearchParams(telegramInitData);
@@ -103,7 +103,8 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         if (!jwt || String(localTgId) !== String(tgUserId)) {
             const timer = setTimeout(() => {
-                if (!telegramInitData) console.error('starting anonymous session with initData -', telegramInitData, typeof telegramInitData, tgUserId, localTgId);
+                if (!telegramInitData) console.error('starting anonymous session');
+                console.log(telegramInitData, typeof telegramInitData, tgUserId, localTgId);
 
                 getJwt(telegramInitData);
                 setShouldConnect(true);
