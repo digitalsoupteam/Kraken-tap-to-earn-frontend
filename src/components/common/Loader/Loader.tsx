@@ -9,7 +9,7 @@ import {ReadyState} from 'react-use-websocket';
 import useWebSocketStore from "@/stores/useWebSocketStore";
 
 import styles from './Loader.module.css';
-import {Spinner, Title} from "@/components/ui";
+import {Button, Spinner, Title} from "@/components/ui";
 import {useGameStore} from "@/components/game";
 
 const Loader: FC = () => {
@@ -50,25 +50,35 @@ const Loader: FC = () => {
 
     if (readyState === ReadyState.OPEN && gameIsReady) return null;
 
-    return <section className={clsx(styles.root, gameIsReady && styles.closed)} onClick={closeLoader}>
+    const isUnderMaintenance = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true';
+
+    return <section className={clsx(styles.root, gameIsReady && styles.closed)}
+                    onClick={isUnderMaintenance ? undefined : closeLoader}>
         <Image className={styles.logo} src={"/images/logo.png"} width={"300"} height={"100"} alt={""}/>
 
         <div className={styles.container}>
             {loadingPercent < TARGET_PERCENT &&
                 <>
-                    <Spinner />
+                    <Spinner/>
                     <span className={styles.loading}>{loadingPercent.toString().padStart(2, '0')}% Loading</span>
                 </>
             }
-            {
-                loadingPercent >= TARGET_PERCENT &&
-                <motion.div
-                    animate={{scale: [1, 1.2, 1]}}
-                    transition={{duration: 1.5, ease: "easeInOut", repeat: Infinity}}
-                >
-                    <Title title={'Tap and go'} titleAccent={'into space'} size={'big'}/>
-                </motion.div>
-            }
+            {loadingPercent >= TARGET_PERCENT && (
+                isUnderMaintenance ? (
+                    <div className={styles.maintenance}>
+                        <Title title="Technical works" titleAccent="" size="big"/>
+                        <span className={styles.maintenanceText}>The game is still available, but various slowdowns may occur. Thanks for understanding.</span>
+                        <Button isLight={true} onClick={closeLoader}>Ok</Button>
+                    </div>
+                ) : (
+                    <motion.div
+                        animate={{scale: [1, 1.2, 1]}}
+                        transition={{duration: 1.5, ease: "easeInOut", repeat: Infinity}}
+                    >
+                        <Title title="Tap and go" titleAccent="into space" size="big"/>
+                    </motion.div>
+                )
+            )}
         </div>
     </section>
 };
