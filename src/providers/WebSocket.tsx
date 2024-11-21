@@ -103,8 +103,8 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         if (!jwt || String(localTgId) !== String(tgUserId)) {
             const timer = setTimeout(() => {
-                if (!telegramInitData) console.error('starting anonymous session');
                 console.log(telegramInitData, typeof telegramInitData, tgUserId, localTgId);
+                if (!telegramInitData) console.error('starting anonymous session');
 
                 getJwt(telegramInitData);
                 setShouldConnect(true);
