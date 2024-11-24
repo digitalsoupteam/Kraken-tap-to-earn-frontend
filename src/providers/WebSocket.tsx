@@ -101,7 +101,7 @@ const WebSocket: FC<PropsWithChildren> = ({children}) => {
 
         if (typeof localStorage !== 'undefined') localStorage.setItem('tgUserId', tgUserId);
 
-        if (!jwt || String(localTgId) !== String(tgUserId)) {
+        if (!jwt || localTgId && String(localTgId) !== String(tgUserId)) {
             const timer = setTimeout(() => {
                 console.log(telegramInitData, typeof telegramInitData, tgUserId, localTgId);
                 if (!telegramInitData) console.error('starting anonymous session');
