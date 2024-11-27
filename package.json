@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@sentry/nextjs": "^8.35.0",
+    "@sentry/tracing": "^7.114.0",
     "@svgr/webpack": "^8.1.0",
     "@twa-dev/sdk": "^7.8.0",
     "clsx": "^2.1.1",
