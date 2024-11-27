@@ -13,6 +13,7 @@ import {Modal} from "@/components/common";
 const WalletConnectModal: FC = () => {
     const [walletValue, setWalletValue] = useState('');
     const [isWalletValid, setIsWalletValid] = useState(true);
+    const [isChange, setIsChange] = useState(false);
 
     const {
         isWalletConnectOpened,
@@ -23,7 +24,6 @@ const WalletConnectModal: FC = () => {
     }));
 
     const {wallet, setWallet} = useGameStore((state) => ({wallet: state.wallet, setWallet: state.setWallet}));
-
 
     const {updateProfile, lastMessage} = useWebSocketStore((state) => ({
         updateProfile: state.updateProfile,
@@ -64,9 +64,10 @@ const WalletConnectModal: FC = () => {
     }, [lastMessage]);
 
     return <Modal isOpen={isWalletConnectOpened} closeModal={closeWalletConnect}>
-        {wallet ? <>
+        {wallet && !isChange ? <>
             <div className={styles.title}>Your wallet connected successfully</div>
 
+            <Button className={styles.button} isLight={true} onClick={() => setIsChange(true)}>Change</Button>
             <Button className={styles.button} isLight={true} onClick={closeWalletConnect}>Close</Button>
         </> : <>
             <div className={styles.title}>Connect Wallet</div>
