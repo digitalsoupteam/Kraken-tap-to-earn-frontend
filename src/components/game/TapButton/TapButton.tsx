@@ -29,10 +29,6 @@ const TapButton: FC = () => {
     const tapQueueRef = useRef<{ x: number, y: number }[]>([]);
     const firstTapRef = useRef(true);
     const tapCooldown = 800;
-    // const [tapsCounter, setTapsCounter] = useState(0);
-    // const [resCounter, setResCounter] = useState(0);
-    // const [prevPayload, setPrevPayload] = useState<{ x: number, y: number }[]>([]);
-    // const [allPayload, setAllPayload] = useState<{ x: number, y: number }[][]>([]);
 
     const {
         multiplier,
@@ -43,6 +39,7 @@ const TapButton: FC = () => {
         setSessionStart,
         setCalmUntil,
         isVibrationOn,
+        setMultiplier,
         level,
     } = useGameStore((state) => ({
         multiplier: state.multiplier,
@@ -52,6 +49,7 @@ const TapButton: FC = () => {
         setSessionUntil: state.setSessionUntil,
         setSessionStart: state.setSessionStart,
         setCalmUntil: state.setCalmUntil,
+        setMultiplier: state.setMultiplier,
         isVibrationOn: state.isVibrationOn,
         level: state.level,
     }));
@@ -160,6 +158,7 @@ const TapButton: FC = () => {
         setSessionUntil(userInfoFromTap.sessionUntil);
         setSessionStart(userInfoFromTap.sessionStart);
         setCalmUntil(userInfoFromTap.calmUntil);
+        setMultiplier(userInfoFromTap.daysInRow);
     }, [lastMessage]);
 
     useEffect(() => {
