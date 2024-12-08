@@ -60,6 +60,7 @@ const WalletConnectModal: FC = () => {
         if (!response.result.wallet) return;
 
         setWallet(response.result.wallet);
+        setIsChange(false);
         console.log('[LOG]: Wallet was updated successfully ', response.result.wallet);
     }, [lastMessage]);
 
