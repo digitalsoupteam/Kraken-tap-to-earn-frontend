@@ -20,6 +20,7 @@ const EnergyTracker: FC = () => {
             timeOffset,
             setTimeOffset,
             setCalmUntil,
+            setIsTapDisabled,
         } = useGameStore((state) => ({
             calmUntil: state.calmUntil,
             sessionUntil: state.sessionUntil,
@@ -28,6 +29,7 @@ const EnergyTracker: FC = () => {
             timeOffset: state.timeOffset,
             setTimeOffset: state.setTimeOffset,
             setCalmUntil: state.setCalmUntil,
+            setIsTapDisabled: state.setIsTapDisabled,
         }));
 
         const {
@@ -82,6 +84,10 @@ const EnergyTracker: FC = () => {
         // Energy full update
         useEffect(() => {
             setIsEnergyFull(energy === 100);
+
+            if (energy === 0) setIsTapDisabled(true);
+
+            if (energy === 100) setIsTapDisabled(false);
         }, [energy]);
 
         // Active session action
@@ -124,11 +130,11 @@ const EnergyTracker: FC = () => {
 
             const minutes = padWithZero(Math.floor(timeDifference / 60));
             const seconds = padWithZero(timeDifference % 60);
-            const currentEnergy = (timeDifference / totalDuration) * 100;
+            const currentEnergy = 100 - (timeDifference / totalDuration) * 100;
 
             setCalmTime(`${minutes}:${seconds}`);
             setEnergy(currentEnergy);
-
+            console.log(currentEnergy);
         }, [calmUntil, currentTime, isSessionActive]);
 
         useEffect(() => {

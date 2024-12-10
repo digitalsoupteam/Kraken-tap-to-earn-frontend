@@ -25,7 +25,6 @@ const TapButton: FC = () => {
     const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
     const buttonRef = useRef<HTMLButtonElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [isDisabled, setIsDisabled] = useState(true);
     const tapQueueRef = useRef<{ x: number, y: number }[]>([]);
     const firstTapRef = useRef(true);
     const tapCooldown = 800;
@@ -41,6 +40,8 @@ const TapButton: FC = () => {
         isVibrationOn,
         setMultiplier,
         level,
+        isTapDisabled,
+        setIsTapDisabled
     } = useGameStore((state) => ({
         multiplier: state.multiplier,
         setTotalPoints: state.setTotalPoints,
@@ -52,16 +53,16 @@ const TapButton: FC = () => {
         setMultiplier: state.setMultiplier,
         isVibrationOn: state.isVibrationOn,
         level: state.level,
+        isTapDisabled: state.isTapDisabled,
+        setIsTapDisabled: state.setIsTapDisabled
     }));
 
     const {
         sendTaps,
         lastMessage,
-        // sendTapsCount
     } = useWebSocketStore((state) => ({
         sendTaps: state.sendTaps,
         lastMessage: state.lastMessage,
-        // sendTapsCount: state.sendTapsCount
     }));
 
     const drawTapEffects = () => {
@@ -110,7 +111,6 @@ const TapButton: FC = () => {
     const sendQueuedTaps = () => {
         if (tapQueueRef.current.length > 0) {
             sendTaps(tapQueueRef.current);
-            // setPrevPayload(tapQueueRef.current);
             tapQueueRef.current = [];
         }
     };
@@ -118,7 +118,7 @@ const TapButton: FC = () => {
     const handledTouchIds = useRef<Set<number>>(new Set());
 
     const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
-        if (isDisabled || !isTouchDevice) return;
+        if (isTapDisabled || !isTouchDevice) return;
 
         playSound();
 
@@ -126,7 +126,6 @@ const TapButton: FC = () => {
             if (!handledTouchIds.current.has(touch.identifier)) {
                 handledTouchIds.current.add(touch.identifier);
                 handleTap(touch.clientX, touch.clientY, touch.identifier);
-                // setTapsCounter(prev => prev + 1);
             }
         });
     };
@@ -138,7 +137,7 @@ const TapButton: FC = () => {
     };
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (isDisabled || isTouchDevice) return;
+        if (isTapDisabled || isTouchDevice) return;
 
         playSound();
         handleTap(e.clientX, e.clientY);
@@ -149,9 +148,9 @@ const TapButton: FC = () => {
         const response = JSON.parse(lastMessage);
 
         if (response.id !== 2000) return;
-        // setResCounter(prev => prev + 1);
-        const userInfoFromTap = response?.result?.userInfo;
 
+        const userInfoFromTap = response?.result?.userInfo;
+        console.log(userInfoFromTap);
         if (!userInfoFromTap) return;
         setTotalPoints(parseFloat(userInfoFromTap.points.toFixed(1)));
         setSessionLeft(userInfoFromTap.sessionLeft);
@@ -162,8 +161,12 @@ const TapButton: FC = () => {
     }, [lastMessage]);
 
     useEffect(() => {
-        setIsDisabled(!sessionLeft);
+        setIsTapDisabled(!sessionLeft);
     }, [sessionLeft]);
+
+    useEffect(() => {
+        console.log(isTapDisabled)
+    }, [isTapDisabled]);
 
     useEffect(() => {
         const interval = setInterval(sendQueuedTaps, tapCooldown);
@@ -184,55 +187,15 @@ const TapButton: FC = () => {
         canvasRef.current.width = window.innerWidth;
      }, [canvasRef]);
 
-
-    // useEffect(() => {
-    //     if (prevPayload.length > 0) {
-    //         setAllPayload(prev => [...prev, prevPayload]);
-    //     }
-    // }, [prevPayload]);
-
     return (
         <div className={styles.root}>
-            {/*<div*/}
-            {/*    style={{*/}
-            {/*        position: 'fixed',*/}
-            {/*        top: '100px',*/}
-            {/*        left: '50px',*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    taps - {tapsCounter}*/}
-            {/*    <br/>*/}
-            {/*    <br/>*/}
-            {/*    sendTaps - {sendTapsCount}*/}
-            {/*    <br/>*/}
-            {/*    <br/>*/}
-            {/*    resCounter - {resCounter}*/}
-            {/*    <br/>*/}
-            {/*    <br/>*/}
-            {/*    payload:*/}
-            {/*    <div>allPayload - {allPayload.flat().length}</div>*/}
-            {/*    <div>prevPayload - {prevPayload.length}</div>*/}
-            {/*    {prevPayload.length > 0 && prevPayload.map((item, index) => (*/}
-            {/*        <>*/}
-            {/*            /!*<div key={item.x + index + item.y}>{index} - {item.x} {item.y}</div>*!/*/}
-            {/*        </>*/}
-            {/*    ))}*/}
-            {/*    <textarea*/}
-            {/*        style={{position: 'relative', zIndex: 999, height: 300}}*/}
-            {/*        value={allPayload*/}
-            {/*            .map((innerArray, index) =>*/}
-            {/*                `${index}: [${innerArray.map(item => `{x: ${item.x}, y: ${item.y}}`).join(', ')}]`*/}
-            {/*            )*/}
-            {/*            .join('\n')}/>*/}
-            {/*</div>*/}
-
             <button
                 className={styles.button}
                 ref={buttonRef}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 onClick={handleClick}
-                disabled={isDisabled}>
+                disabled={isTapDisabled}>
                 <span className={styles.buttonInner}>
                     <span className={styles.image}>
                         <span className={styles.buttonBg}/>

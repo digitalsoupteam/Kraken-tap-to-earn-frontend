@@ -38,6 +38,7 @@ type State = {
     levelsGates: number[];
     level: number;
     gameIsReady: boolean;
+    isTapDisabled: boolean;
 }
 
 type Action = {
@@ -59,6 +60,7 @@ type Action = {
     toggleVibration: () => void;
     setLevel: (level: number) => void;
     setGameIsReady: (readiness: boolean) => void;
+    setIsTapDisabled: (tapDisabled: boolean) => void;
 }
 
 const useGameStore = create<State & Action>()(
@@ -83,6 +85,7 @@ const useGameStore = create<State & Action>()(
             levelsGates : [0, 350000, 850000, 1350000],
             level: 0,
             gameIsReady: false,
+            isTapDisabled: true,
             setTelegramInitData: (initData: string) => set({telegramInitData: initData}),
             setUserId: (userId: string) => set({userId: userId}),
             setUserPhoto: (photo: string) => set({userPhoto: photo}),
@@ -114,7 +117,8 @@ const useGameStore = create<State & Action>()(
                 }
             },
             setLevel: (level: number) => set({level: level}),
-            setGameIsReady: (readiness: boolean) => set({gameIsReady: readiness})
+            setGameIsReady: (readiness: boolean) => set({gameIsReady: readiness}),
+            setIsTapDisabled: (isTapDisabled) => set({isTapDisabled: isTapDisabled})
         })
     )
 );
