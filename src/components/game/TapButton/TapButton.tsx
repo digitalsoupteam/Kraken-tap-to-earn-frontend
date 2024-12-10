@@ -150,7 +150,6 @@ const TapButton: FC = () => {
         if (response.id !== 2000) return;
 
         const userInfoFromTap = response?.result?.userInfo;
-        console.log(userInfoFromTap);
         if (!userInfoFromTap) return;
         setTotalPoints(parseFloat(userInfoFromTap.points.toFixed(1)));
         setSessionLeft(userInfoFromTap.sessionLeft);
@@ -163,10 +162,6 @@ const TapButton: FC = () => {
     useEffect(() => {
         setIsTapDisabled(!sessionLeft);
     }, [sessionLeft]);
-
-    useEffect(() => {
-        console.log(isTapDisabled)
-    }, [isTapDisabled]);
 
     useEffect(() => {
         const interval = setInterval(sendQueuedTaps, tapCooldown);

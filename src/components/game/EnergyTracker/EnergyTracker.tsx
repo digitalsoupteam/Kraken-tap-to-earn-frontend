@@ -134,7 +134,6 @@ const EnergyTracker: FC = () => {
 
             setCalmTime(`${minutes}:${seconds}`);
             setEnergy(currentEnergy);
-            console.log(currentEnergy);
         }, [calmUntil, currentTime, isSessionActive]);
 
         useEffect(() => {
